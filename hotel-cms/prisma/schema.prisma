@@ -1,0 +1,208 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── Enums ───────────────────────────────────────────────
+
+enum HotelCategory {
+  luxury
+  boutique
+  business
+  resort
+  budget
+}
+
+enum PageType {
+  home
+  rooms
+  gallery
+  contact
+  about
+  dining
+  spa
+  events
+  custom
+}
+
+enum VersionStatus {
+  draft
+  published
+  rejected
+  rolled_back
+}
+
+// ─── Hotel ───────────────────────────────────────────────
+
+model Hotel {
+  id            String        @id @default(uuid())
+  name          String
+  category      HotelCategory
+  contactInfo   Json          @map("contact_info")   // { phone, email, address, coordinates }
+  seoConfig     Json          @default("{}") @map("seo_config")  // { title, description, keywords }
+  defaultLocale String        @default("en") @map("default_locale")
+  createdAt     DateTime      @default(now()) @map("created_at")
+  updatedAt     DateTime      @updatedAt @map("updated_at")
+
+  theme   Theme?
+  pages   Page[]
+  rooms   Room[]
+  media   MediaAsset[]
+  versions SchemaVersion[]
+  context  HotelContext?
+
+  @@map("hotels")
+}
+
+// ─── Theme ───────────────────────────────────────────────
+
+model Theme {
+  id           String @id @default(uuid())
+  hotelId      String @unique @map("hotel_id")
+  colorTokens  Json   @map("color_tokens")   // { primary, secondary, accent, bg, text }
+  typography   Json                           // { heading_font, body_font, scale }
+  spacing      Json                           // "compact" | "balanced" | "spacious" or custom
+  baseTemplate String @map("base_template")   // luxury | boutique | business | resort
+
+  hotel Hotel @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+
+  @@map("themes")
+}
+
+// ─── Page ────────────────────────────────────────────────
+
+model Page {
+  id        String   @id @default(uuid())
+  hotelId   String   @map("hotel_id")
+  slug      String
+  locale    String   @default("en")
+  pageType  PageType @map("page_type")
+  sortOrder Int      @default(0) @map("sort_order")
+  metaTags  Json     @default("{}") @map("meta_tags") // { title, description, og_image }
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  hotel    Hotel     @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+  sections Section[]
+
+  @@unique([hotelId, slug, locale])
+  @@map("pages")
+}
+
+// ─── Section ─────────────────────────────────────────────
+
+model Section {
+  id               String  @id @default(uuid())
+  pageId           String  @map("page_id")
+  sortOrder        Int     @default(0) @map("sort_order")
+  isVisible        Boolean @default(true) @map("is_visible")
+  componentVariant String  @map("component_variant") // references Component.variant
+  props            Json    @default("{}") // component-specific props
+  customCss        String?  @map("custom_css")
+  customHtml       String?  @map("custom_html")
+  customMode       Boolean  @default(false) @map("custom_mode")
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @updatedAt @map("updated_at")
+
+  page Page @relation(fields: [pageId], references: [id], onDelete: Cascade)
+
+  @@map("sections")
+}
+
+// ─── Component (Registry) ────────────────────────────────
+
+model Component {
+  id             String @id @default(uuid())
+  type           String // hero, rooms, gallery, booking, reviews, map, footer
+  variant        String @unique // hero_cinematic, hero_editorial, etc.
+  defaultProps   Json   @map("default_props")
+  propSchema     Json   @map("prop_schema") // JSON Schema for prop validation
+  renderTemplate String @map("render_template") // template identifier
+  categoryAffinity Json @default("[]") @map("category_affinity") // ["luxury", "boutique"]
+  tierRequirement  Int  @default(0) @map("tier_requirement") // 0-3
+  description    String @default("")
+
+  @@map("components")
+}
+
+// ─── Room ────────────────────────────────────────────────
+
+model Room {
+  id          String @id @default(uuid())
+  hotelId     String @map("hotel_id")
+  name        String
+  description String @default("")
+  pricing     Json   // { base_price, currency, seasonal_rates }
+  amenities   Json   @default("[]") // ["wifi", "pool", "minibar"]
+  maxGuests   Int    @default(2) @map("max_guests")
+  images      Json   @default("[]") // array of media asset IDs
+  sortOrder   Int    @default(0) @map("sort_order")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  hotel Hotel @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+
+  @@map("rooms")
+}
+
+// ─── Media Asset ─────────────────────────────────────────
+
+model MediaAsset {
+  id        String @id @default(uuid())
+  hotelId   String @map("hotel_id")
+  url       String
+  altText   String @default("") @map("alt_text")
+  tags      Json   @default("[]") // ["pool", "lobby", "room", "exterior"]
+  variants  Json   @default("{}") // { thumbnail, "400w", "800w", "1200w", "1600w", webp, avif }
+  mimeType  String @default("image/jpeg") @map("mime_type")
+  fileSize  Int    @default(0) @map("file_size")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  hotel Hotel @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+
+  @@map("media_assets")
+}
+
+// ─── Schema Version ──────────────────────────────────────
+
+model SchemaVersion {
+  id         String        @id @default(uuid())
+  hotelId    String        @map("hotel_id")
+  versionNum Int           @map("version_num")
+  diffPatch  Json          @map("diff_patch") // RFC 6902 JSON patch
+  snapshot   Json          @default("{}") // full state at this version
+  modelTier  Int           @default(0) @map("model_tier") // 0-3
+  modelUsed  String        @default("none") @map("model_used") // haiku, sonnet, opus, none
+  description String       @default("")
+  status     VersionStatus @default(draft)
+  createdAt  DateTime      @default(now()) @map("created_at")
+
+  hotel Hotel @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+
+  @@unique([hotelId, versionNum])
+  @@map("schema_versions")
+}
+
+// ─── Hotel Context (AI Memory + Snapshots) ───────────────
+
+model HotelContext {
+  id            String   @id @default(uuid())
+  hotelId       String   @unique @map("hotel_id")
+  brandVoice    String   @default("")
+  styleNotes    String   @default("")
+  pastDecisions Json     @default("[]")
+  preferences   Json     @default("{}")
+  renderedHtml  Json     @default("{}")
+  renderedCss   String   @default("")
+  lastSnapshot  DateTime @default(now()) @map("last_snapshot")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  hotel Hotel @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+
+  @@map("hotel_contexts")
+}

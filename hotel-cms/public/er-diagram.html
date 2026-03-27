@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Hotel CMS — ER Diagram</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<style>
+  body { margin: 0; padding: 24px; background: #f8f7fa; font-family: system-ui, sans-serif; }
+  h1 { font-size: 22px; color: #1a1a2e; margin-bottom: 4px; }
+  p { font-size: 13px; color: #7c7893; margin-bottom: 20px; }
+  .mermaid { background: #fff; border-radius: 12px; padding: 24px; box-shadow: 0 4px 16px rgba(0,0,0,0.04); border: 1px solid #e2dfe8; }
+  .legend { margin-top: 20px; display: flex; gap: 20px; font-size: 12px; color: #7c7893; }
+  .legend span { display: inline-flex; align-items: center; gap: 4px; }
+  .legend .dot { width: 10px; height: 10px; border-radius: 3px; }
+</style>
+</head>
+<body>
+<h1>Hotel CMS — Entity Relationship Diagram</h1>
+<p>8 models, 3 enums, all relations cascade on delete. JSON fields store flexible data (theme tokens, props, pricing).</p>
+
+<div class="mermaid">
+erDiagram
+    Hotel ||--o| Theme : "has one"
+    Hotel ||--o{ Page : "has many"
+    Hotel ||--o{ Room : "has many"
+    Hotel ||--o{ MediaAsset : "has many"
+    Hotel ||--o{ SchemaVersion : "has many"
+    Page ||--o{ Section : "has many"
+
+    Hotel {
+        uuid id PK
+        string name
+        HotelCategory category
+        json contactInfo "phone, email, address, coords"
+        json seoConfig "title, desc, keywords"
+        string defaultLocale "default: en"
+        datetime createdAt
+        datetime updatedAt
+    }
+
+    Theme {
+        uuid id PK
+        uuid hotelId FK "unique"
+        json colorTokens "primary, secondary, accent, bg, text"
+        json typography "headingFont, bodyFont, scale"
+        json spacing "compact | balanced | spacious"
+        string baseTemplate "luxury | boutique | business | resort"
+    }
+
+    Page {
+        uuid id PK
+        uuid hotelId FK
+        string slug
+        string locale "default: en"
+        PageType pageType
+        int sortOrder
+        json metaTags "title, description, ogImage"
+        datetime createdAt
+        datetime updatedAt
+    }
+
+    Section {
+        uuid id PK
+        uuid pageId FK
+        int sortOrder
+        boolean isVisible "default: true"
+        string componentVariant "refs Component.variant"
+        json props "component-specific props"
+        datetime createdAt
+        datetime updatedAt
+    }
+
+    Component {
+        uuid id PK
+        string type "hero, rooms, gallery, etc"
+        string variant UK "hero_cinematic, etc"
+        json defaultProps
+        json propSchema "JSON Schema validation"
+        string renderTemplate
+        json categoryAffinity "luxury, boutique, etc"
+        int tierRequirement "0-3"
+        string description
+    }
+
+    Room {
+        uuid id PK
+        uuid hotelId FK
+        string name
+        string description
+        json pricing "basePrice, currency, rates"
+        json amenities "wifi, pool, minibar"
+        int maxGuests "default: 2"
+        json images "media asset IDs"
+        int sortOrder
+    }
+
+    MediaAsset {
+        uuid id PK
+        uuid hotelId FK
+        string url
+        string altText
+        json tags "pool, lobby, room, etc"
+        json variants "thumbnail, 400w-1600w, webp, avif"
+        string mimeType
+        int fileSize
+    }
+
+    SchemaVersion {
+        uuid id PK
+        uuid hotelId FK
+        int versionNum "unique per hotel"
+        json diffPatch "RFC 6902 JSON patch"
+        json snapshot "full state at version"
+        int modelTier "0-3"
+        string modelUsed "haiku, sonnet, opus, none"
+        string description
+        VersionStatus status "draft, published, rejected"
+    }
+</div>
+
+<div class="legend">
+  <span><span class="dot" style="background: #e85d45;"></span> Enums: HotelCategory (luxury/boutique/business/resort/budget), PageType (home/rooms/gallery/contact/about/dining/spa/events/custom), VersionStatus (draft/published/rejected/rolled_back)</span>
+</div>
+<div class="legend">
+  <span><span class="dot" style="background: #0fa886;"></span> All FK relations cascade on delete</span>
+  <span><span class="dot" style="background: #7c5cbf;"></span> Component is standalone (no FK) — referenced by Section.componentVariant</span>
+  <span><span class="dot" style="background: #3b7dd8;"></span> Unique constraints: Theme.hotelId, Component.variant, Page(hotelId+slug+locale), SchemaVersion(hotelId+versionNum)</span>
+</div>
+
+<script>mermaid.initialize({ theme: 'default', er: { useMaxWidth: true } });</script>
+</body>
+</html>

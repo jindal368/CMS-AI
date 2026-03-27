@@ -1,0 +1,2007 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>hotelCMS — Documentation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --coral: #e85d45;
+      --coral-light: #f5856f;
+      --coral-dark: #c94832;
+      --coral-bg: #fdf1ee;
+      --purple: #7c5cbf;
+      --purple-light: #9b7fd4;
+      --purple-dark: #5e4399;
+      --purple-bg: #f4f0fb;
+      --bg: #f8f7fa;
+      --surface: #ffffff;
+      --surface-2: #f2f1f5;
+      --border: #e8e6ed;
+      --border-light: #f0eef5;
+      --text: #1a1626;
+      --text-2: #4a4560;
+      --text-3: #7a7590;
+      --code-bg: #1a1626;
+      --code-border: #2e2847;
+      --sidebar-w: 260px;
+      --header-h: 64px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      font-size: 15px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ─── SCROLLBAR ─── */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--text-3); }
+
+    /* ─── HEADER ─── */
+    .header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: var(--header-h);
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(16px) saturate(180%);
+      -webkit-backdrop-filter: blur(16px) saturate(180%);
+      border-bottom: 1px solid var(--border-light);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      padding: 0 24px;
+      gap: 16px;
+    }
+
+    .header-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+
+    .header-logo-icon {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, var(--coral), var(--purple));
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      font-weight: 800;
+      color: white;
+      letter-spacing: -1px;
+    }
+
+    .header-logo-text {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.3px;
+    }
+
+    .header-logo-text span { color: var(--coral); }
+
+    .header-badge {
+      background: var(--coral-bg);
+      color: var(--coral);
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 20px;
+      letter-spacing: 0.3px;
+    }
+
+    .header-spacer { flex: 1; }
+
+    .header-version {
+      font-size: 12px;
+      color: var(--text-3);
+      font-weight: 500;
+    }
+
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 6px 10px;
+      cursor: pointer;
+      color: var(--text-2);
+      font-size: 18px;
+      line-height: 1;
+    }
+
+    /* ─── LAYOUT ─── */
+    .layout {
+      display: flex;
+      padding-top: var(--header-h);
+      min-height: 100vh;
+    }
+
+    /* ─── SIDEBAR ─── */
+    .sidebar {
+      position: fixed;
+      top: var(--header-h);
+      left: 0;
+      bottom: 0;
+      width: var(--sidebar-w);
+      background: var(--surface);
+      border-right: 1px solid var(--border-light);
+      overflow-y: auto;
+      padding: 24px 0 40px;
+      z-index: 90;
+    }
+
+    .sidebar-section { margin-bottom: 8px; }
+
+    .sidebar-label {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-3);
+      padding: 12px 20px 6px;
+    }
+
+    .sidebar-link {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 20px;
+      color: var(--text-2);
+      text-decoration: none;
+      font-size: 13.5px;
+      font-weight: 450;
+      border-left: 2px solid transparent;
+      transition: all 0.15s ease;
+      line-height: 1.4;
+    }
+
+    .sidebar-link:hover {
+      color: var(--coral);
+      background: var(--coral-bg);
+      border-left-color: var(--coral-light);
+    }
+
+    .sidebar-link.active {
+      color: var(--coral);
+      background: var(--coral-bg);
+      border-left-color: var(--coral);
+      font-weight: 600;
+    }
+
+    .sidebar-icon { font-size: 14px; opacity: 0.7; }
+
+    /* ─── MAIN CONTENT ─── */
+    .main {
+      margin-left: var(--sidebar-w);
+      flex: 1;
+      min-width: 0;
+      padding: 48px 40px 80px;
+      max-width: 900px;
+    }
+
+    /* ─── SECTIONS ─── */
+    .section {
+      margin-bottom: 72px;
+      scroll-margin-top: calc(var(--header-h) + 24px);
+    }
+
+    /* ─── HERO ─── */
+    .hero {
+      background: linear-gradient(135deg, #1a1626 0%, #2e1e4a 50%, #1a2640 100%);
+      border-radius: 20px;
+      padding: 64px 56px;
+      margin-bottom: 72px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -80px; right: -80px;
+      width: 320px; height: 320px;
+      background: radial-gradient(circle, rgba(232,93,69,0.2) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -60px; left: 40px;
+      width: 240px; height: 240px;
+      background: radial-gradient(circle, rgba(124,92,191,0.2) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 20px;
+      padding: 6px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.7);
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .hero-eyebrow-dot {
+      width: 6px; height: 6px;
+      background: var(--coral);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.6; transform: scale(0.85); }
+    }
+
+    .hero h1 {
+      font-size: 52px;
+      font-weight: 800;
+      color: white;
+      letter-spacing: -2px;
+      line-height: 1.1;
+      margin-bottom: 12px;
+    }
+
+    .hero h1 span {
+      background: linear-gradient(135deg, var(--coral-light), var(--purple-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-tagline {
+      font-size: 20px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.6);
+      margin-bottom: 24px;
+      letter-spacing: -0.3px;
+    }
+
+    .hero-desc {
+      font-size: 16px;
+      color: rgba(255,255,255,0.5);
+      max-width: 520px;
+      line-height: 1.7;
+      margin-bottom: 36px;
+    }
+
+    .hero-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .hero-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px;
+      padding: 8px 14px;
+      font-size: 13px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.65);
+    }
+
+    .hero-pill-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+    }
+
+    /* ─── HEADINGS ─── */
+    h2 {
+      font-size: 28px;
+      font-weight: 750;
+      color: var(--text);
+      letter-spacing: -0.8px;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    h2 .section-icon {
+      width: 36px; height: 36px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 17px;
+      flex-shrink: 0;
+    }
+
+    .section-desc {
+      color: var(--text-3);
+      font-size: 15px;
+      margin-bottom: 28px;
+      line-height: 1.6;
+    }
+
+    h3 {
+      font-size: 17px;
+      font-weight: 650;
+      color: var(--text);
+      letter-spacing: -0.3px;
+      margin: 28px 0 12px;
+    }
+
+    h4 {
+      font-size: 14px;
+      font-weight: 650;
+      color: var(--text);
+      letter-spacing: 0.2px;
+      margin: 20px 0 8px;
+    }
+
+    p {
+      color: var(--text-2);
+      line-height: 1.75;
+      margin-bottom: 14px;
+    }
+
+    /* ─── CARDS GRID ─── */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border-light);
+      border-radius: 14px;
+      padding: 22px;
+      transition: box-shadow 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+    }
+
+    .card:hover {
+      box-shadow: 0 8px 32px rgba(0,0,0,0.07);
+      border-color: var(--border);
+      transform: translateY(-1px);
+    }
+
+    .card-icon {
+      width: 42px; height: 42px;
+      border-radius: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      margin-bottom: 14px;
+    }
+
+    .card-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 7px;
+      letter-spacing: -0.2px;
+    }
+
+    .card-desc {
+      font-size: 13px;
+      color: var(--text-3);
+      line-height: 1.65;
+    }
+
+    /* ─── ACCENT VARIANTS ─── */
+    .accent-coral { background: var(--coral-bg); color: var(--coral); }
+    .accent-purple { background: var(--purple-bg); color: var(--purple); }
+    .accent-green { background: #edf7f2; color: #2d7a56; }
+    .accent-blue { background: #eef4fd; color: #2f5fa8; }
+    .accent-orange { background: #fdf5ee; color: #c46b1a; }
+    .accent-pink { background: #fdf0f6; color: #b84a82; }
+
+    /* ─── CODE BLOCKS ─── */
+    pre, code {
+      font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
+      font-size: 13px;
+    }
+
+    code {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      padding: 2px 6px;
+      color: var(--coral-dark);
+      font-size: 12.5px;
+    }
+
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--code-border);
+      border-radius: 12px;
+      padding: 20px 24px;
+      overflow-x: auto;
+      margin: 16px 0;
+      position: relative;
+    }
+
+    pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      color: #c9bfff;
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .code-label {
+      position: absolute;
+      top: 12px; right: 16px;
+      font-size: 10px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.25);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .kw { color: #ff79c6; }
+    .str { color: #f1fa8c; }
+    .cm { color: #6272a4; font-style: italic; }
+    .fn { color: #8be9fd; }
+    .num { color: #bd93f9; }
+    .var { color: #50fa7b; }
+    .prop { color: #ffb86c; }
+    .op { color: #ff79c6; }
+
+    /* ─── TABLES ─── */
+    .table-wrap {
+      background: var(--surface);
+      border: 1px solid var(--border-light);
+      border-radius: 14px;
+      overflow: hidden;
+      margin: 20px 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th {
+      background: var(--surface-2);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.7px;
+      color: var(--text-3);
+      padding: 12px 16px;
+      text-align: left;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    td {
+      padding: 12px 16px;
+      font-size: 13.5px;
+      color: var(--text-2);
+      border-bottom: 1px solid var(--border-light);
+      vertical-align: top;
+      line-height: 1.5;
+    }
+
+    tr:last-child td { border-bottom: none; }
+
+    tr:hover td { background: var(--bg); }
+
+    td code { font-size: 11.5px; }
+
+    td strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    /* ─── STEPS ─── */
+    .steps { display: flex; flex-direction: column; gap: 0; }
+
+    .step {
+      display: flex;
+      gap: 20px;
+      padding: 0 0 28px;
+      position: relative;
+    }
+
+    .step:not(:last-child)::before {
+      content: '';
+      position: absolute;
+      left: 19px;
+      top: 40px;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--coral-light), transparent);
+    }
+
+    .step-num {
+      width: 38px; height: 38px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--coral), var(--coral-dark));
+      color: white;
+      font-weight: 700;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      box-shadow: 0 4px 12px rgba(232,93,69,0.3);
+    }
+
+    .step-content { flex: 1; padding-top: 6px; }
+
+    .step-title {
+      font-size: 15px;
+      font-weight: 650;
+      color: var(--text);
+      margin-bottom: 6px;
+      letter-spacing: -0.2px;
+    }
+
+    .step-desc {
+      font-size: 13.5px;
+      color: var(--text-3);
+      line-height: 1.65;
+      margin-bottom: 10px;
+    }
+
+    /* ─── ARCH DIAGRAM ─── */
+    .arch-diagram {
+      background: linear-gradient(135deg, #1a1626, #221840);
+      border-radius: 16px;
+      padding: 40px;
+      margin: 20px 0;
+      overflow-x: auto;
+    }
+
+    .arch-flow {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0;
+      justify-content: center;
+    }
+
+    .arch-node {
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 10px;
+      padding: 10px 16px;
+      text-align: center;
+      color: rgba(255,255,255,0.85);
+      font-size: 12.5px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .arch-node.accent-coral-dark {
+      background: rgba(232,93,69,0.2);
+      border-color: rgba(232,93,69,0.4);
+      color: #f5856f;
+    }
+
+    .arch-node.accent-purple-dark {
+      background: rgba(124,92,191,0.2);
+      border-color: rgba(124,92,191,0.4);
+      color: #9b7fd4;
+    }
+
+    .arch-node.accent-green-dark {
+      background: rgba(45,122,86,0.2);
+      border-color: rgba(45,122,86,0.4);
+      color: #5fcf8a;
+    }
+
+    .arch-arrow {
+      color: rgba(255,255,255,0.2);
+      font-size: 18px;
+      padding: 0 8px;
+      flex-shrink: 0;
+    }
+
+    .arch-fork {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      align-items: flex-start;
+    }
+
+    .arch-label {
+      font-size: 10px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.3);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    .arch-row {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .arch-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* ─── API ENDPOINTS ─── */
+    .endpoint-group { margin-bottom: 28px; }
+
+    .endpoint-group-title {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-3);
+      margin-bottom: 10px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .endpoint {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 10px 14px;
+      border-radius: 9px;
+      margin-bottom: 4px;
+      background: var(--surface);
+      border: 1px solid var(--border-light);
+      transition: border-color 0.15s;
+    }
+
+    .endpoint:hover { border-color: var(--border); }
+
+    .method {
+      font-size: 10px;
+      font-weight: 800;
+      padding: 3px 7px;
+      border-radius: 5px;
+      letter-spacing: 0.5px;
+      flex-shrink: 0;
+      margin-top: 1px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .method-get { background: #edf7f2; color: #2d7a56; }
+    .method-post { background: var(--coral-bg); color: var(--coral-dark); }
+    .method-put { background: var(--purple-bg); color: var(--purple-dark); }
+    .method-delete { background: #fdeaed; color: #b52a3a; }
+
+    .endpoint-path {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12.5px;
+      color: var(--text);
+      font-weight: 500;
+      flex: 1;
+    }
+
+    .endpoint-desc {
+      font-size: 12px;
+      color: var(--text-3);
+      margin-top: 2px;
+    }
+
+    /* ─── SHORTCUTS ─── */
+    .shortcuts-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .shortcut {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 18px;
+      background: var(--surface);
+      border: 1px solid var(--border-light);
+      border-radius: 10px;
+    }
+
+    .shortcut-desc {
+      font-size: 14px;
+      color: var(--text-2);
+      font-weight: 450;
+    }
+
+    .shortcut-keys {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    kbd {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-bottom-width: 2px;
+      border-radius: 6px;
+      padding: 3px 8px;
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-2);
+      box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+    }
+
+    .plus-sep {
+      color: var(--text-3);
+      font-size: 12px;
+    }
+
+    /* ─── TECH STACK ─── */
+    .tech-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 12px;
+    }
+
+    .tech-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 16px;
+      background: var(--surface);
+      border: 1px solid var(--border-light);
+      border-radius: 11px;
+      transition: all 0.15s ease;
+    }
+
+    .tech-item:hover {
+      border-color: var(--border);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+    }
+
+    .tech-icon {
+      width: 36px; height: 36px;
+      border-radius: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .tech-info {}
+
+    .tech-name {
+      font-size: 13.5px;
+      font-weight: 650;
+      color: var(--text);
+      line-height: 1.3;
+    }
+
+    .tech-role {
+      font-size: 11.5px;
+      color: var(--text-3);
+    }
+
+    /* ─── TIER BADGES ─── */
+    .tier-badge {
+      display: inline-flex;
+      align-items: center;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 20px;
+      letter-spacing: 0.3px;
+    }
+
+    .tier-0 { background: #edf7f2; color: #2d7a56; }
+    .tier-1 { background: var(--coral-bg); color: var(--coral-dark); }
+    .tier-2 { background: var(--purple-bg); color: var(--purple-dark); }
+    .tier-3 { background: #fdf5ee; color: #c46b1a; }
+
+    /* ─── CALLOUT ─── */
+    .callout {
+      border-radius: 11px;
+      padding: 16px 20px;
+      margin: 20px 0;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      font-size: 13.5px;
+      line-height: 1.65;
+    }
+
+    .callout-coral {
+      background: var(--coral-bg);
+      border: 1px solid rgba(232,93,69,0.15);
+      color: #8a2e1f;
+    }
+
+    .callout-purple {
+      background: var(--purple-bg);
+      border: 1px solid rgba(124,92,191,0.15);
+      color: #3e2470;
+    }
+
+    .callout-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+
+    /* ─── DIVIDER ─── */
+    .divider {
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--border), transparent);
+      margin: 48px 0;
+    }
+
+    /* ─── FOOTER ─── */
+    .footer {
+      background: var(--surface);
+      border-top: 1px solid var(--border-light);
+      padding: 32px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .footer-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .footer-brand-icon {
+      width: 28px; height: 28px;
+      background: linear-gradient(135deg, var(--coral), var(--purple));
+      border-radius: 7px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 800;
+      color: white;
+    }
+
+    .footer-brand-name {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .footer-brand-name span { color: var(--coral); }
+
+    .footer-meta {
+      font-size: 12px;
+      color: var(--text-3);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 20px;
+    }
+
+    .footer-link {
+      font-size: 12.5px;
+      color: var(--text-3);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.15s;
+    }
+
+    .footer-link:hover { color: var(--coral); }
+
+    /* ─── MOBILE SIDEBAR OVERLAY ─── */
+    .sidebar-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.4);
+      z-index: 85;
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 900px) {
+      .main {
+        margin-left: 0;
+        padding: 32px 24px 60px;
+      }
+
+      .sidebar {
+        transform: translateX(-100%);
+        transition: transform 0.25s ease;
+      }
+
+      .sidebar.open {
+        transform: translateX(0);
+      }
+
+      .sidebar-overlay.open {
+        display: block;
+      }
+
+      .mobile-menu-btn {
+        display: flex;
+        align-items: center;
+      }
+
+      .hero {
+        padding: 40px 28px;
+      }
+
+      .hero h1 { font-size: 36px; }
+
+      .hero-tagline { font-size: 16px; }
+
+      .cards-grid { grid-template-columns: 1fr; }
+
+      .tech-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 600px) {
+      .main { padding: 24px 16px 60px; }
+      .hero { padding: 28px 20px; }
+      .hero h1 { font-size: 28px; letter-spacing: -1px; }
+      .tech-grid { grid-template-columns: 1fr; }
+      .footer { flex-direction: column; align-items: flex-start; }
+      .arch-diagram { padding: 24px 16px; }
+    }
+
+    /* ─── FLOW DIAGRAM STEPS ─── */
+    .flow-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      position: relative;
+      padding-left: 32px;
+    }
+
+    .flow-steps::before {
+      content: '';
+      position: absolute;
+      left: 11px;
+      top: 20px;
+      bottom: 20px;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--coral), var(--purple));
+    }
+
+    .flow-step {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 0 0 20px;
+      position: relative;
+    }
+
+    .flow-dot {
+      position: absolute;
+      left: -26px;
+      top: 6px;
+      width: 14px; height: 14px;
+      border-radius: 50%;
+      border: 2px solid var(--surface);
+      box-shadow: 0 0 0 2px var(--coral);
+      background: var(--coral);
+      flex-shrink: 0;
+    }
+
+    .flow-step:nth-child(even) .flow-dot {
+      box-shadow: 0 0 0 2px var(--purple);
+      background: var(--purple);
+    }
+
+    .flow-content {
+      background: var(--surface);
+      border: 1px solid var(--border-light);
+      border-radius: 10px;
+      padding: 12px 16px;
+      flex: 1;
+    }
+
+    .flow-title {
+      font-size: 13.5px;
+      font-weight: 650;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+
+    .flow-detail {
+      font-size: 12.5px;
+      color: var(--text-3);
+      line-height: 1.55;
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <button class="mobile-menu-btn" id="menuBtn" onclick="toggleSidebar()" aria-label="Menu">☰</button>
+  <a href="#intro" class="header-logo">
+    <div class="header-logo-icon">H</div>
+    <span class="header-logo-text">hotel<span>CMS</span></span>
+  </a>
+  <span class="header-badge">Docs</span>
+  <div class="header-spacer"></div>
+  <span class="header-version">v1.0</span>
+</header>
+
+<!-- SIDEBAR OVERLAY -->
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+<!-- SIDEBAR -->
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">Overview</div>
+    <a href="#intro" class="sidebar-link active"><span class="sidebar-icon">✦</span> Introduction</a>
+    <a href="#features" class="sidebar-link"><span class="sidebar-icon">⚡</span> Features</a>
+    <a href="#architecture" class="sidebar-link"><span class="sidebar-icon">🏗</span> Architecture</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Getting Started</div>
+    <a href="#getting-started" class="sidebar-link"><span class="sidebar-icon">🚀</span> Quick Start</a>
+    <a href="#operations" class="sidebar-link"><span class="sidebar-icon">⚙</span> CMS Operations</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Reference</div>
+    <a href="#components" class="sidebar-link"><span class="sidebar-icon">◧</span> Component Registry</a>
+    <a href="#schema" class="sidebar-link"><span class="sidebar-icon">🗄</span> Database Schema</a>
+    <a href="#ai-flow" class="sidebar-link"><span class="sidebar-icon">🤖</span> AI Prompt Flow</a>
+    <a href="#api" class="sidebar-link"><span class="sidebar-icon">⟁</span> API Reference</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Appendix</div>
+    <a href="#tech-stack" class="sidebar-link"><span class="sidebar-icon">🔧</span> Tech Stack</a>
+    <a href="#shortcuts" class="sidebar-link"><span class="sidebar-icon">⌨</span> Shortcuts</a>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<main class="main">
+
+  <!-- ─── HERO ─── -->
+  <section id="intro" class="section">
+    <div class="hero">
+      <div class="hero-eyebrow">
+        <div class="hero-eyebrow-dot"></div>
+        AI-Powered · No Code Required
+      </div>
+      <h1>hotel<span>CMS</span></h1>
+      <div class="hero-tagline">AI-Powered Hotel Website Builder</div>
+      <p class="hero-desc">
+        Create stunning hotel websites using pre-built components and AI that understands your brand.
+        Describe what you want in plain language — hotelCMS handles the rest. No coding required.
+      </p>
+      <div class="hero-pills">
+        <div class="hero-pill"><div class="hero-pill-dot" style="background:#e85d45"></div> 12 Pre-built Components</div>
+        <div class="hero-pill"><div class="hero-pill-dot" style="background:#7c5cbf"></div> 4-Tier AI Routing</div>
+        <div class="hero-pill"><div class="hero-pill-dot" style="background:#2d7a56"></div> RFC 6902 Versioning</div>
+        <div class="hero-pill"><div class="hero-pill-dot" style="background:#2f5fa8"></div> Visual Page Builder</div>
+      </div>
+    </div>
+
+    <p>
+      hotelCMS is a full-stack platform that combines a visual drag-and-drop page builder with a
+      multi-model AI engine. Hotel teams can manage their website through a CMS dashboard, while AI
+      interprets natural-language commands to modify content, swap components, adjust themes, and
+      even inject custom code — all version-controlled with instant rollback.
+    </p>
+  </section>
+
+  <!-- ─── FEATURES ─── -->
+  <section id="features" class="section">
+    <h2>
+      <div class="section-icon accent-coral">⚡</div>
+      Features Overview
+    </h2>
+    <p class="section-desc">Everything you need to build, manage, and evolve a premium hotel website.</p>
+
+    <div class="cards-grid">
+      <div class="card">
+        <div class="card-icon accent-coral">🧠</div>
+        <div class="card-title">Multi-LLM AI Engine</div>
+        <div class="card-desc">4-tier task routing selects the cheapest model that can handle each task. Tier 0 hits the DB directly, Tiers 1–3 escalate to increasingly capable LLMs. Every action is classified before execution.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon accent-purple">◧</div>
+        <div class="card-title">12 Pre-built Components</div>
+        <div class="card-desc">Hero (cinematic, editorial, minimal), Rooms (grid, showcase), Gallery (masonry, filmstrip), Booking (inline, sticky), Reviews wall, Map, and Footer — all production-ready.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon accent-blue">🖱</div>
+        <div class="card-title">Visual Page Builder</div>
+        <div class="card-desc">Drag sections to reorder, toggle visibility, preview live in an iframe, and fire AI commands from anywhere via the ⌘K command bar.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon accent-orange">✏</div>
+        <div class="card-title">AI Direct Code Editing</div>
+        <div class="card-desc">AI goes beyond structured CMS operations — it can inject custom CSS targeting any element or replace a section's HTML entirely for pixel-perfect custom layouts.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon accent-green">💾</div>
+        <div class="card-title">Hotel Context & Memory</div>
+        <div class="card-desc">AI remembers your brand voice, visual style preferences, and past decisions. Each interaction contributes to a growing hotel context that makes AI responses more accurate over time.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon accent-coral">🕓</div>
+        <div class="card-title">Version Control</div>
+        <div class="card-desc">Every change is stored as an RFC 6902 JSON patch. View the full version timeline, compare diffs, publish, reject, or rollback to any previous state with one click.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon accent-purple">⚔</div>
+        <div class="card-title">Smart Merge</div>
+        <div class="card-desc">Detects and handles conflicts when structured CMS edits collide with AI custom HTML/CSS overrides, preventing silent data loss.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon accent-pink">🔗</div>
+        <div class="card-title">Reference URL Generation</div>
+        <div class="card-desc">Paste a competitor or inspiration URL — the AI scrapes its structure and generates a full homepage with matching aesthetic and layout, adapted to your hotel's content.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon accent-blue">🖼</div>
+        <div class="card-title">Image Pipeline</div>
+        <div class="card-desc">Upload → EXIF strip → WebP + AVIF conversion → responsive srcset generation → AI-generated alt text and semantic tags. Images are optimized for Core Web Vitals out of the box.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon accent-orange">🎨</div>
+        <div class="card-title">Theme Editor</div>
+        <div class="card-desc">Color tokens, typography scales, spacing rhythm, and border radius — all editable with a live-preview swatch. Changes propagate instantly across all components.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── ARCHITECTURE ─── -->
+  <section id="architecture" class="section">
+    <h2>
+      <div class="section-icon accent-purple">🏗</div>
+      Architecture Overview
+    </h2>
+    <p class="section-desc">hotelCMS uses a layered architecture where every user action passes through an intent classifier before reaching the database or an LLM.</p>
+
+    <div class="arch-diagram">
+      <div class="arch-label">Request Flow</div>
+      <div class="arch-col" style="gap:12px;">
+        <div class="arch-row">
+          <div class="arch-node accent-coral-dark">User</div>
+          <div class="arch-arrow">→</div>
+          <div class="arch-node">CMS Dashboard</div>
+          <div class="arch-arrow">→</div>
+          <div class="arch-node">Intent Classifier</div>
+          <div class="arch-arrow">→</div>
+          <div class="arch-node">Tier Router</div>
+        </div>
+        <div style="display:flex; align-items:center; justify-content:center; gap:16px; flex-wrap:wrap; margin-top:4px;">
+          <div class="arch-arrow" style="transform:rotate(90deg);">→</div>
+        </div>
+        <div class="arch-row" style="gap:12px;">
+          <div class="arch-node tier-0" style="background:rgba(45,122,86,0.2);border-color:rgba(45,122,86,0.4);color:#5fcf8a;">Tier 0: Direct DB</div>
+          <div style="color:rgba(255,255,255,0.2);font-size:13px;">│</div>
+          <div class="arch-node accent-coral-dark">Tier 1–3: LLM</div>
+        </div>
+        <div style="display:flex; align-items:center; justify-content:center; gap:16px; margin-top:4px;">
+          <div class="arch-arrow" style="transform:rotate(90deg);">→</div>
+        </div>
+        <div class="arch-row">
+          <div class="arch-node accent-purple-dark">Operations Executor</div>
+          <div class="arch-arrow">→</div>
+          <div class="arch-node">PostgreSQL</div>
+          <div class="arch-arrow">→</div>
+          <div class="arch-node">Renderer</div>
+          <div class="arch-arrow">→</div>
+          <div class="arch-node accent-green-dark">Live Preview</div>
+        </div>
+      </div>
+    </div>
+
+    <h3>Tech Foundation</h3>
+    <p>Built on <strong>Next.js 16</strong> with App Router and Server Components for zero-JS pages by default.
+    <strong>PostgreSQL</strong> with <strong>Prisma ORM</strong> for typed database access. <strong>OpenRouter</strong>
+    as the LLM gateway to swap between providers. <strong>Tailwind CSS</strong> for component styling.</p>
+
+    <h3>Tier Routing Logic</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Tier</th>
+            <th>Trigger</th>
+            <th>Handler</th>
+            <th>Latency</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="tier-badge tier-0">Tier 0</span></td>
+            <td>Rule-matched: simple text/prop updates</td>
+            <td>Direct DB write, no LLM call</td>
+            <td>&lt; 50ms</td>
+          </tr>
+          <tr>
+            <td><span class="tier-badge tier-1">Tier 1</span></td>
+            <td>Structured CMS ops, low complexity</td>
+            <td>Fast, cheap LLM (e.g. Haiku)</td>
+            <td>~400ms</td>
+          </tr>
+          <tr>
+            <td><span class="tier-badge tier-2">Tier 2</span></td>
+            <td>Multi-step ops, theme changes, memory</td>
+            <td>Mid-tier LLM (e.g. Sonnet)</td>
+            <td>~1.5s</td>
+          </tr>
+          <tr>
+            <td><span class="tier-badge tier-3">Tier 3</span></td>
+            <td>Code injection, HTML replacement, complex reasoning</td>
+            <td>Frontier LLM (e.g. Opus / GPT-4o)</td>
+            <td>~4s</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ─── GETTING STARTED ─── -->
+  <section id="getting-started" class="section">
+    <h2>
+      <div class="section-icon accent-green">🚀</div>
+      Getting Started
+    </h2>
+    <p class="section-desc">Get hotelCMS running locally in under 5 minutes.</p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <div class="step-title">Install PostgreSQL</div>
+          <div class="step-desc">hotelCMS requires PostgreSQL 14+. Install via Homebrew (macOS), apt (Ubuntu), or use a managed service like Neon or Supabase.</div>
+          <pre><code><span class="cm"># macOS</span>
+<span class="fn">brew</span> install postgresql@16 <span class="op">&&</span> <span class="fn">brew</span> services start postgresql@16
+
+<span class="cm"># Ubuntu</span>
+<span class="fn">sudo</span> apt install -y postgresql postgresql-contrib</code></pre>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <div class="step-title">Clone the repository and install dependencies</div>
+          <pre><code><span class="fn">git</span> clone https://github.com/your-org/hotel-cms.git
+<span class="fn">cd</span> hotel-cms
+<span class="fn">npm</span> install</code></pre>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <div class="step-title">Configure environment variables</div>
+          <div class="step-desc">Copy the example env file and fill in your credentials.</div>
+          <pre><code><span class="fn">cp</span> .env.example .env</code></pre>
+          <pre><code><span class="cm"># .env</span>
+<span class="prop">DATABASE_URL</span>=<span class="str">"postgresql://user:password@localhost:5432/hotelcms"</span>
+<span class="prop">OPENROUTER_API_KEY</span>=<span class="str">"sk-or-..."</span>
+<span class="prop">NEXTAUTH_SECRET</span>=<span class="str">"your-secret-here"</span>
+<span class="prop">NEXT_PUBLIC_APP_URL</span>=<span class="str">"http://localhost:3000"</span></code></pre>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <div class="step-title">Run database migrations</div>
+          <pre><code><span class="fn">npx</span> prisma migrate dev <span class="op">--</span>name init</code></pre>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-content">
+          <div class="step-title">Seed demo data</div>
+          <div class="step-desc">Populate the database with a sample hotel, pages, and components.</div>
+          <pre><code><span class="fn">npx</span> prisma db seed</code></pre>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">6</div>
+        <div class="step-content">
+          <div class="step-title">Start the development server</div>
+          <pre><code><span class="fn">npm</span> run dev</code></pre>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">7</div>
+        <div class="step-content">
+          <div class="step-title">Open hotelCMS</div>
+          <div class="step-desc">Navigate to the CMS dashboard in your browser.</div>
+          <pre><code>http://localhost:3000</code></pre>
+          <div class="callout callout-coral">
+            <div class="callout-icon">💡</div>
+            <div>Press <kbd>⌘K</kbd> anywhere in the dashboard to open the AI command bar. Try: <em>"Make the hero section cinematic with a full-bleed image"</em></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── CMS OPERATIONS ─── -->
+  <section id="operations" class="section">
+    <h2>
+      <div class="section-icon accent-orange">⚙</div>
+      CMS Operations Reference
+    </h2>
+    <p class="section-desc">The AI emits one or more of these 13 typed operations in response to every user command. Operations are validated with Zod and executed atomically.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Operation</th>
+            <th>Description</th>
+            <th>Min Tier</th>
+            <th>Key Payload Fields</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>update_text</code></td>
+            <td>Change visible text content in a section (headline, body, CTA label)</td>
+            <td><span class="tier-badge tier-0">Tier 0</span></td>
+            <td><code>sectionId</code>, <code>field</code>, <code>value</code></td>
+          </tr>
+          <tr>
+            <td><code>update_props</code></td>
+            <td>Update structured props (layout variant, colors, image URLs, boolean flags)</td>
+            <td><span class="tier-badge tier-0">Tier 0</span></td>
+            <td><code>sectionId</code>, <code>props</code> (partial)</td>
+          </tr>
+          <tr>
+            <td><code>swap_component</code></td>
+            <td>Replace a section's component type while preserving compatible props</td>
+            <td><span class="tier-badge tier-1">Tier 1</span></td>
+            <td><code>sectionId</code>, <code>newComponentId</code></td>
+          </tr>
+          <tr>
+            <td><code>add_section</code></td>
+            <td>Insert a new section at a specified position on the page</td>
+            <td><span class="tier-badge tier-1">Tier 1</span></td>
+            <td><code>pageId</code>, <code>componentId</code>, <code>position</code>, <code>props</code></td>
+          </tr>
+          <tr>
+            <td><code>remove_section</code></td>
+            <td>Delete a section from a page (soft delete, recoverable via rollback)</td>
+            <td><span class="tier-badge tier-1">Tier 1</span></td>
+            <td><code>sectionId</code></td>
+          </tr>
+          <tr>
+            <td><code>update_theme</code></td>
+            <td>Modify global theme tokens: colors, typography, spacing, radius</td>
+            <td><span class="tier-badge tier-2">Tier 2</span></td>
+            <td><code>hotelId</code>, <code>themeChanges</code> (partial Theme)</td>
+          </tr>
+          <tr>
+            <td><code>update_meta</code></td>
+            <td>Update page SEO metadata: title, description, OG image, canonical</td>
+            <td><span class="tier-badge tier-0">Tier 0</span></td>
+            <td><code>pageId</code>, <code>meta</code></td>
+          </tr>
+          <tr>
+            <td><code>reorder_sections</code></td>
+            <td>Resequence sections on a page by providing a new ordered array of IDs</td>
+            <td><span class="tier-badge tier-1">Tier 1</span></td>
+            <td><code>pageId</code>, <code>sectionIds</code> (ordered)</td>
+          </tr>
+          <tr>
+            <td><code>inject_css</code></td>
+            <td>Append scoped custom CSS targeting a specific section or global scope</td>
+            <td><span class="tier-badge tier-3">Tier 3</span></td>
+            <td><code>sectionId?</code>, <code>css</code></td>
+          </tr>
+          <tr>
+            <td><code>replace_html</code></td>
+            <td>Fully replace a section's rendered HTML with AI-generated markup</td>
+            <td><span class="tier-badge tier-3">Tier 3</span></td>
+            <td><code>sectionId</code>, <code>html</code></td>
+          </tr>
+          <tr>
+            <td><code>clear_overrides</code></td>
+            <td>Remove all custom CSS / HTML overrides for a section, reverting to component defaults</td>
+            <td><span class="tier-badge tier-1">Tier 1</span></td>
+            <td><code>sectionId</code></td>
+          </tr>
+          <tr>
+            <td><code>save_memory</code></td>
+            <td>Persist a fact or preference to the hotel's AI memory store for future sessions</td>
+            <td><span class="tier-badge tier-2">Tier 2</span></td>
+            <td><code>hotelId</code>, <code>key</code>, <code>value</code></td>
+          </tr>
+          <tr>
+            <td><code>update_brand_voice</code></td>
+            <td>Update the hotel's brand voice descriptor used in all subsequent AI content generation</td>
+            <td><span class="tier-badge tier-2">Tier 2</span></td>
+            <td><code>hotelId</code>, <code>brandVoice</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout callout-purple">
+      <div class="callout-icon">ℹ</div>
+      <div>A single AI response can contain multiple operations that execute in order. For example, swapping a component and then updating its props happens in one atomic transaction.</div>
+    </div>
+  </section>
+
+  <!-- ─── COMPONENT REGISTRY ─── -->
+  <section id="components" class="section">
+    <h2>
+      <div class="section-icon accent-purple">◧</div>
+      Component Registry
+    </h2>
+    <p class="section-desc">All 12 production-ready components. Each component defines its own prop schema, variant options, and AI affinity.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Component</th>
+            <th>Description</th>
+            <th>Category</th>
+            <th>Tier</th>
+            <th>Key Props</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Hero — Cinematic</strong></td>
+            <td>Full-bleed video or image background with bold overlay headline and CTA</td>
+            <td>Hero</td>
+            <td><span class="tier-badge tier-1">Tier 1</span></td>
+            <td><code>mediaUrl</code>, <code>headline</code>, <code>ctaLabel</code>, <code>overlay</code></td>
+          </tr>
+          <tr>
+            <td><strong>Hero — Editorial</strong></td>
+            <td>Split-layout hero with large typography on one side, featured image on the other</td>
+            <td>Hero</td>
+            <td><span class="tier-badge tier-1">Tier 1</span></td>
+            <td><code>headline</code>, <code>subhead</code>, <code>imageUrl</code>, <code>alignment</code></td>
+          </tr>
+          <tr>
+            <td><strong>Hero — Minimal</strong></td>
+            <td>Clean, text-centered hero with gradient background, ideal for boutique properties</td>
+            <td>Hero</td>
+            <td><span class="tier-badge tier-0">Tier 0</span></td>
+            <td><code>headline</code>, <code>tagline</code>, <code>bgGradient</code></td>
+          </tr>
+          <tr>
+            <td><strong>Rooms — Grid</strong></td>
+            <td>Responsive masonry or uniform grid of room cards with pricing and quick-book</td>
+            <td>Rooms</td>
+            <td><span class="tier-badge tier-1">Tier 1</span></td>
+            <td><code>roomIds</code>, <code>columns</code>, <code>showPricing</code>, <code>showRating</code></td>
+          </tr>
+          <tr>
+            <td><strong>Rooms — Showcase</strong></td>
+            <td>Horizontal scrolling hero card per room with full-bleed image and feature list</td>
+            <td>Rooms</td>
+            <td><span class="tier-badge tier-1">Tier 1</span></td>
+            <td><code>roomIds</code>, <code>autoPlay</code>, <code>interval</code></td>
+          </tr>
+          <tr>
+            <td><strong>Gallery — Masonry</strong></td>
+            <td>Pinterest-style variable-height image grid with lightbox</td>
+            <td>Gallery</td>
+            <td><span class="tier-badge tier-1">Tier 1</span></td>
+            <td><code>mediaIds</code>, <code>columns</code>, <code>lightbox</code></td>
+          </tr>
+          <tr>
+            <td><strong>Gallery — Filmstrip</strong></td>
+            <td>Horizontal strip with looping animation, ideal for lobby/property photography</td>
+            <td>Gallery</td>
+            <td><span class="tier-badge tier-1">Tier 1</span></td>
+            <td><code>mediaIds</code>, <code>speed</code>, <code>gap</code></td>
+          </tr>
+          <tr>
+            <td><strong>Booking — Inline</strong></td>
+            <td>Embedded check-in/check-out date picker with room count and CTA</td>
+            <td>Booking</td>
+            <td><span class="tier-badge tier-2">Tier 2</span></td>
+            <td><code>engineUrl</code>, <code>style</code>, <code>primaryColor</code></td>
+          </tr>
+          <tr>
+            <td><strong>Booking — Sticky</strong></td>
+            <td>Fixed bottom booking bar that appears on scroll, non-intrusive on mobile</td>
+            <td>Booking</td>
+            <td><span class="tier-badge tier-2">Tier 2</span></td>
+            <td><code>engineUrl</code>, <code>scrollThreshold</code>, <code>mobileHide</code></td>
+          </tr>
+          <tr>
+            <td><strong>Reviews Wall</strong></td>
+            <td>Animated grid of guest reviews pulled from connected sources with star ratings</td>
+            <td>Social Proof</td>
+            <td><span class="tier-badge tier-1">Tier 1</span></td>
+            <td><code>reviewIds</code>, <code>layout</code>, <code>showSource</code>, <code>animate</code></td>
+          </tr>
+          <tr>
+            <td><strong>Map</strong></td>
+            <td>Interactive map section with hotel pin, nearby attractions, and directions link</td>
+            <td>Location</td>
+            <td><span class="tier-badge tier-1">Tier 1</span></td>
+            <td><code>lat</code>, <code>lng</code>, <code>zoom</code>, <code>mapStyle</code>, <code>showNearby</code></td>
+          </tr>
+          <tr>
+            <td><strong>Footer</strong></td>
+            <td>Multi-column footer with nav links, social icons, newsletter signup, and legal</td>
+            <td>Navigation</td>
+            <td><span class="tier-badge tier-0">Tier 0</span></td>
+            <td><code>columns</code>, <code>socialLinks</code>, <code>newsletter</code>, <code>legalText</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ─── DATABASE SCHEMA ─── -->
+  <section id="schema" class="section">
+    <h2>
+      <div class="section-icon accent-blue">🗄</div>
+      Database Schema
+    </h2>
+    <p class="section-desc">9 Prisma models covering the full domain from hotel configuration to AI memory.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Model</th>
+            <th>Purpose</th>
+            <th>Key Fields</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Hotel</strong></td>
+            <td>Root entity. One record per property.</td>
+            <td><code>id</code>, <code>name</code>, <code>slug</code>, <code>domain</code>, <code>themeId</code>, <code>brandVoice</code></td>
+          </tr>
+          <tr>
+            <td><strong>Theme</strong></td>
+            <td>Global design tokens for a hotel.</td>
+            <td><code>primaryColor</code>, <code>fontFamily</code>, <code>borderRadius</code>, <code>spacing</code>, <code>colorTokens</code> (JSON)</td>
+          </tr>
+          <tr>
+            <td><strong>Page</strong></td>
+            <td>A published or draft page on the hotel site.</td>
+            <td><code>slug</code>, <code>title</code>, <code>status</code>, <code>metaTitle</code>, <code>metaDescription</code>, <code>hotelId</code></td>
+          </tr>
+          <tr>
+            <td><strong>Section</strong></td>
+            <td>A placed component instance on a page.</td>
+            <td><code>pageId</code>, <code>componentId</code>, <code>order</code>, <code>props</code> (JSON), <code>customCss</code>, <code>customHtml</code>, <code>visible</code></td>
+          </tr>
+          <tr>
+            <td><strong>Component</strong></td>
+            <td>Registry of all available UI components.</td>
+            <td><code>name</code>, <code>slug</code>, <code>category</code>, <code>defaultProps</code> (JSON), <code>propSchema</code> (JSON), <code>minTier</code></td>
+          </tr>
+          <tr>
+            <td><strong>Room</strong></td>
+            <td>Hotel room or suite record.</td>
+            <td><code>name</code>, <code>description</code>, <code>pricePerNight</code>, <code>capacity</code>, <code>amenities</code>, <code>mediaIds</code></td>
+          </tr>
+          <tr>
+            <td><strong>MediaAsset</strong></td>
+            <td>Uploaded images and videos post-processing pipeline.</td>
+            <td><code>originalUrl</code>, <code>webpUrl</code>, <code>avifUrl</code>, <code>srcset</code>, <code>altText</code>, <code>tags</code>, <code>width</code>, <code>height</code></td>
+          </tr>
+          <tr>
+            <td><strong>SchemaVersion</strong></td>
+            <td>Immutable version snapshot with RFC 6902 patch.</td>
+            <td><code>patch</code> (JSON), <code>status</code> (draft/published/rejected), <code>createdBy</code>, <code>publishedAt</code></td>
+          </tr>
+          <tr>
+            <td><strong>HotelContext</strong></td>
+            <td>AI memory store. Key-value pairs for persistent hotel preferences.</td>
+            <td><code>hotelId</code>, <code>key</code>, <code>value</code> (JSON), <code>updatedAt</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Schema Relationships</h3>
+    <pre><code><span class="cm">// Simplified Prisma schema excerpt</span>
+<span class="kw">model</span> <span class="fn">Hotel</span> {
+  id        <span class="prop">String</span>   <span class="op">@id @default</span>(<span class="fn">cuid</span>())
+  pages     <span class="fn">Page</span>[]
+  theme     <span class="fn">Theme?</span>
+  context   <span class="fn">HotelContext</span>[]
+}
+
+<span class="kw">model</span> <span class="fn">Section</span> {
+  id          <span class="prop">String</span>  <span class="op">@id</span>
+  page        <span class="fn">Page</span>    <span class="op">@relation</span>(fields: [pageId], references: [id])
+  component   <span class="fn">Component</span>
+  props       <span class="prop">Json</span>
+  customCss   <span class="prop">String?</span>
+  customHtml  <span class="prop">String?</span>
+  order       <span class="prop">Int</span>
+  visible     <span class="prop">Boolean</span> <span class="op">@default</span>(<span class="kw">true</span>)
+}</code></pre>
+    <div class="code-label" style="display:none;"></div>
+  </section>
+
+  <!-- ─── AI PROMPT FLOW ─── -->
+  <section id="ai-flow" class="section">
+    <h2>
+      <div class="section-icon accent-coral">🤖</div>
+      AI Prompt Flow
+    </h2>
+    <p class="section-desc">Every natural-language command travels through a deterministic pipeline before anything in the database changes.</p>
+
+    <div class="flow-steps">
+      <div class="flow-step">
+        <div class="flow-dot"></div>
+        <div class="flow-content">
+          <div class="flow-title">1 — User types a command</div>
+          <div class="flow-detail">Via the ⌘K command bar, a text field in the dashboard, or the API directly. Example: <em>"Make the booking section sticky and change the CTA to 'Reserve Now'"</em></div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-dot"></div>
+        <div class="flow-content">
+          <div class="flow-title">2 — Intent classification</div>
+          <div class="flow-detail">A lightweight rule engine checks for pattern matches (regex + keyword heuristics). On a match, Tier 0 executes directly. On ambiguity, the classifier calls a small LLM to resolve intent and assign a tier.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-dot"></div>
+        <div class="flow-content">
+          <div class="flow-title">3 — Context assembly</div>
+          <div class="flow-detail">The system gathers: hotel profile + brand voice, active theme tokens, all sections with props, HotelContext memory entries, and the current rendered HTML of the page. This forms the LLM's system prompt.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-dot"></div>
+        <div class="flow-content">
+          <div class="flow-title">4 — LLM call via OpenRouter</div>
+          <div class="flow-detail">The appropriate tier's model receives the assembled context and the user command. It responds with a structured JSON array of operations conforming to the CMS operations schema.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-dot"></div>
+        <div class="flow-content">
+          <div class="flow-title">5 — Response parsing and validation</div>
+          <div class="flow-detail">The LLM output is parsed and each operation is validated with Zod. Invalid operations are rejected with an error surfaced to the user. Valid operations proceed to execution.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-dot"></div>
+        <div class="flow-content">
+          <div class="flow-title">6 — Execute against database</div>
+          <div class="flow-detail">Operations run in a Prisma transaction. A before-state snapshot is captured, the changes applied, and an RFC 6902 patch computed between old and new state for the version record.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-dot"></div>
+        <div class="flow-content">
+          <div class="flow-title">7 — Preview refresh</div>
+          <div class="flow-detail">The dashboard's iframe preview reloads, reflecting all changes. The version timeline updates with the new draft entry, ready to publish or reject.</div>
+        </div>
+      </div>
+    </div>
+
+    <h3>Context Window Budget</h3>
+    <pre><code><span class="cm">// Approximate token allocation per LLM call</span>
+<span class="var">systemPrompt</span>     = hotel profile + theme tokens      <span class="cm">// ~800 tokens</span>
+<span class="var">sectionContext</span>   = all sections serialized to JSON   <span class="cm">// ~2,400 tokens</span>
+<span class="var">aiMemory</span>         = HotelContext key-value pairs       <span class="cm">// ~400 tokens</span>
+<span class="var">renderedHtml</span>     = truncated current page HTML        <span class="cm">// ~1,200 tokens</span>
+<span class="var">userMessage</span>      = the natural language command       <span class="cm">// ~50–200 tokens</span>
+<span class="cm">// Total: ~5,000 tokens (well within Tier 1 context windows)</span></code></pre>
+  </section>
+
+  <!-- ─── API REFERENCE ─── -->
+  <section id="api" class="section">
+    <h2>
+      <div class="section-icon accent-blue">⟁</div>
+      API Reference
+    </h2>
+    <p class="section-desc">All endpoints return JSON. Authentication uses Bearer tokens in the <code>Authorization</code> header.</p>
+
+    <div class="endpoint-group">
+      <div class="endpoint-group-title">Hotels</div>
+      <div class="endpoint"><span class="method method-get">GET</span><div><div class="endpoint-path">/api/hotels</div><div class="endpoint-desc">List all hotels for the authenticated user</div></div></div>
+      <div class="endpoint"><span class="method method-post">POST</span><div><div class="endpoint-path">/api/hotels</div><div class="endpoint-desc">Create a new hotel</div></div></div>
+      <div class="endpoint"><span class="method method-get">GET</span><div><div class="endpoint-path">/api/hotels/[id]</div><div class="endpoint-desc">Fetch a hotel by ID with theme and pages</div></div></div>
+      <div class="endpoint"><span class="method method-put">PUT</span><div><div class="endpoint-path">/api/hotels/[id]</div><div class="endpoint-desc">Update hotel profile (name, domain, brand voice)</div></div></div>
+      <div class="endpoint"><span class="method method-delete">DELETE</span><div><div class="endpoint-path">/api/hotels/[id]</div><div class="endpoint-desc">Delete hotel and all associated data</div></div></div>
+      <div class="endpoint"><span class="method method-get">GET</span><div><div class="endpoint-path">/api/hotels/[id]/theme</div><div class="endpoint-desc">Get hotel theme tokens</div></div></div>
+      <div class="endpoint"><span class="method method-put">PUT</span><div><div class="endpoint-path">/api/hotels/[id]/theme</div><div class="endpoint-desc">Update theme tokens (partial update supported)</div></div></div>
+    </div>
+
+    <div class="endpoint-group">
+      <div class="endpoint-group-title">Pages</div>
+      <div class="endpoint"><span class="method method-get">GET</span><div><div class="endpoint-path">/api/pages</div><div class="endpoint-desc">List all pages, optionally filtered by hotelId</div></div></div>
+      <div class="endpoint"><span class="method method-post">POST</span><div><div class="endpoint-path">/api/pages</div><div class="endpoint-desc">Create a new page under a hotel</div></div></div>
+      <div class="endpoint"><span class="method method-get">GET</span><div><div class="endpoint-path">/api/pages/[id]</div><div class="endpoint-desc">Get page with all sections and their props</div></div></div>
+      <div class="endpoint"><span class="method method-put">PUT</span><div><div class="endpoint-path">/api/pages/[id]</div><div class="endpoint-desc">Update page metadata or status</div></div></div>
+      <div class="endpoint"><span class="method method-delete">DELETE</span><div><div class="endpoint-path">/api/pages/[id]</div><div class="endpoint-desc">Delete page and all its sections</div></div></div>
+    </div>
+
+    <div class="endpoint-group">
+      <div class="endpoint-group-title">Sections</div>
+      <div class="endpoint"><span class="method method-post">POST</span><div><div class="endpoint-path">/api/sections</div><div class="endpoint-desc">Add a new section to a page</div></div></div>
+      <div class="endpoint"><span class="method method-get">GET</span><div><div class="endpoint-path">/api/sections/[id]</div><div class="endpoint-desc">Get section with component definition</div></div></div>
+      <div class="endpoint"><span class="method method-put">PUT</span><div><div class="endpoint-path">/api/sections/[id]</div><div class="endpoint-desc">Update section props, CSS, HTML, or visibility</div></div></div>
+      <div class="endpoint"><span class="method method-delete">DELETE</span><div><div class="endpoint-path">/api/sections/[id]</div><div class="endpoint-desc">Remove a section from its page</div></div></div>
+      <div class="endpoint"><span class="method method-put">PUT</span><div><div class="endpoint-path">/api/sections/[id]/reorder</div><div class="endpoint-desc">Update section order within its page</div></div></div>
+    </div>
+
+    <div class="endpoint-group">
+      <div class="endpoint-group-title">Rooms</div>
+      <div class="endpoint"><span class="method method-post">POST</span><div><div class="endpoint-path">/api/rooms</div><div class="endpoint-desc">Create a room record linked to a hotel</div></div></div>
+      <div class="endpoint"><span class="method method-get">GET</span><div><div class="endpoint-path">/api/rooms/[id]</div><div class="endpoint-desc">Get room details with media assets</div></div></div>
+      <div class="endpoint"><span class="method method-put">PUT</span><div><div class="endpoint-path">/api/rooms/[id]</div><div class="endpoint-desc">Update room content, pricing, or amenities</div></div></div>
+      <div class="endpoint"><span class="method method-delete">DELETE</span><div><div class="endpoint-path">/api/rooms/[id]</div><div class="endpoint-desc">Delete room record</div></div></div>
+    </div>
+
+    <div class="endpoint-group">
+      <div class="endpoint-group-title">Media</div>
+      <div class="endpoint"><span class="method method-get">GET</span><div><div class="endpoint-path">/api/media</div><div class="endpoint-desc">List media assets for a hotel</div></div></div>
+      <div class="endpoint"><span class="method method-post">POST</span><div><div class="endpoint-path">/api/media</div><div class="endpoint-desc">Create a media record (after upload)</div></div></div>
+      <div class="endpoint"><span class="method method-get">GET</span><div><div class="endpoint-path">/api/media/[id]</div><div class="endpoint-desc">Get a media asset by ID including srcset</div></div></div>
+      <div class="endpoint"><span class="method method-put">PUT</span><div><div class="endpoint-path">/api/media/[id]</div><div class="endpoint-desc">Update alt text or tags</div></div></div>
+      <div class="endpoint"><span class="method method-delete">DELETE</span><div><div class="endpoint-path">/api/media/[id]</div><div class="endpoint-desc">Delete media asset and remove from storage</div></div></div>
+      <div class="endpoint"><span class="method method-post">POST</span><div><div class="endpoint-path">/api/media/upload</div><div class="endpoint-desc">Upload file → EXIF strip → convert → srcset → AI alt text. Returns MediaAsset.</div></div></div>
+    </div>
+
+    <div class="endpoint-group">
+      <div class="endpoint-group-title">Versions</div>
+      <div class="endpoint"><span class="method method-get">GET</span><div><div class="endpoint-path">/api/versions</div><div class="endpoint-desc">List all version records for a page or hotel</div></div></div>
+      <div class="endpoint"><span class="method method-get">GET</span><div><div class="endpoint-path">/api/versions/[id]</div><div class="endpoint-desc">Get a specific version with its RFC 6902 patch</div></div></div>
+      <div class="endpoint"><span class="method method-post">POST</span><div><div class="endpoint-path">/api/versions/[id]/publish</div><div class="endpoint-desc">Mark a draft version as published</div></div></div>
+      <div class="endpoint"><span class="method method-post">POST</span><div><div class="endpoint-path">/api/versions/[id]/reject</div><div class="endpoint-desc">Reject and archive a version</div></div></div>
+      <div class="endpoint"><span class="method method-post">POST</span><div><div class="endpoint-path">/api/versions/[id]/rollback</div><div class="endpoint-desc">Apply reverse patch to restore previous state</div></div></div>
+    </div>
+
+    <div class="endpoint-group">
+      <div class="endpoint-group-title">AI</div>
+      <div class="endpoint"><span class="method method-post">POST</span><div><div class="endpoint-path">/api/ai/classify</div><div class="endpoint-desc">Classify a command string — returns intent, tier, and matched operations. Useful for debugging.</div></div></div>
+      <div class="endpoint"><span class="method method-post">POST</span><div><div class="endpoint-path">/api/ai/execute</div><div class="endpoint-desc">Execute a natural-language command against a page. Full pipeline: classify → context → LLM → validate → DB → version.</div></div></div>
+    </div>
+
+    <h3>Example: Execute AI Command</h3>
+    <pre><code><span class="cm">// POST /api/ai/execute</span>
+{
+  <span class="prop">"hotelId"</span>: <span class="str">"cld_abc123"</span>,
+  <span class="prop">"pageId"</span>:  <span class="str">"cld_xyz789"</span>,
+  <span class="prop">"command"</span>: <span class="str">"Make the hero cinematic with a sunset beach photo and change the headline to 'Where the Ocean Meets Luxury'"</span>
+}
+
+<span class="cm">// Response</span>
+{
+  <span class="prop">"operations"</span>: [
+    { <span class="prop">"type"</span>: <span class="str">"swap_component"</span>, <span class="prop">"sectionId"</span>: <span class="str">"sec_001"</span>, <span class="prop">"newComponentId"</span>: <span class="str">"hero-cinematic"</span> },
+    { <span class="prop">"type"</span>: <span class="str">"update_text"</span>, <span class="prop">"sectionId"</span>: <span class="str">"sec_001"</span>, <span class="prop">"field"</span>: <span class="str">"headline"</span>, <span class="prop">"value"</span>: <span class="str">"Where the Ocean Meets Luxury"</span> }
+  ],
+  <span class="prop">"versionId"</span>: <span class="str">"ver_20240312_001"</span>,
+  <span class="prop">"tier"</span>: <span class="num">1</span>
+}</code></pre>
+  </section>
+
+  <!-- ─── TECH STACK ─── -->
+  <section id="tech-stack" class="section">
+    <h2>
+      <div class="section-icon accent-green">🔧</div>
+      Tech Stack
+    </h2>
+    <p class="section-desc">Chosen for performance, type safety, and developer experience.</p>
+
+    <div class="tech-grid">
+      <div class="tech-item">
+        <div class="tech-icon" style="background:#edf4ff;">▲</div>
+        <div class="tech-info">
+          <div class="tech-name">Next.js 16</div>
+          <div class="tech-role">App Router, Server Components</div>
+        </div>
+      </div>
+      <div class="tech-item">
+        <div class="tech-icon" style="background:#edf7f2;">🐘</div>
+        <div class="tech-info">
+          <div class="tech-name">PostgreSQL</div>
+          <div class="tech-role">Primary data store</div>
+        </div>
+      </div>
+      <div class="tech-item">
+        <div class="tech-icon" style="background:#f0eef8;">◈</div>
+        <div class="tech-info">
+          <div class="tech-name">Prisma ORM</div>
+          <div class="tech-role">Type-safe DB access</div>
+        </div>
+      </div>
+      <div class="tech-item">
+        <div class="tech-icon" style="background:#edf7f5;">💨</div>
+        <div class="tech-info">
+          <div class="tech-name">Tailwind CSS</div>
+          <div class="tech-role">Utility-first styling</div>
+        </div>
+      </div>
+      <div class="tech-item">
+        <div class="tech-icon" style="background:#fdf1ee;">🔀</div>
+        <div class="tech-info">
+          <div class="tech-name">OpenRouter</div>
+          <div class="tech-role">LLM gateway, multi-model</div>
+        </div>
+      </div>
+      <div class="tech-item">
+        <div class="tech-icon" style="background:#fdf5ee;">🖼</div>
+        <div class="tech-info">
+          <div class="tech-name">Sharp</div>
+          <div class="tech-role">WebP/AVIF image processing</div>
+        </div>
+      </div>
+      <div class="tech-item">
+        <div class="tech-icon" style="background:#f4f0fb;">📋</div>
+        <div class="tech-info">
+          <div class="tech-name">fast-json-patch</div>
+          <div class="tech-role">RFC 6902 diff & apply</div>
+        </div>
+      </div>
+      <div class="tech-item">
+        <div class="tech-icon" style="background:#edf4ff;">✓</div>
+        <div class="tech-info">
+          <div class="tech-name">Zod</div>
+          <div class="tech-role">Runtime schema validation</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── SHORTCUTS ─── -->
+  <section id="shortcuts" class="section">
+    <h2>
+      <div class="section-icon accent-purple">⌨</div>
+      Keyboard Shortcuts
+    </h2>
+    <p class="section-desc">Move faster through the dashboard with these shortcuts.</p>
+
+    <div class="shortcuts-grid">
+      <div class="shortcut">
+        <div class="shortcut-desc">Focus AI command bar</div>
+        <div class="shortcut-keys">
+          <kbd>⌘</kbd>
+          <span class="plus-sep">+</span>
+          <kbd>K</kbd>
+          <span style="color:var(--text-3);font-size:12px;margin:0 8px;">or</span>
+          <kbd>Ctrl</kbd>
+          <span class="plus-sep">+</span>
+          <kbd>K</kbd>
+        </div>
+      </div>
+      <div class="shortcut">
+        <div class="shortcut-desc">Submit AI command</div>
+        <div class="shortcut-keys">
+          <kbd>Enter</kbd>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout callout-purple" style="margin-top:20px;">
+      <div class="callout-icon">💡</div>
+      <div>More shortcuts are planned for future releases, including section navigation, undo/redo, and quick component insertion.</div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="footer" style="margin-left: var(--sidebar-w);">
+  <div class="footer-brand">
+    <div class="footer-brand-icon">H</div>
+    <div>
+      <div class="footer-brand-name">hotel<span>CMS</span></div>
+      <div class="footer-meta" style="margin-top:2px;">Version 1.0 — AI-Powered Hotel Website Builder</div>
+    </div>
+  </div>
+  <div class="footer-meta">
+    Built with hotelCMS · Next.js 16 · PostgreSQL · OpenRouter
+  </div>
+  <div class="footer-links">
+    <a href="#intro" class="footer-link">Docs</a>
+    <a href="#api" class="footer-link">API</a>
+    <a href="#getting-started" class="footer-link">Quick Start</a>
+  </div>
+</footer>
+
+<script>
+  // ─── MOBILE SIDEBAR ───
+  function toggleSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    sidebar.classList.toggle('open');
+    overlay.classList.toggle('open');
+  }
+
+  // ─── ACTIVE SIDEBAR LINK ON SCROLL ───
+  const sections = document.querySelectorAll('.section[id]');
+  const sidebarLinks = document.querySelectorAll('.sidebar-link');
+
+  function updateActiveLink() {
+    let currentId = '';
+    const scrollY = window.scrollY + 100;
+
+    sections.forEach(section => {
+      if (section.offsetTop <= scrollY) {
+        currentId = section.id;
+      }
+    });
+
+    sidebarLinks.forEach(link => {
+      link.classList.remove('active');
+      const href = link.getAttribute('href');
+      if (href === '#' + currentId) {
+        link.classList.add('active');
+      }
+    });
+  }
+
+  window.addEventListener('scroll', updateActiveLink, { passive: true });
+  updateActiveLink();
+
+  // ─── CLOSE SIDEBAR ON LINK CLICK (MOBILE) ───
+  sidebarLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.getElementById('sidebarOverlay');
+      if (sidebar.classList.contains('open')) {
+        sidebar.classList.remove('open');
+        overlay.classList.remove('open');
+      }
+    });
+  });
+
+  // ─── RESPONSIVE FOOTER MARGIN ───
+  function updateFooterMargin() {
+    const footer = document.querySelector('footer');
+    if (window.innerWidth <= 900) {
+      footer.style.marginLeft = '0';
+    } else {
+      footer.style.marginLeft = 'var(--sidebar-w)';
+    }
+  }
+
+  window.addEventListener('resize', updateFooterMargin);
+  updateFooterMargin();
+</script>
+</body>
+</html>
