@@ -1,0 +1,11 @@
+# Build output
+.next/
+
+# Screenshots and test images
+*.png
+
+# Generated HTML docs
+hotel-cms-architecture.html
+
+# Playwright MCP
+.playwright-mcp/
