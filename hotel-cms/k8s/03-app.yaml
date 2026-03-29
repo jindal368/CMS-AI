@@ -26,8 +26,8 @@ spec:
                 --region "$AWS_REGION" \
                 --query SecretString --output text)
 
-              echo "export DATABASE_URL=\"$(echo $SECRET_JSON | python3 -c "import sys,json;print(json.load(sys.stdin)['DATABASE_URL'])")\"" > /shared/env
-              echo "export OPENROUTER_API_KEY=\"$(echo $SECRET_JSON | python3 -c "import sys,json;print(json.load(sys.stdin)['OPENROUTER_API_KEY'])")\"" >> /shared/env
+              echo "export DATABASE_URL=\"$(echo $SECRET_JSON | python3 -c "import sys,json;print(json.load(sys.stdin)['ALCMS_DATABASE_URL'])")\"" > /shared/env
+              echo "export OPENROUTER_API_KEY=\"$(echo $SECRET_JSON | python3 -c "import sys,json;print(json.load(sys.stdin)['ALCMS_OPENROUTER_API_KEY'])")\"" >> /shared/env
 
               echo "[fetch-secrets] Loaded secrets from $SECRET_NAME"
           env:
