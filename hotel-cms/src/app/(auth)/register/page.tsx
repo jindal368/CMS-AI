@@ -60,21 +60,21 @@ export default function RegisterPage() {
         >
           H
         </div>
-        <span className="text-xl font-semibold" style={{ color: "#1a1a2e" }}>
+        <span className="text-xl font-semibold" style={{ color: "var(--foreground)" }}>
           hotelCMS
         </span>
       </div>
 
-      <h1 className="text-2xl font-bold mb-1" style={{ color: "#1a1a2e" }}>
+      <h1 className="text-2xl font-bold mb-1" style={{ color: "var(--foreground)" }}>
         Create your account
       </h1>
-      <p className="text-sm mb-6" style={{ color: "#7c7893" }}>
+      <p className="text-sm mb-6" style={{ color: "var(--muted)" }}>
         Set up your organization and get started.
       </p>
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <div className="flex flex-col gap-1.5">
-          <label className="text-sm font-medium" style={{ color: "#1a1a2e" }}>
+          <label className="text-sm font-medium" style={{ color: "var(--foreground)" }}>
             Organization name
           </label>
           <input
@@ -83,12 +83,12 @@ export default function RegisterPage() {
             value={orgName}
             onChange={(e) => setOrgName(e.target.value)}
             placeholder="Acme Hotels"
-            className="bg-[#f8f7fa] border border-[#e2dfe8] focus:border-[#7c5cbf] rounded-lg px-4 py-2.5 text-sm outline-none transition-colors"
+            className="bg-background border border-border focus:border-[#7c5cbf] focus:ring-2 focus:ring-[#7c5cbf]/20 rounded-xl px-4 py-2.5 text-sm outline-none transition-all"
           />
         </div>
 
         <div className="flex flex-col gap-1.5">
-          <label className="text-sm font-medium" style={{ color: "#1a1a2e" }}>
+          <label className="text-sm font-medium" style={{ color: "var(--foreground)" }}>
             Your name
           </label>
           <input
@@ -98,12 +98,12 @@ export default function RegisterPage() {
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="Jane Smith"
-            className="bg-[#f8f7fa] border border-[#e2dfe8] focus:border-[#7c5cbf] rounded-lg px-4 py-2.5 text-sm outline-none transition-colors"
+            className="bg-background border border-border focus:border-[#7c5cbf] focus:ring-2 focus:ring-[#7c5cbf]/20 rounded-xl px-4 py-2.5 text-sm outline-none transition-all"
           />
         </div>
 
         <div className="flex flex-col gap-1.5">
-          <label className="text-sm font-medium" style={{ color: "#1a1a2e" }}>
+          <label className="text-sm font-medium" style={{ color: "var(--foreground)" }}>
             Email
           </label>
           <input
@@ -113,12 +113,12 @@ export default function RegisterPage() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="you@example.com"
-            className="bg-[#f8f7fa] border border-[#e2dfe8] focus:border-[#7c5cbf] rounded-lg px-4 py-2.5 text-sm outline-none transition-colors"
+            className="bg-background border border-border focus:border-[#7c5cbf] focus:ring-2 focus:ring-[#7c5cbf]/20 rounded-xl px-4 py-2.5 text-sm outline-none transition-all"
           />
         </div>
 
         <div className="flex flex-col gap-1.5">
-          <label className="text-sm font-medium" style={{ color: "#1a1a2e" }}>
+          <label className="text-sm font-medium" style={{ color: "var(--foreground)" }}>
             Password
           </label>
           <input
@@ -128,12 +128,12 @@ export default function RegisterPage() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Min. 8 characters"
-            className="bg-[#f8f7fa] border border-[#e2dfe8] focus:border-[#7c5cbf] rounded-lg px-4 py-2.5 text-sm outline-none transition-colors"
+            className="bg-background border border-border focus:border-[#7c5cbf] focus:ring-2 focus:ring-[#7c5cbf]/20 rounded-xl px-4 py-2.5 text-sm outline-none transition-all"
           />
         </div>
 
         <div className="flex flex-col gap-1.5">
-          <label className="text-sm font-medium" style={{ color: "#1a1a2e" }}>
+          <label className="text-sm font-medium" style={{ color: "var(--foreground)" }}>
             Confirm password
           </label>
           <input
@@ -143,7 +143,7 @@ export default function RegisterPage() {
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             placeholder="••••••••"
-            className="bg-[#f8f7fa] border border-[#e2dfe8] focus:border-[#7c5cbf] rounded-lg px-4 py-2.5 text-sm outline-none transition-colors"
+            className="bg-background border border-border focus:border-[#7c5cbf] focus:ring-2 focus:ring-[#7c5cbf]/20 rounded-xl px-4 py-2.5 text-sm outline-none transition-all"
           />
         </div>
 
@@ -154,7 +154,7 @@ export default function RegisterPage() {
         <button
           type="submit"
           disabled={loading}
-          className="w-full py-2.5 rounded-lg text-sm font-semibold text-white flex items-center justify-center gap-2 transition-opacity disabled:opacity-70"
+          className="w-full py-2.5 rounded-xl text-sm font-semibold tracking-wide text-white flex items-center justify-center gap-2 transition-opacity disabled:opacity-70"
           style={{ background: "linear-gradient(135deg, #e85d45, #c94d37)" }}
         >
           {loading ? (
@@ -171,7 +171,7 @@ export default function RegisterPage() {
         </button>
       </form>
 
-      <p className="mt-6 text-center text-sm" style={{ color: "#7c7893" }}>
+      <p className="mt-6 text-center text-sm" style={{ color: "var(--muted)" }}>
         Already have an account?{" "}
         <Link href="/login" className="font-medium" style={{ color: "#7c5cbf" }}>
           Sign in

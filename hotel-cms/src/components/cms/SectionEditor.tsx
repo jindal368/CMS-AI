@@ -65,7 +65,7 @@ function PropField({
         <button
           onClick={() => onChange(!value)}
           className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors ${
-            value ? "bg-[#0fa886]" : "bg-[#e2dfe8]"
+            value ? "bg-[#0fa886]" : "bg-border"
           }`}
         >
           <span
@@ -82,7 +82,7 @@ function PropField({
             min={minimum}
             max={maximum}
             onChange={(e) => onChange(Number(e.target.value))}
-            className="flex-1 px-2.5 py-1.5 rounded-lg bg-[#f8f7fa] border border-[#e2dfe8] text-xs text-[#1a1a2e] focus:outline-none focus:border-[#e85d45]/50 focus:ring-1 focus:ring-[#e85d45]/20 transition-colors"
+            className="flex-1 px-2.5 py-1.5 rounded-lg bg-background border border-border text-xs text-foreground focus:outline-none focus:border-[#e85d45]/50 focus:ring-1 focus:ring-[#e85d45]/20 transition-colors"
           />
           {(minimum !== undefined || maximum !== undefined) && (
             <span className="text-xs text-[#9994ad] shrink-0">
@@ -94,7 +94,7 @@ function PropField({
         <select
           value={String(value ?? "")}
           onChange={(e) => onChange(e.target.value)}
-          className="w-full px-2.5 py-1.5 rounded-lg bg-[#f8f7fa] border border-[#e2dfe8] text-xs text-[#1a1a2e] focus:outline-none focus:border-[#e85d45]/50 focus:ring-1 focus:ring-[#e85d45]/20 transition-colors appearance-none cursor-pointer"
+          className="w-full px-2.5 py-1.5 rounded-lg bg-background border border-border text-xs text-foreground focus:outline-none focus:border-[#e85d45]/50 focus:ring-1 focus:ring-[#e85d45]/20 transition-colors appearance-none cursor-pointer"
         >
           {enumValues.map((v) => (
             <option key={v} value={v}>
@@ -109,7 +109,7 @@ function PropField({
           maxLength={maxLength}
           onChange={(e) => onChange(e.target.value)}
           placeholder={description}
-          className="w-full px-2.5 py-1.5 rounded-lg bg-[#f8f7fa] border border-[#e2dfe8] text-xs text-[#1a1a2e] placeholder-[#9994ad] focus:outline-none focus:border-[#e85d45]/50 focus:ring-1 focus:ring-[#e85d45]/20 transition-colors"
+          className="w-full px-2.5 py-1.5 rounded-lg bg-background border border-border text-xs text-foreground placeholder-[#9994ad] focus:outline-none focus:border-[#e85d45]/50 focus:ring-1 focus:ring-[#e85d45]/20 transition-colors"
         />
       )}
 
@@ -241,7 +241,7 @@ export default function SectionEditor({ section, onUpdate, onDelete, onClose }: 
       )}
     <div className="flex flex-col h-full">
       {/* Header */}
-      <div className="px-4 py-4 border-b border-[#e2dfe8]">
+      <div className="px-4 py-4 border-b border-border">
         <div className="flex items-start justify-between gap-2">
           <div className="min-w-0">
             <div className="flex items-center gap-2 flex-wrap">
@@ -257,18 +257,18 @@ export default function SectionEditor({ section, onUpdate, onDelete, onClose }: 
                 {tier.label}
               </span>
             </div>
-            <h3 className="text-sm font-semibold text-[#1a1a2e] mt-1 truncate">
+            <h3 className="text-sm font-semibold text-foreground mt-1 truncate">
               {section.componentVariant.replace(/_/g, " ")}
             </h3>
             {componentDef?.description && (
-              <p className="text-xs text-[#7c7893] mt-1 leading-relaxed">
+              <p className="text-xs text-muted mt-1 leading-relaxed">
                 {componentDef.description}
               </p>
             )}
           </div>
           <button
             onClick={onClose}
-            className="p-1 rounded-lg text-[#7c7893] hover:text-[#1a1a2e] hover:bg-[#f0eef5] transition-colors shrink-0"
+            className="p-1 rounded-lg text-muted hover:text-foreground hover:bg-elevated transition-colors shrink-0"
           >
             <svg viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4">
               <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
@@ -282,7 +282,7 @@ export default function SectionEditor({ section, onUpdate, onDelete, onClose }: 
             {componentDef.categoryAffinity.map((cat) => (
               <span
                 key={cat}
-                className="text-xs px-1.5 py-0.5 rounded-full bg-[#f0eef5] text-[#9994ad] capitalize"
+                className="text-xs px-1.5 py-0.5 rounded-full bg-elevated text-[#9994ad] capitalize"
               >
                 {cat}
               </span>
@@ -292,9 +292,9 @@ export default function SectionEditor({ section, onUpdate, onDelete, onClose }: 
       </div>
 
       {/* Status strip */}
-      <div className="flex items-center justify-between px-4 py-2.5 bg-[#f8f7fa] border-b border-[#e2dfe8]">
+      <div className="flex items-center justify-between px-4 py-2.5 bg-background border-b border-border">
         <div className="flex items-center gap-2">
-          <span className="text-xs text-[#7c7893]">Sort #{section.sortOrder + 1}</span>
+          <span className="text-xs text-muted">Sort #{section.sortOrder + 1}</span>
         </div>
         <div className="flex items-center gap-2">
           <button
@@ -302,7 +302,7 @@ export default function SectionEditor({ section, onUpdate, onDelete, onClose }: 
             className={`flex items-center gap-1.5 text-xs px-2 py-1 rounded-md transition-colors ${
               section.isVisible
                 ? "text-[#0fa886] bg-[#0fa886]/10 hover:bg-[#0fa886]/20"
-                : "text-[#9994ad] bg-[#f0eef5] hover:bg-[#e2dfe8]"
+                : "text-[#9994ad] bg-elevated hover:bg-border"
             }`}
           >
             {section.isVisible ? (
@@ -340,18 +340,18 @@ export default function SectionEditor({ section, onUpdate, onDelete, onClose }: 
           ))
         ) : (
           <div className="flex flex-col items-center justify-center py-8 text-center">
-            <div className="w-8 h-8 rounded-full bg-[#f0eef5] flex items-center justify-center mb-2">
+            <div className="w-8 h-8 rounded-full bg-elevated flex items-center justify-center mb-2">
               <svg viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4 text-[#9994ad]">
                 <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
               </svg>
             </div>
-            <p className="text-xs text-[#7c7893]">No editable props</p>
+            <p className="text-xs text-muted">No editable props</p>
           </div>
         )}
       </div>
 
       {/* Footer actions */}
-      <div className="px-4 py-3 border-t border-[#e2dfe8] space-y-2">
+      <div className="px-4 py-3 border-t border-border space-y-2">
         {/* Save button */}
         <button
           onClick={handleSave}

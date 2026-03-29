@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import Portal from "@/components/ui/Portal";
 
 interface CreatePageModalProps {
   hotelId: string;
@@ -99,6 +100,7 @@ export default function CreatePageModal({
   };
 
   return (
+    <Portal>
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       {/* Backdrop */}
       <div
@@ -266,5 +268,6 @@ export default function CreatePageModal({
         </form>
       </div>
     </div>
+    </Portal>
   );
 }

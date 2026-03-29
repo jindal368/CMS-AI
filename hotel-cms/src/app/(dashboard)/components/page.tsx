@@ -45,16 +45,16 @@ function TierBadge({ tier }: { tier: number }) {
   );
 }
 
-function ComponentCard({ component }: { component: ComponentData }) {
+function ComponentCard({ component, index }: { component: ComponentData; index: number }) {
   return (
-    <div className="bg-[#ffffff] border border-[#e2dfe8] rounded-xl p-4 flex flex-col gap-3 hover:border-[#d4d0de] transition-colors">
+    <div className={`bg-card border border-border rounded-xl p-4 flex flex-col gap-3 hover:border-[#d4d0de] transition-colors animate-in animate-in-delay-${Math.min(index + 1, 5)}`}>
       {/* Header row */}
       <div className="flex items-start justify-between gap-2">
         <div className="min-w-0">
-          <p className="text-sm font-semibold text-[#1a1a2e] truncate">
+          <p className="text-sm font-semibold text-foreground truncate">
             {component.variant}
           </p>
-          <p className="text-xs text-[#7c7893] mt-0.5 capitalize">
+          <p className="text-xs text-muted mt-0.5 capitalize">
             {component.type}
           </p>
         </div>
@@ -72,7 +72,7 @@ function ComponentCard({ component }: { component: ComponentData }) {
           {component.categoryAffinity.map((cat) => (
             <span
               key={cat}
-              className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium bg-[#f0eef5] text-[#7c7893] border border-[#e2dfe8] capitalize"
+              className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium bg-elevated text-muted border border-border capitalize"
             >
               {cat}
             </span>
@@ -105,21 +105,21 @@ export default function ComponentsPage() {
   const totalCount = COMPONENT_REGISTRY.length;
 
   return (
-    <div className="space-y-8 max-w-5xl">
+    <div className="space-y-8 max-w-[1600px]">
       {/* Page header */}
-      <div>
-        <h1 className="text-xl font-semibold text-[#1a1a2e]">
+      <div className="animate-in">
+        <h1 className="text-2xl font-semibold tracking-tight text-foreground">
           Component Registry
         </h1>
-        <p className="text-sm text-[#7c7893] mt-1">
+        <p className="text-sm text-muted mt-1">
           {totalCount} pre-built component variant
           {totalCount !== 1 ? "s" : ""} available for page composition
         </p>
       </div>
 
       {/* Tier legend */}
-      <div className="bg-[#ffffff] border border-[#e2dfe8] rounded-xl p-4">
-        <p className="text-xs font-medium text-[#7c7893] uppercase tracking-wider mb-3">
+      <div className="bg-card border border-border rounded-xl p-4">
+        <p className="text-xs font-medium text-muted uppercase tracking-wider mb-3">
           Tier Requirements
         </p>
         <div className="flex flex-wrap gap-4">
@@ -131,7 +131,7 @@ export default function ComponentsPage() {
               >
                 {badge.label}
               </span>
-              <span className="text-xs text-[#7c7893]">
+              <span className="text-xs text-muted">
                 {tier === "0" && "All plans"}
                 {tier === "1" && "Standard+"}
                 {tier === "2" && "Pro+"}
@@ -146,17 +146,17 @@ export default function ComponentsPage() {
       {Object.entries(grouped).map(([type, components]) => (
         <section key={type}>
           <div className="flex items-center gap-3 mb-4">
-            <h2 className="text-sm font-semibold text-[#1a1a2e] capitalize">
+            <h2 className="text-sm font-semibold text-foreground capitalize">
               {TYPE_LABELS[type] ?? type}
             </h2>
-            <span className="text-xs text-[#7c7893] bg-[#f0eef5] border border-[#e2dfe8] px-2 py-0.5 rounded-full">
+            <span className="text-xs text-muted bg-elevated border border-border px-2 py-0.5 rounded-full">
               {components.length}
             </span>
-            <div className="flex-1 h-px bg-[#e2dfe8]" />
+            <div className="flex-1 h-px bg-border" />
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-            {components.map((component) => (
-              <ComponentCard key={component.variant} component={component} />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+            {components.map((component, index) => (
+              <ComponentCard key={component.variant} component={component} index={index} />
             ))}
           </div>
         </section>

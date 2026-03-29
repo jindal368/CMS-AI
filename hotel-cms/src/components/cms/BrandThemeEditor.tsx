@@ -61,18 +61,18 @@ function ColorRow({
 }) {
   return (
     <div className="flex items-center gap-3">
-      <label className="w-24 text-xs text-[#7c7893] capitalize shrink-0">{label}</label>
+      <label className="w-24 text-xs text-muted capitalize shrink-0">{label}</label>
       <div className="relative shrink-0">
         <input
           type="color"
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className="w-9 h-9 rounded-lg border border-[#e2dfe8] bg-[#f0eef5] cursor-pointer p-0.5 appearance-none"
+          className="w-9 h-9 rounded-lg border border-border bg-elevated cursor-pointer p-0.5 appearance-none"
           style={{ colorScheme: "dark" }}
         />
       </div>
       <div
-        className="w-5 h-5 rounded-md border border-[#e2dfe8] shrink-0"
+        className="w-5 h-5 rounded-md border border-border shrink-0"
         style={{ backgroundColor: value }}
       />
       <input
@@ -83,7 +83,7 @@ function ColorRow({
           if (/^#[0-9a-fA-F]{0,6}$/.test(v)) onChange(v);
         }}
         maxLength={7}
-        className="flex-1 min-w-0 px-3 py-1.5 rounded-lg bg-[#f0eef5] border border-[#e2dfe8] focus:border-[#7c5cbf] text-[#1a1a2e] text-xs font-mono outline-none transition-colors"
+        className="flex-1 min-w-0 px-3 py-1.5 rounded-lg bg-elevated border border-border focus:border-[#7c5cbf] text-foreground text-xs font-mono outline-none transition-colors"
         placeholder="#000000"
       />
     </div>
@@ -145,14 +145,14 @@ export default function BrandThemeEditor({ brandTheme, onSave }: BrandThemeEdito
   return (
     <div className="space-y-6">
       {/* Toggle */}
-      <div className="flex items-center gap-3 p-4 bg-[#f0eef5] rounded-xl">
+      <div className="flex items-center gap-3 p-4 bg-elevated rounded-xl">
         <button
           type="button"
           role="switch"
           aria-checked={enabled}
           onClick={() => setEnabled((v) => !v)}
           className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors focus:outline-none ${
-            enabled ? "bg-[#7c5cbf]" : "bg-[#e2dfe8]"
+            enabled ? "bg-[#7c5cbf]" : "bg-border"
           }`}
         >
           <span
@@ -162,10 +162,10 @@ export default function BrandThemeEditor({ brandTheme, onSave }: BrandThemeEdito
           />
         </button>
         <div>
-          <p className="text-sm font-medium text-[#1a1a2e]">
+          <p className="text-sm font-medium text-foreground">
             Apply organization theme to all hotels
           </p>
-          <p className="text-xs text-[#7c7893]">
+          <p className="text-xs text-muted">
             {enabled
               ? "Hotels without a custom theme will inherit this brand theme."
               : "Each hotel uses its own theme settings."}
@@ -176,8 +176,8 @@ export default function BrandThemeEditor({ brandTheme, onSave }: BrandThemeEdito
       {enabled && (
         <>
           {/* Colors */}
-          <section className="bg-[#f0eef5] rounded-xl p-5">
-            <h4 className="text-xs font-semibold text-[#7c7893] uppercase tracking-wider mb-4">
+          <section className="bg-elevated rounded-xl p-5">
+            <h4 className="text-xs font-semibold text-muted uppercase tracking-wider mb-4">
               Colors
             </h4>
             <div className="space-y-3">
@@ -190,28 +190,28 @@ export default function BrandThemeEditor({ brandTheme, onSave }: BrandThemeEdito
           </section>
 
           {/* Typography */}
-          <section className="bg-[#f0eef5] rounded-xl p-5">
-            <h4 className="text-xs font-semibold text-[#7c7893] uppercase tracking-wider mb-4">
+          <section className="bg-elevated rounded-xl p-5">
+            <h4 className="text-xs font-semibold text-muted uppercase tracking-wider mb-4">
               Typography
             </h4>
             <div className="space-y-4">
               <div>
-                <label className="block text-xs text-[#7c7893] mb-1.5">Heading Font</label>
+                <label className="block text-xs text-muted mb-1.5">Heading Font</label>
                 <input
                   type="text"
                   value={headingFont}
                   onChange={(e) => setHeadingFont(e.target.value)}
-                  className="w-full px-3 py-2 rounded-lg bg-[#ffffff] border border-[#e2dfe8] focus:border-[#7c5cbf] text-[#1a1a2e] text-sm outline-none transition-colors"
+                  className="w-full px-3 py-2 rounded-lg bg-card border border-border focus:border-[#7c5cbf] text-foreground text-sm outline-none transition-colors"
                   placeholder="e.g. Cormorant Garamond"
                 />
               </div>
               <div>
-                <label className="block text-xs text-[#7c7893] mb-1.5">Body Font</label>
+                <label className="block text-xs text-muted mb-1.5">Body Font</label>
                 <input
                   type="text"
                   value={bodyFont}
                   onChange={(e) => setBodyFont(e.target.value)}
-                  className="w-full px-3 py-2 rounded-lg bg-[#ffffff] border border-[#e2dfe8] focus:border-[#7c5cbf] text-[#1a1a2e] text-sm outline-none transition-colors"
+                  className="w-full px-3 py-2 rounded-lg bg-card border border-border focus:border-[#7c5cbf] text-foreground text-sm outline-none transition-colors"
                   placeholder="e.g. Inter"
                 />
               </div>
@@ -219,8 +219,8 @@ export default function BrandThemeEditor({ brandTheme, onSave }: BrandThemeEdito
           </section>
 
           {/* Spacing */}
-          <section className="bg-[#f0eef5] rounded-xl p-5">
-            <h4 className="text-xs font-semibold text-[#7c7893] uppercase tracking-wider mb-4">
+          <section className="bg-elevated rounded-xl p-5">
+            <h4 className="text-xs font-semibold text-muted uppercase tracking-wider mb-4">
               Spacing
             </h4>
             <select
@@ -228,7 +228,7 @@ export default function BrandThemeEditor({ brandTheme, onSave }: BrandThemeEdito
               onChange={(e) =>
                 setSpacing(e.target.value as "compact" | "balanced" | "spacious")
               }
-              className="w-full px-3 py-2 rounded-lg bg-[#ffffff] border border-[#e2dfe8] focus:border-[#7c5cbf] text-[#1a1a2e] text-sm outline-none transition-colors"
+              className="w-full px-3 py-2 rounded-lg bg-card border border-border focus:border-[#7c5cbf] text-foreground text-sm outline-none transition-colors"
             >
               <option value="compact">Compact</option>
               <option value="balanced">Balanced</option>
@@ -237,8 +237,8 @@ export default function BrandThemeEditor({ brandTheme, onSave }: BrandThemeEdito
           </section>
 
           {/* Base Template */}
-          <section className="bg-[#f0eef5] rounded-xl p-5">
-            <h4 className="text-xs font-semibold text-[#7c7893] uppercase tracking-wider mb-4">
+          <section className="bg-elevated rounded-xl p-5">
+            <h4 className="text-xs font-semibold text-muted uppercase tracking-wider mb-4">
               Base Template
             </h4>
             <select
@@ -248,7 +248,7 @@ export default function BrandThemeEditor({ brandTheme, onSave }: BrandThemeEdito
                   e.target.value as "luxury" | "boutique" | "business" | "resort"
                 )
               }
-              className="w-full px-3 py-2 rounded-lg bg-[#ffffff] border border-[#e2dfe8] focus:border-[#7c5cbf] text-[#1a1a2e] text-sm outline-none transition-colors"
+              className="w-full px-3 py-2 rounded-lg bg-card border border-border focus:border-[#7c5cbf] text-foreground text-sm outline-none transition-colors"
             >
               <option value="luxury">Luxury</option>
               <option value="boutique">Boutique</option>

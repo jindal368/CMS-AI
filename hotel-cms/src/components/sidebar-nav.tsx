@@ -83,7 +83,7 @@ export default function SidebarNav({ user }: SidebarNavProps) {
   }, []);
 
   return (
-    <aside className="flex flex-col items-center w-14 h-full bg-[#ffffff] border-r border-[#e2dfe8] py-3 shrink-0">
+    <aside className="flex flex-col items-center w-14 h-full bg-card border-r border-border py-3 shrink-0">
       {/* Logo badge */}
       <div
         className="flex items-center justify-center w-8 h-8 rounded-lg mb-4 shrink-0"
@@ -105,14 +105,14 @@ export default function SidebarNav({ user }: SidebarNavProps) {
             <Link
               key={item.label}
               href={item.href}
-              className={`group relative flex items-center justify-center w-9 h-9 rounded-lg transition-colors ${
+              className={`group relative flex items-center justify-center w-9 h-9 rounded-xl transition-colors ${
                 isActive
                   ? "bg-[#e85d45]/10 text-[#e85d45]"
-                  : "text-[#7c7893] hover:text-[#1a1a2e] hover:bg-[#f0eef5]"
+                  : "text-muted hover:text-foreground hover:bg-elevated"
               }`}
             >
               {item.icon}
-              <span className="absolute left-full ml-2 px-2 py-1 rounded-md bg-[#1a1a2e] text-white text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity z-50">
+              <span className="absolute left-full ml-2 px-2 py-1 rounded-md bg-foreground text-white text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity z-50">
                 {item.label}
               </span>
             </Link>
@@ -121,16 +121,16 @@ export default function SidebarNav({ user }: SidebarNavProps) {
         {user?.role === "admin" && (
           <Link
             href="/team"
-            className={`group relative flex items-center justify-center w-9 h-9 rounded-lg transition-colors ${
+            className={`group relative flex items-center justify-center w-9 h-9 rounded-xl transition-colors ${
               pathname.startsWith("/team")
                 ? "bg-[#e85d45]/10 text-[#e85d45]"
-                : "text-[#7c7893] hover:text-[#1a1a2e] hover:bg-[#f0eef5]"
+                : "text-muted hover:text-foreground hover:bg-elevated"
             }`}
           >
             <svg viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
               <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" />
             </svg>
-            <span className="absolute left-full ml-2 px-2 py-1 rounded-md bg-[#1a1a2e] text-white text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity z-50">
+            <span className="absolute left-full ml-2 px-2 py-1 rounded-md bg-foreground text-white text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity z-50">
               Team
             </span>
           </Link>
@@ -138,16 +138,16 @@ export default function SidebarNav({ user }: SidebarNavProps) {
         {user?.role === "admin" && (
           <Link
             href="/campaigns"
-            className={`group relative flex items-center justify-center w-9 h-9 rounded-lg transition-colors ${
+            className={`group relative flex items-center justify-center w-9 h-9 rounded-xl transition-colors ${
               pathname.startsWith("/campaigns")
                 ? "bg-[#e85d45]/10 text-[#e85d45]"
-                : "text-[#7c7893] hover:text-[#1a1a2e] hover:bg-[#f0eef5]"
+                : "text-muted hover:text-foreground hover:bg-elevated"
             }`}
           >
             <svg viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
               <path d="M18 3a1 1 0 00-1.196-.98l-10 2A1 1 0 006 5v6a1 1 0 00.804.98l10 2A1 1 0 0018 13V3zM4 7.5A1.5 1.5 0 002.5 9v2A1.5 1.5 0 004 12.5h1V7.5H4z" />
             </svg>
-            <span className="absolute left-full ml-2 px-2 py-1 rounded-md bg-[#1a1a2e] text-white text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity z-50">
+            <span className="absolute left-full ml-2 px-2 py-1 rounded-md bg-foreground text-white text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity z-50">
               Campaigns
             </span>
           </Link>
@@ -155,10 +155,10 @@ export default function SidebarNav({ user }: SidebarNavProps) {
         {user?.role === "admin" && (
           <Link
             href="/brand"
-            className={`group relative flex items-center justify-center w-9 h-9 rounded-lg transition-colors ${
+            className={`group relative flex items-center justify-center w-9 h-9 rounded-xl transition-colors ${
               pathname.startsWith("/brand")
                 ? "bg-[#e85d45]/10 text-[#e85d45]"
-                : "text-[#7c7893] hover:text-[#1a1a2e] hover:bg-[#f0eef5]"
+                : "text-muted hover:text-foreground hover:bg-elevated"
             }`}
           >
             <svg viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
@@ -168,7 +168,7 @@ export default function SidebarNav({ user }: SidebarNavProps) {
                 clipRule="evenodd"
               />
             </svg>
-            <span className="absolute left-full ml-2 px-2 py-1 rounded-md bg-[#1a1a2e] text-white text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity z-50">
+            <span className="absolute left-full ml-2 px-2 py-1 rounded-md bg-foreground text-white text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity z-50">
               Brand
             </span>
           </Link>
@@ -179,7 +179,7 @@ export default function SidebarNav({ user }: SidebarNavProps) {
       <div className="flex-1" />
 
       {/* Separator */}
-      <div className="w-8 h-px bg-[#e2dfe8] mb-3 shrink-0" />
+      <div className="w-8 h-px bg-border mb-3 shrink-0" />
 
       {/* Hotel avatars */}
       <div className="flex flex-col items-center gap-1.5 mb-3">
@@ -197,7 +197,7 @@ export default function SidebarNav({ user }: SidebarNavProps) {
               <span className="text-white font-semibold text-xs leading-none">
                 {hotel.name.charAt(0).toUpperCase()}
               </span>
-              <span className="absolute left-full ml-2 px-2 py-1 rounded-md bg-[#1a1a2e] text-white text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity z-50">
+              <span className="absolute left-full ml-2 px-2 py-1 rounded-md bg-foreground text-white text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity z-50">
                 {hotel.name}
               </span>
             </Link>
@@ -206,10 +206,10 @@ export default function SidebarNav({ user }: SidebarNavProps) {
       </div>
 
       {/* Separator */}
-      <div className="w-8 h-px bg-[#e2dfe8] mb-3 shrink-0" />
+      <div className="w-8 h-px bg-border mb-3 shrink-0" />
 
       {/* User avatar */}
-      <div className="flex items-center justify-center w-7 h-7 rounded-full bg-[#f0eef5] shrink-0">
+      <div className="flex items-center justify-center w-7 h-7 rounded-full bg-elevated shrink-0">
         <span className="text-[#7c5cbf] font-semibold text-xs leading-none">
           A
         </span>

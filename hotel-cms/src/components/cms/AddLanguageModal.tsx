@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { LOCALE_NAMES } from "@/lib/i18n/languages";
+import Portal from "@/components/ui/Portal";
 
 interface AddLanguageModalProps {
   hotelId: string;
@@ -66,6 +67,7 @@ export default function AddLanguageModal({
   };
 
   return (
+    <Portal>
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       {/* Backdrop */}
       <div
@@ -85,17 +87,17 @@ export default function AddLanguageModal({
         }}
       >
         {/* Header */}
-        <div className="px-6 py-4 border-b border-white/40 flex items-center justify-between">
+        <div className="px-6 py-4 border-b border-border/40 flex items-center justify-between">
           <div>
-            <h2 className="text-base font-bold text-[#1a1a2e]">Add Language</h2>
-            <p className="text-xs text-[#7c7893] mt-0.5">
+            <h2 className="text-base font-bold text-foreground">Add Language</h2>
+            <p className="text-xs text-muted mt-0.5">
               Select a language to translate all pages
             </p>
           </div>
           {state.phase !== "translating" && (
             <button
               onClick={onClose}
-              className="p-1.5 rounded-lg text-[#7c7893] hover:text-[#1a1a2e] hover:bg-white/60 transition-colors"
+              className="p-1.5 rounded-lg text-muted hover:text-foreground hover:bg-elevated/60 transition-colors"
               aria-label="Close"
             >
               <svg viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4">
@@ -114,7 +116,7 @@ export default function AddLanguageModal({
           {state.phase === "pick" && (
             <>
               {availableLocales.length === 0 ? (
-                <p className="text-sm text-[#7c7893] text-center py-4">
+                <p className="text-sm text-muted text-center py-4">
                   All available languages are already enabled.
                 </p>
               ) : (
@@ -123,12 +125,12 @@ export default function AddLanguageModal({
                     <button
                       key={locale}
                       onClick={() => handleSelect(locale, language)}
-                      className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-left transition-all border border-white/50 bg-white/50 hover:bg-[#7c5cbf]/10 hover:border-[#7c5cbf]/30 group"
+                      className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-left transition-all border border-border/50 bg-card/50 hover:bg-[#7c5cbf]/10 hover:border-[#7c5cbf]/30 group"
                     >
                       <span className="text-xs font-bold text-[#7c5cbf] bg-[#7c5cbf]/10 px-1.5 py-0.5 rounded-md group-hover:bg-[#7c5cbf]/20 transition-colors">
                         {locale.toUpperCase()}
                       </span>
-                      <span className="text-sm text-[#1a1a2e] font-medium truncate">
+                      <span className="text-sm text-foreground font-medium truncate">
                         {language}
                       </span>
                     </button>
@@ -164,10 +166,10 @@ export default function AddLanguageModal({
                 </div>
               </div>
               <div>
-                <p className="text-sm font-semibold text-[#1a1a2e]">
+                <p className="text-sm font-semibold text-foreground">
                   Translating to {LOCALE_NAMES[state.locale] ?? state.locale}…
                 </p>
-                <p className="text-xs text-[#7c7893] mt-1">
+                <p className="text-xs text-muted mt-1">
                   This may take 1–3 minutes. Please wait.
                 </p>
               </div>
@@ -190,10 +192,10 @@ export default function AddLanguageModal({
                 </svg>
               </div>
               <div>
-                <p className="text-sm font-semibold text-[#1a1a2e]">
+                <p className="text-sm font-semibold text-foreground">
                   Done! {state.count} {state.count === 1 ? "page" : "pages"} translated.
                 </p>
-                <p className="text-xs text-[#7c7893] mt-1">
+                <p className="text-xs text-muted mt-1">
                   {LOCALE_NAMES[state.locale] ?? state.locale} is now available for this hotel.
                 </p>
               </div>
@@ -223,12 +225,12 @@ export default function AddLanguageModal({
               </div>
               <div>
                 <p className="text-sm font-semibold text-[#e85d45]">Translation failed</p>
-                <p className="text-xs text-[#7c7893] mt-1 max-w-xs">{state.message}</p>
+                <p className="text-xs text-muted mt-1 max-w-xs">{state.message}</p>
               </div>
               <div className="flex gap-2">
                 <button
                   onClick={() => setState({ phase: "pick" })}
-                  className="px-4 py-2 rounded-lg border border-[#7c7893]/30 text-[#7c7893] text-sm font-medium hover:bg-white/60 transition-colors"
+                  className="px-4 py-2 rounded-lg border border-[#7c7893]/30 text-muted text-sm font-medium hover:bg-elevated/60 transition-colors"
                 >
                   Try Again
                 </button>
@@ -244,5 +246,6 @@ export default function AddLanguageModal({
         </div>
       </div>
     </div>
+    </Portal>
   );
 }

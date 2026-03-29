@@ -3,6 +3,7 @@ import Link from "next/link";
 import { prisma } from "@/lib/db";
 import { getHotelPageData } from "@/lib/render-page";
 import PageRenderer from "@/components/renderer/PageRenderer";
+import ScrollAnimator from "@/components/site/ScrollAnimator";
 
 // For development: force-dynamic. For production ISR, swap to:
 // export const revalidate = 3600;
@@ -58,7 +59,7 @@ function HotelCard({ hotel, orgSlug, accentColor }: HotelCardProps) {
     >
       <div
         style={{
-          background: "#ffffff",
+          background: "var(--card)",
           borderRadius: "16px",
           boxShadow: "0 1px 3px rgba(0,0,0,0.08), 0 8px 24px rgba(0,0,0,0.06)",
           overflow: "hidden",
@@ -131,7 +132,7 @@ function HotelCard({ hotel, orgSlug, accentColor }: HotelCardProps) {
               margin: "0 0 6px",
               fontSize: "1.2rem",
               fontWeight: 700,
-              color: "#1a1a2e",
+              color: "var(--foreground)",
               lineHeight: 1.25,
             }}
           >
@@ -291,13 +292,14 @@ function PropertyDirectory({
                 {hotels.length} propert{hotels.length !== 1 ? "ies" : "y"} available
               </p>
               <div className="hotel-grid">
-                {hotels.map((hotel) => (
-                  <HotelCard
-                    key={hotel.id}
-                    hotel={hotel}
-                    orgSlug={(org as any).slug}
-                    accentColor={accentColor}
-                  />
+                {hotels.map((hotel, i) => (
+                  <div key={hotel.id} className={`animate-on-scroll stagger-${Math.min(i + 1, 5)}`}>
+                    <HotelCard
+                      hotel={hotel}
+                      orgSlug={(org as any).slug}
+                      accentColor={accentColor}
+                    />
+                  </div>
                 ))}
               </div>
             </>
@@ -333,11 +335,13 @@ export default async function SitePage({ params }: SitePageProps) {
     });
 
     return (
-      <PropertyDirectory
-        org={{ name: org.name, brandTheme: org.brandTheme, slug: orgSlug } as any}
-        hotels={hotels as any}
-        orgSlug={orgSlug}
-      />
+      <ScrollAnimator>
+        <PropertyDirectory
+          org={{ name: org.name, brandTheme: org.brandTheme, slug: orgSlug } as any}
+          hotels={hotels as any}
+          orgSlug={orgSlug}
+        />
+      </ScrollAnimator>
     );
   }
 
@@ -381,11 +385,13 @@ export default async function SitePage({ params }: SitePageProps) {
           __html: JSON.stringify(data.structuredData),
         }}
       />
-      <PageRenderer
-        sections={data.sections}
-        theme={data.themeData}
-        hotelName={data.hotel.name}
-      />
+      <ScrollAnimator>
+        <PageRenderer
+          sections={data.sections}
+          theme={data.themeData}
+          hotelName={data.hotel.name}
+        />
+      </ScrollAnimator>
     </>
   );
 }

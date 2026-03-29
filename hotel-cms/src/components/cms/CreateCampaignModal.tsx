@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Portal from "@/components/ui/Portal";
 
 interface Hotel {
   id: string;
@@ -83,6 +84,7 @@ export default function CreateCampaignModal({ hotels, onClose }: CreateCampaignM
   const labelClass = "block text-xs font-medium text-[#7c7893] mb-1.5";
 
   return (
+    <Portal>
     <div
       className="fixed inset-0 z-50 flex items-center justify-center"
       aria-modal="true"
@@ -247,5 +249,6 @@ export default function CreateCampaignModal({ hotels, onClose }: CreateCampaignM
         </form>
       </div>
     </div>
+    </Portal>
   );
 }

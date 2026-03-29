@@ -148,8 +148,8 @@ export default function LockedSectionManager({
       {/* Section list */}
       {sections.length === 0 && !showForm && (
         <div className="flex flex-col items-center justify-center py-10 text-center">
-          <div className="w-12 h-12 rounded-full bg-[#f0eef5] flex items-center justify-center mb-3">
-            <svg viewBox="0 0 20 20" fill="currentColor" className="w-6 h-6 text-[#7c7893]">
+          <div className="w-12 h-12 rounded-full bg-elevated flex items-center justify-center mb-3">
+            <svg viewBox="0 0 20 20" fill="currentColor" className="w-6 h-6 text-muted">
               <path
                 fillRule="evenodd"
                 d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
@@ -157,8 +157,8 @@ export default function LockedSectionManager({
               />
             </svg>
           </div>
-          <p className="text-sm font-medium text-[#1a1a2e] mb-1">No locked sections</p>
-          <p className="text-xs text-[#7c7893]">
+          <p className="text-sm font-medium text-foreground mb-1">No locked sections</p>
+          <p className="text-xs text-muted">
             Add sections that must appear on every hotel page.
           </p>
         </div>
@@ -169,7 +169,7 @@ export default function LockedSectionManager({
           {sections.map((section) => (
             <div
               key={section.id}
-              className="flex items-center justify-between gap-3 p-4 bg-[#f0eef5] rounded-xl"
+              className="flex items-center justify-between gap-3 p-4 bg-elevated rounded-xl"
             >
               <div className="flex items-center gap-3 min-w-0 flex-1">
                 <span
@@ -182,15 +182,15 @@ export default function LockedSectionManager({
                   {section.position === "top" ? "Top" : "Bottom"}
                 </span>
                 <div className="min-w-0">
-                  <p className="text-sm font-medium text-[#1a1a2e] truncate">{section.label}</p>
-                  <p className="text-xs text-[#7c7893] font-mono truncate">{section.variant}</p>
+                  <p className="text-sm font-medium text-foreground truncate">{section.label}</p>
+                  <p className="text-xs text-muted font-mono truncate">{section.variant}</p>
                 </div>
               </div>
               <div className="flex items-center gap-1.5 shrink-0">
                 <button
                   type="button"
                   onClick={() => openEditForm(section)}
-                  className="p-1.5 rounded-lg text-[#7c7893] hover:text-[#1a1a2e] hover:bg-[#e2dfe8] transition-colors"
+                  className="p-1.5 rounded-lg text-muted hover:text-foreground hover:bg-border transition-colors"
                   title="Edit"
                 >
                   <svg viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4">
@@ -200,7 +200,7 @@ export default function LockedSectionManager({
                 <button
                   type="button"
                   onClick={() => handleDelete(section.id)}
-                  className="p-1.5 rounded-lg text-[#7c7893] hover:text-[#e85d45] hover:bg-[#e85d45]/10 transition-colors"
+                  className="p-1.5 rounded-lg text-muted hover:text-[#e85d45] hover:bg-[#e85d45]/10 transition-colors"
                   title="Delete"
                 >
                   <svg viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4">
@@ -219,8 +219,8 @@ export default function LockedSectionManager({
 
       {/* Inline form */}
       {showForm && (
-        <div className="p-5 bg-[#f0eef5] rounded-xl border border-[#e2dfe8] space-y-4">
-          <h4 className="text-sm font-semibold text-[#1a1a2e]">
+        <div className="p-5 bg-elevated rounded-xl border border-border space-y-4">
+          <h4 className="text-sm font-semibold text-foreground">
             {editingId ? "Edit Locked Section" : "Add Locked Section"}
           </h4>
 
@@ -231,22 +231,22 @@ export default function LockedSectionManager({
           )}
 
           <div>
-            <label className="block text-xs text-[#7c7893] mb-1.5">Label</label>
+            <label className="block text-xs text-muted mb-1.5">Label</label>
             <input
               type="text"
               value={label}
               onChange={(e) => setLabel(e.target.value)}
               placeholder="e.g. Booking Banner"
-              className="w-full px-3 py-2 rounded-lg bg-[#ffffff] border border-[#e2dfe8] focus:border-[#7c5cbf] text-[#1a1a2e] text-sm outline-none transition-colors"
+              className="w-full px-3 py-2 rounded-lg bg-card border border-border focus:border-[#7c5cbf] text-foreground text-sm outline-none transition-colors"
             />
           </div>
 
           <div>
-            <label className="block text-xs text-[#7c7893] mb-1.5">Position</label>
+            <label className="block text-xs text-muted mb-1.5">Position</label>
             <select
               value={position}
               onChange={(e) => setPosition(e.target.value as "top" | "bottom")}
-              className="w-full px-3 py-2 rounded-lg bg-[#ffffff] border border-[#e2dfe8] focus:border-[#7c5cbf] text-[#1a1a2e] text-sm outline-none transition-colors"
+              className="w-full px-3 py-2 rounded-lg bg-card border border-border focus:border-[#7c5cbf] text-foreground text-sm outline-none transition-colors"
             >
               <option value="top">Top</option>
               <option value="bottom">Bottom</option>
@@ -254,14 +254,14 @@ export default function LockedSectionManager({
           </div>
 
           <div>
-            <label className="block text-xs text-[#7c7893] mb-1.5">Component Variant</label>
+            <label className="block text-xs text-muted mb-1.5">Component Variant</label>
             <select
               value={variant}
               onChange={(e) => {
                 setVariant(e.target.value);
                 setPropsJson(defaultPropsForVariant(e.target.value));
               }}
-              className="w-full px-3 py-2 rounded-lg bg-[#ffffff] border border-[#e2dfe8] focus:border-[#7c5cbf] text-[#1a1a2e] text-sm outline-none transition-colors"
+              className="w-full px-3 py-2 rounded-lg bg-card border border-border focus:border-[#7c5cbf] text-foreground text-sm outline-none transition-colors"
             >
               {COMPONENT_REGISTRY.map((comp) => (
                 <option key={comp.variant} value={comp.variant}>
@@ -272,13 +272,13 @@ export default function LockedSectionManager({
           </div>
 
           <div>
-            <label className="block text-xs text-[#7c7893] mb-1.5">Props (JSON)</label>
+            <label className="block text-xs text-muted mb-1.5">Props (JSON)</label>
             <textarea
               value={propsJson}
               onChange={(e) => setPropsJson(e.target.value)}
               rows={6}
               placeholder={'{\n  "headline": "Book Direct & Save",\n  "cta": "Check Availability"\n}'}
-              className="w-full px-3 py-2 rounded-lg bg-[#ffffff] border border-[#e2dfe8] focus:border-[#7c5cbf] text-[#1a1a2e] text-xs font-mono outline-none transition-colors resize-y"
+              className="w-full px-3 py-2 rounded-lg bg-card border border-border focus:border-[#7c5cbf] text-foreground text-xs font-mono outline-none transition-colors resize-y"
             />
           </div>
 
@@ -286,7 +286,7 @@ export default function LockedSectionManager({
             <button
               type="button"
               onClick={cancelForm}
-              className="px-4 py-2 rounded-lg text-sm text-[#7c7893] hover:text-[#1a1a2e] hover:bg-[#e2dfe8] transition-colors"
+              className="px-4 py-2 rounded-lg text-sm text-muted hover:text-foreground hover:bg-border transition-colors"
             >
               Cancel
             </button>
@@ -328,7 +328,7 @@ export default function LockedSectionManager({
         <button
           type="button"
           onClick={openAddForm}
-          className="flex items-center gap-2 px-4 py-2.5 rounded-lg border border-dashed border-[#e2dfe8] text-sm text-[#7c7893] hover:text-[#1a1a2e] hover:border-[#7c5cbf] hover:bg-[#f0eef5] transition-all w-full justify-center"
+          className="flex items-center gap-2 px-4 py-2.5 rounded-lg border border-dashed border-border text-sm text-muted hover:text-foreground hover:border-[#7c5cbf] hover:bg-elevated transition-all w-full justify-center"
         >
           <svg viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4">
             <path

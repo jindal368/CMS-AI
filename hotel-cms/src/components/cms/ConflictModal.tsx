@@ -1,5 +1,7 @@
 "use client";
 
+import Portal from "@/components/ui/Portal";
+
 interface ConflictModalProps {
   sectionId: string;
   overrideType: "enhanced" | "custom";
@@ -16,15 +18,16 @@ export default function ConflictModal({
   const editKind = overrideType === "custom" ? "CSS/HTML" : "CSS/HTML";
 
   return (
+    <Portal>
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       {/* Backdrop */}
       <div
-        className="absolute inset-0 bg-black/30 backdrop-blur-[2px]"
+        className="absolute inset-0 bg-black/50 backdrop-blur-[2px]"
         onClick={onClose}
       />
 
       {/* Panel — glass-card-static */}
-      <div className="relative z-10 w-full max-w-md mx-4 bg-white/70 border border-white/50 rounded-2xl shadow-xl shadow-black/10 p-6">
+      <div className="relative z-10 w-full max-w-md mx-4 bg-card border border-border rounded-2xl shadow-xl shadow-black/10 p-6 max-h-[90vh] overflow-y-auto">
         {/* Header */}
         <div className="flex items-start gap-3 mb-4">
           <div className="flex-shrink-0 w-9 h-9 rounded-full bg-[#d49a12]/15 border border-[#d49a12]/25 flex items-center justify-center">
@@ -42,17 +45,17 @@ export default function ConflictModal({
             </svg>
           </div>
           <div className="min-w-0">
-            <h2 className="text-sm font-semibold text-[#1a1a2e] leading-snug">
+            <h2 className="text-sm font-semibold text-foreground leading-snug">
               Custom Edits Detected
             </h2>
-            <p className="text-xs text-[#7c7893] mt-1 leading-relaxed">
-              This section has custom <span className="font-medium text-[#5a5670]">{editKind}</span> edits.
+            <p className="text-xs text-muted mt-1 leading-relaxed">
+              This section has custom <span className="font-medium text-foreground">{editKind}</span> edits.
               A CMS change is being applied — choose how to handle the conflict.
             </p>
           </div>
           <button
             onClick={onClose}
-            className="flex-shrink-0 p-1 rounded-lg text-[#9994ad] hover:text-[#1a1a2e] hover:bg-[#f0eef5] transition-colors"
+            className="flex-shrink-0 p-1 rounded-lg text-muted hover:text-foreground hover:bg-elevated transition-colors"
           >
             <svg viewBox="0 0 20 20" fill="currentColor" style={{ width: "1rem", height: "1rem" }}>
               <path
@@ -65,7 +68,7 @@ export default function ConflictModal({
         </div>
 
         {/* Divider */}
-        <div className="border-t border-white/60 mb-4" />
+        <div className="border-t border-border mb-4" />
 
         {/* Options */}
         <div className="space-y-2.5">
@@ -93,7 +96,7 @@ export default function ConflictModal({
               <p className="text-xs font-semibold text-[#d49a12] group-hover:text-[#b8850f] transition-colors">
                 Keep custom edits
               </p>
-              <p className="text-xs text-[#7c7893] mt-0.5 leading-relaxed">
+              <p className="text-xs text-muted mt-0.5 leading-relaxed">
                 Applies the CMS change but preserves your custom {editKind} overrides.
               </p>
             </div>
@@ -129,7 +132,7 @@ export default function ConflictModal({
               <p className="text-xs font-semibold text-[#e85d45] transition-colors">
                 Discard custom edits
               </p>
-              <p className="text-xs text-[#7c7893] mt-0.5 leading-relaxed">
+              <p className="text-xs text-muted mt-0.5 leading-relaxed">
                 Clears all overrides and applies the CMS change as a fresh component.
               </p>
             </div>
@@ -165,7 +168,7 @@ export default function ConflictModal({
               <p className="text-xs font-semibold text-[#7c5cbf] transition-colors">
                 Re-apply with AI
               </p>
-              <p className="text-xs text-[#7c7893] mt-0.5 leading-relaxed">
+              <p className="text-xs text-muted mt-0.5 leading-relaxed">
                 Clears overrides, applies the CMS change, then AI re-styles the component to match your preferences.
               </p>
             </div>
@@ -175,11 +178,12 @@ export default function ConflictModal({
         {/* Cancel */}
         <button
           onClick={onClose}
-          className="w-full mt-4 px-4 py-2 rounded-lg text-xs font-medium text-[#7c7893] hover:text-[#1a1a2e] hover:bg-[#f0eef5] transition-colors border border-transparent hover:border-[#e2dfe8]"
+          className="w-full mt-4 px-4 py-2 rounded-lg text-xs font-medium text-muted hover:text-foreground hover:bg-elevated transition-colors border border-transparent hover:border-border"
         >
           Cancel — keep current state
         </button>
       </div>
     </div>
+    </Portal>
   );
 }

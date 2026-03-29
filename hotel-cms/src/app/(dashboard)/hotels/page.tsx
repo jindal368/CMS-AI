@@ -20,7 +20,7 @@ const categoryColors: Record<string, { text: string; bg: string; dot: string }> 
   boutique: { text: "text-[#7c5cbf]", bg: "bg-[#7c5cbf]/10", dot: "bg-[#7c5cbf]" },
   business: { text: "text-[#3b7dd8]", bg: "bg-[#3b7dd8]/10", dot: "bg-[#3b7dd8]" },
   resort: { text: "text-[#0fa886]", bg: "bg-[#0fa886]/10", dot: "bg-[#0fa886]" },
-  budget: { text: "text-[#7c7893]", bg: "bg-[#7c7893]/10", dot: "bg-[#7c7893]" },
+  budget: { text: "text-muted", bg: "bg-[#7c7893]/10", dot: "bg-[#7c7893]" },
 };
 
 const gradientPairs = [
@@ -33,12 +33,12 @@ export default async function HotelsPage() {
   const hotels = await getHotels();
 
   return (
-    <div className="space-y-6 max-w-6xl">
+    <div className="space-y-8 max-w-[1600px]">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between animate-in">
         <div>
-          <h2 className="text-2xl font-bold tracking-tight text-[#1a1a2e]">Hotels</h2>
-          <p className="text-sm text-[#7c7893] mt-0.5">
+          <h2 className="text-2xl font-bold tracking-tight text-foreground">Hotels</h2>
+          <p className="text-sm text-muted mt-0.5">
             {hotels.length} {hotels.length === 1 ? "property" : "properties"} registered
           </p>
         </div>
@@ -48,11 +48,11 @@ export default async function HotelsPage() {
       {/* Hotels grid */}
       {hotels.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-20 glass-card-static rounded-xl text-center">
-          <div className="w-16 h-16 rounded-full bg-[#f0eef5] flex items-center justify-center mb-4">
+          <div className="w-16 h-16 rounded-full bg-elevated flex items-center justify-center mb-4">
             <svg
               viewBox="0 0 20 20"
               fill="currentColor"
-              className="w-8 h-8 text-[#7c7893]"
+              className="w-8 h-8 text-muted"
             >
               <path
                 fillRule="evenodd"
@@ -61,16 +61,16 @@ export default async function HotelsPage() {
               />
             </svg>
           </div>
-          <h3 className="text-base font-semibold text-[#1a1a2e] mb-1">
+          <h3 className="text-base font-semibold text-foreground mb-1">
             No hotels yet
           </h3>
-          <p className="text-sm text-[#7c7893] mb-4">
+          <p className="text-sm text-muted mb-4">
             Create your first hotel property to get started
           </p>
           <HotelActions />
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
           {hotels.map((hotel, index) => {
             const colors = categoryColors[hotel.category] ?? categoryColors.budget;
             const contactInfo = hotel.contactInfo as Record<string, string>;
@@ -79,7 +79,7 @@ export default async function HotelsPage() {
               <Link
                 key={hotel.id}
                 href={`/hotels/${hotel.id}`}
-                className="group relative block glass-card rounded-xl p-5"
+                className={`group relative block glass-card rounded-xl p-5 animate-in animate-in-delay-${Math.min(index + 1, 5)}`}
               >
                 {/* Card header */}
                 <div className="flex items-start justify-between mb-4">
@@ -94,11 +94,11 @@ export default async function HotelsPage() {
                       {hotel.name.charAt(0).toUpperCase()}
                     </div>
                     <div className="min-w-0">
-                      <h3 className="text-sm font-semibold text-[#1a1a2e] group-hover:text-white transition-colors line-clamp-1">
+                      <h3 className="text-sm font-semibold text-foreground group-hover:text-white transition-colors line-clamp-1">
                         {hotel.name}
                       </h3>
                       {contactInfo?.address && (
-                        <p className="text-xs text-[#7c7893] line-clamp-1 mt-0.5">
+                        <p className="text-xs text-muted line-clamp-1 mt-0.5">
                           {contactInfo.address}
                         </p>
                       )}
@@ -116,24 +116,24 @@ export default async function HotelsPage() {
                 </div>
 
                 {/* Stats row */}
-                <div className="grid grid-cols-3 gap-2 pt-4 border-t border-[#e2dfe8]">
+                <div className="grid grid-cols-3 gap-2 pt-4 border-t border-border">
                   <div className="text-center">
-                    <p className="text-base font-bold text-[#1a1a2e] tabular-nums">
+                    <p className="text-base font-bold text-foreground tabular-nums">
                       {hotel._count.pages}
                     </p>
-                    <p className="text-xs text-[#7c7893]">Pages</p>
+                    <p className="text-xs text-muted">Pages</p>
                   </div>
-                  <div className="text-center border-x border-[#e2dfe8]">
-                    <p className="text-base font-bold text-[#1a1a2e] tabular-nums">
+                  <div className="text-center border-x border-border">
+                    <p className="text-base font-bold text-foreground tabular-nums">
                       {hotel._count.rooms}
                     </p>
-                    <p className="text-xs text-[#7c7893]">Rooms</p>
+                    <p className="text-xs text-muted">Rooms</p>
                   </div>
                   <div className="text-center">
-                    <p className="text-base font-bold text-[#1a1a2e] tabular-nums">
+                    <p className="text-base font-bold text-foreground tabular-nums">
                       {hotel._count.media}
                     </p>
-                    <p className="text-xs text-[#7c7893]">Media</p>
+                    <p className="text-xs text-muted">Media</p>
                   </div>
                 </div>
               </Link>

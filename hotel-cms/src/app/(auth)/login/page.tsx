@@ -46,21 +46,21 @@ export default function LoginPage() {
         >
           H
         </div>
-        <span className="text-xl font-semibold" style={{ color: "#1a1a2e" }}>
+        <span className="text-xl font-semibold" style={{ color: "var(--foreground)" }}>
           hotelCMS
         </span>
       </div>
 
-      <h1 className="text-2xl font-bold mb-1" style={{ color: "#1a1a2e" }}>
+      <h1 className="text-2xl font-bold mb-1" style={{ color: "var(--foreground)" }}>
         Sign in to your account
       </h1>
-      <p className="text-sm mb-6" style={{ color: "#7c7893" }}>
+      <p className="text-sm mb-6" style={{ color: "var(--muted)" }}>
         Welcome back. Enter your credentials to continue.
       </p>
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <div className="flex flex-col gap-1.5">
-          <label className="text-sm font-medium" style={{ color: "#1a1a2e" }}>
+          <label className="text-sm font-medium" style={{ color: "var(--foreground)" }}>
             Email
           </label>
           <input
@@ -70,12 +70,12 @@ export default function LoginPage() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="you@example.com"
-            className="bg-[#f8f7fa] border border-[#e2dfe8] focus:border-[#7c5cbf] rounded-lg px-4 py-2.5 text-sm outline-none transition-colors"
+            className="bg-background border border-border focus:border-[#7c5cbf] focus:ring-2 focus:ring-[#7c5cbf]/20 rounded-xl px-4 py-2.5 text-sm outline-none transition-all"
           />
         </div>
 
         <div className="flex flex-col gap-1.5">
-          <label className="text-sm font-medium" style={{ color: "#1a1a2e" }}>
+          <label className="text-sm font-medium" style={{ color: "var(--foreground)" }}>
             Password
           </label>
           <input
@@ -85,7 +85,7 @@ export default function LoginPage() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="••••••••"
-            className="bg-[#f8f7fa] border border-[#e2dfe8] focus:border-[#7c5cbf] rounded-lg px-4 py-2.5 text-sm outline-none transition-colors"
+            className="bg-background border border-border focus:border-[#7c5cbf] focus:ring-2 focus:ring-[#7c5cbf]/20 rounded-xl px-4 py-2.5 text-sm outline-none transition-all"
           />
         </div>
 
@@ -96,7 +96,7 @@ export default function LoginPage() {
         <button
           type="submit"
           disabled={loading}
-          className="w-full py-2.5 rounded-lg text-sm font-semibold text-white flex items-center justify-center gap-2 transition-opacity disabled:opacity-70"
+          className="w-full py-2.5 rounded-xl text-sm font-semibold tracking-wide text-white flex items-center justify-center gap-2 transition-opacity disabled:opacity-70"
           style={{ background: "linear-gradient(135deg, #e85d45, #c94d37)" }}
         >
           {loading ? (
@@ -113,7 +113,7 @@ export default function LoginPage() {
         </button>
       </form>
 
-      <p className="mt-6 text-center text-sm" style={{ color: "#7c7893" }}>
+      <p className="mt-6 text-center text-sm" style={{ color: "var(--muted)" }}>
         Don&apos;t have an account?{" "}
         <Link href="/register" className="font-medium" style={{ color: "#7c5cbf" }}>
           Create one

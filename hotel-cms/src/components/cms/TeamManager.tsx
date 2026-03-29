@@ -128,7 +128,7 @@ function UserCard({ user, hotels, isSelf, index }: UserCardProps) {
   }
 
   return (
-    <div className="glass-card-static rounded-xl p-4 flex flex-col sm:flex-row sm:items-center gap-4 border border-[#e2dfe8] bg-white/60 backdrop-blur-sm">
+    <div className={`glass-card-static rounded-xl p-4 flex flex-col sm:flex-row sm:items-center gap-4 border border-border bg-card/60 backdrop-blur-sm animate-in animate-in-delay-${Math.min(index + 1, 5)}`}>
       {/* Avatar */}
       <div
         className="w-10 h-10 shrink-0 rounded-xl flex items-center justify-center text-base font-bold text-white"
@@ -143,9 +143,9 @@ function UserCard({ user, hotels, isSelf, index }: UserCardProps) {
       {/* Info */}
       <div className="flex-1 min-w-0 space-y-1">
         <div className="flex items-center flex-wrap gap-2">
-          <p className="text-sm font-semibold text-[#1a1a2e] truncate">{user.name}</p>
+          <p className="text-sm font-semibold text-foreground truncate">{user.name}</p>
           {isSelf && (
-            <span className="text-xs text-[#7c7893] bg-[#f0eef5] rounded-full px-2 py-0.5">
+            <span className="text-xs text-muted bg-elevated rounded-full px-2 py-0.5">
               you
             </span>
           )}
@@ -155,10 +155,10 @@ function UserCard({ user, hotels, isSelf, index }: UserCardProps) {
             {user.role}
           </span>
         </div>
-        <p className="text-xs text-[#7c7893] truncate">{user.email}</p>
-        <div className="flex items-center gap-3 text-xs text-[#7c7893]">
+        <p className="text-xs text-muted truncate">{user.email}</p>
+        <div className="flex items-center gap-3 text-xs text-muted">
           <span>{hotelLabel}</span>
-          <span className="text-[#e2dfe8]">·</span>
+          <span className="text-border">·</span>
           <span>Last login: {relativeTime(user.lastLoginAt)}</span>
         </div>
       </div>
@@ -173,7 +173,7 @@ function UserCard({ user, hotels, isSelf, index }: UserCardProps) {
                 value={selectedRole}
                 onChange={(e) => setSelectedRole(e.target.value)}
                 disabled={savingRole}
-                className="text-xs px-2 py-1.5 rounded-lg border border-[#e2dfe8] bg-[#f0eef5] text-[#1a1a2e] focus:border-[#7c5cbf] focus:outline-none transition-colors disabled:opacity-50"
+                className="text-xs px-2 py-1.5 rounded-lg border border-border bg-elevated text-foreground focus:border-[#7c5cbf] focus:outline-none transition-colors disabled:opacity-50"
               >
                 <option value="admin">Admin</option>
                 <option value="editor">Editor</option>
@@ -201,7 +201,7 @@ function UserCard({ user, hotels, isSelf, index }: UserCardProps) {
                 type="button"
                 onClick={() => { setEditingRole(false); setSelectedRole(user.role); }}
                 disabled={savingRole}
-                className="p-1.5 rounded-lg text-[#7c7893] hover:text-[#1a1a2e] hover:bg-[#f0eef5] transition-colors disabled:opacity-40"
+                className="p-1.5 rounded-lg text-muted hover:text-foreground hover:bg-elevated transition-colors disabled:opacity-40"
                 title="Cancel"
               >
                 <svg viewBox="0 0 20 20" fill="currentColor" className="w-3.5 h-3.5">
@@ -213,7 +213,7 @@ function UserCard({ user, hotels, isSelf, index }: UserCardProps) {
             <button
               type="button"
               onClick={() => setEditingRole(true)}
-              className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-medium text-[#7c7893] hover:text-[#1a1a2e] hover:bg-[#f0eef5] transition-colors"
+              className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-medium text-muted hover:text-foreground hover:bg-elevated transition-colors"
               title="Edit role"
             >
               <svg viewBox="0 0 20 20" fill="currentColor" className="w-3.5 h-3.5">
@@ -232,7 +232,7 @@ function UserCard({ user, hotels, isSelf, index }: UserCardProps) {
             className={`p-1.5 rounded-lg transition-colors disabled:opacity-40 disabled:cursor-not-allowed ${
               confirming
                 ? "bg-[#e85d45]/20 text-[#e85d45] hover:bg-[#e85d45]/30"
-                : "text-[#7c7893] hover:text-[#e85d45] hover:bg-[#e85d45]/10"
+                : "text-muted hover:text-[#e85d45] hover:bg-[#e85d45]/10"
             }`}
           >
             {deleting ? (
@@ -258,12 +258,12 @@ export default function TeamManager({ users, hotels, currentUserId }: TeamManage
   const [inviteOpen, setInviteOpen] = useState(false);
 
   return (
-    <div className="space-y-6 max-w-4xl">
+    <div className="space-y-8 max-w-4xl">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between animate-in">
         <div>
-          <h2 className="text-2xl font-bold tracking-tight text-[#1a1a2e]">Team</h2>
-          <p className="text-sm text-[#7c7893] mt-0.5">
+          <h2 className="text-2xl font-semibold tracking-tight text-foreground">Team</h2>
+          <p className="text-sm text-muted mt-0.5">
             {users.length} {users.length === 1 ? "member" : "members"}
           </p>
         </div>
@@ -283,13 +283,13 @@ export default function TeamManager({ users, hotels, currentUserId }: TeamManage
       {/* User list */}
       {users.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-20 glass-card-static rounded-xl text-center">
-          <div className="w-16 h-16 rounded-full bg-[#f0eef5] flex items-center justify-center mb-4">
-            <svg viewBox="0 0 20 20" fill="currentColor" className="w-8 h-8 text-[#7c7893]">
+          <div className="w-16 h-16 rounded-full bg-elevated flex items-center justify-center mb-4">
+            <svg viewBox="0 0 20 20" fill="currentColor" className="w-8 h-8 text-muted">
               <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" />
             </svg>
           </div>
-          <h3 className="text-base font-semibold text-[#1a1a2e] mb-1">No team members</h3>
-          <p className="text-sm text-[#7c7893] mb-4">
+          <h3 className="text-base font-semibold text-foreground mb-1">No team members</h3>
+          <p className="text-sm text-muted mb-4">
             Invite your first team member to get started
           </p>
           <button

@@ -48,20 +48,20 @@ export default function BrandPageClient({
   }
 
   return (
-    <div className="space-y-6 max-w-2xl">
+    <div className="space-y-8 max-w-2xl">
       {/* Header */}
-      <div>
-        <h2 className="text-2xl font-bold tracking-tight text-[#1a1a2e]">Brand Governance</h2>
-        <p className="text-sm text-[#7c7893] mt-0.5">
+      <div className="animate-in">
+        <h2 className="text-2xl font-semibold tracking-tight text-foreground">Brand Governance</h2>
+        <p className="text-sm text-muted mt-0.5">
           Manage organization-wide theme and locked page sections.
         </p>
       </div>
 
       {/* Organization Theme */}
-      <div className="glass-card-static rounded-xl p-6">
+      <div className="glass-card-static rounded-xl p-6 animate-in animate-in-delay-1">
         <div className="mb-5">
-          <h3 className="text-base font-semibold text-[#1a1a2e]">Organization Theme</h3>
-          <p className="text-xs text-[#7c7893] mt-0.5">
+          <h3 className="text-base font-semibold text-foreground">Organization Theme</h3>
+          <p className="text-xs text-muted mt-0.5">
             Apply a consistent visual identity across all hotel websites.
           </p>
         </div>
@@ -72,10 +72,10 @@ export default function BrandPageClient({
       </div>
 
       {/* Locked Sections */}
-      <div className="glass-card-static rounded-xl p-6">
+      <div className="glass-card-static rounded-xl p-6 animate-in animate-in-delay-2">
         <div className="mb-5">
-          <h3 className="text-base font-semibold text-[#1a1a2e]">Locked Sections</h3>
-          <p className="text-xs text-[#7c7893] mt-0.5">
+          <h3 className="text-base font-semibold text-foreground">Locked Sections</h3>
+          <p className="text-xs text-muted mt-0.5">
             Define sections that are pinned to the top or bottom of every hotel page.
           </p>
         </div>
@@ -86,10 +86,10 @@ export default function BrandPageClient({
       </div>
 
       {/* Custom Domain */}
-      <div className="glass-card-static rounded-xl p-6">
+      <div className="glass-card-static rounded-xl p-6 animate-in animate-in-delay-3">
         <div className="mb-5">
-          <h3 className="text-base font-semibold text-[#1a1a2e]">Custom Domain</h3>
-          <p className="text-xs text-[#7c7893] mt-0.5">
+          <h3 className="text-base font-semibold text-foreground">Custom Domain</h3>
+          <p className="text-xs text-muted mt-0.5">
             Connect your domain to serve hotel websites publicly.
           </p>
         </div>
@@ -106,7 +106,7 @@ export default function BrandPageClient({
             style={{
               borderColor: "rgba(124,120,147,0.25)",
               background: "rgba(255,255,255,0.6)",
-              color: "#1a1a2e",
+              color: "var(--foreground)",
             }}
           />
           <button

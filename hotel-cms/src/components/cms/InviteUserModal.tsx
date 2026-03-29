@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Portal from "@/components/ui/Portal";
 
 interface Hotel {
   id: string;
@@ -94,10 +95,11 @@ export default function InviteUserModal({ hotels, onClose }: InviteUserModalProp
   }
 
   const inputClass =
-    "w-full px-3 py-2 rounded-lg bg-[#f0eef5] border border-[#e2dfe8] focus:border-[#7c5cbf] focus:outline-none text-[#1a1a2e] text-sm placeholder-[#7c7893] transition-colors";
-  const labelClass = "block text-xs font-medium text-[#7c7893] mb-1.5";
+    "w-full px-3 py-2 rounded-lg bg-[#f0eef5] border border-border focus:border-[#7c5cbf] focus:outline-none text-foreground text-sm placeholder-muted transition-colors";
+  const labelClass = "block text-xs font-medium text-muted mb-1.5";
 
   return (
+    <Portal>
     <div
       className="fixed inset-0 z-50 flex items-center justify-center"
       aria-modal="true"
@@ -111,15 +113,15 @@ export default function InviteUserModal({ hotels, onClose }: InviteUserModalProp
       />
 
       {/* Modal card */}
-      <div className="relative z-10 w-full max-w-lg mx-4 bg-[#ffffff] border border-[#e2dfe8] rounded-2xl shadow-2xl shadow-black/40 max-h-[90vh] overflow-y-auto">
+      <div className="relative z-10 w-full max-w-lg mx-4 bg-card border border-border rounded-2xl shadow-2xl shadow-black/40 max-h-[90vh] overflow-y-auto">
         {/* Header */}
-        <div className="flex items-center justify-between px-6 pt-6 pb-4 border-b border-[#e2dfe8] sticky top-0 bg-[#ffffff] z-10">
-          <h2 className="text-base font-semibold text-[#1a1a2e]">Invite Team Member</h2>
+        <div className="flex items-center justify-between px-6 pt-6 pb-4 border-b border-border sticky top-0 bg-card z-10">
+          <h2 className="text-base font-semibold text-foreground">Invite Team Member</h2>
           <button
             type="button"
             onClick={onClose}
             disabled={step === "submitting"}
-            className="p-1.5 rounded-lg text-[#7c7893] hover:text-[#1a1a2e] hover:bg-[#f0eef5] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+            className="p-1.5 rounded-lg text-muted hover:text-foreground hover:bg-[#f0eef5] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
             aria-label="Close"
           >
             <svg viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4">
@@ -149,21 +151,21 @@ export default function InviteUserModal({ hotels, onClose }: InviteUserModalProp
                 </svg>
               </div>
               <div>
-                <p className="text-sm font-semibold text-[#1a1a2e]">Invitation sent!</p>
-                <p className="text-xs text-[#7c7893] mt-0.5">
+                <p className="text-sm font-semibold text-foreground">Invitation sent!</p>
+                <p className="text-xs text-muted mt-0.5">
                   Share this temporary password with{" "}
-                  <span className="font-medium text-[#1a1a2e]">{name}</span>. It
+                  <span className="font-medium text-foreground">{name}</span>. It
                   won&apos;t be shown again.
                 </p>
               </div>
             </div>
 
             <div className="rounded-xl border border-[#e85d45]/30 bg-[#e85d45]/5 p-4 space-y-3">
-              <p className="text-xs font-medium text-[#7c7893] uppercase tracking-wider">
+              <p className="text-xs font-medium text-muted uppercase tracking-wider">
                 Temporary Password
               </p>
               <div className="flex items-center gap-3">
-                <code className="flex-1 text-sm font-mono text-[#1a1a2e] bg-[#f0eef5] rounded-lg px-3 py-2 select-all break-all">
+                <code className="flex-1 text-sm font-mono text-foreground bg-[#f0eef5] rounded-lg px-3 py-2 select-all break-all">
                   {temporaryPassword}
                 </code>
                 <button
@@ -172,7 +174,7 @@ export default function InviteUserModal({ hotels, onClose }: InviteUserModalProp
                   className={`shrink-0 inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-medium transition-colors ${
                     copied
                       ? "bg-[#0fa886]/10 text-[#0fa886]"
-                      : "bg-[#f0eef5] text-[#7c7893] hover:text-[#1a1a2e]"
+                      : "bg-[#f0eef5] text-muted hover:text-foreground"
                   }`}
                 >
                   {copied ? (
@@ -282,7 +284,7 @@ export default function InviteUserModal({ hotels, onClose }: InviteUserModalProp
                     {allSelected ? "Deselect all" : "Select all"}
                   </button>
                 </div>
-                <div className="rounded-xl border border-[#e2dfe8] bg-[#f0eef5]/40 divide-y divide-[#e2dfe8] max-h-48 overflow-y-auto">
+                <div className="rounded-xl border border-border bg-[#f0eef5]/40 divide-y divide-border max-h-48 overflow-y-auto">
                   {hotels.map((hotel) => {
                     const checked = selectedHotelIds.includes(hotel.id);
                     return (
@@ -295,14 +297,14 @@ export default function InviteUserModal({ hotels, onClose }: InviteUserModalProp
                           checked={checked}
                           onChange={() => toggleHotel(hotel.id)}
                           disabled={step === "submitting"}
-                          className="w-4 h-4 rounded border-[#e2dfe8] accent-[#7c5cbf]"
+                          className="w-4 h-4 rounded border-border accent-[#7c5cbf]"
                         />
-                        <span className="text-sm text-[#1a1a2e]">{hotel.name}</span>
+                        <span className="text-sm text-foreground">{hotel.name}</span>
                       </label>
                     );
                   })}
                 </div>
-                <p className="mt-1.5 text-xs text-[#7c7893]">
+                <p className="mt-1.5 text-xs text-muted">
                   {selectedHotelIds.length === 0
                     ? "No hotels selected — user will have no hotel access."
                     : `${selectedHotelIds.length} of ${hotels.length} hotel${hotels.length !== 1 ? "s" : ""} selected.`}
@@ -323,7 +325,7 @@ export default function InviteUserModal({ hotels, onClose }: InviteUserModalProp
                 type="button"
                 onClick={onClose}
                 disabled={step === "submitting"}
-                className="px-4 py-2 text-sm font-medium text-[#7c7893] hover:text-[#1a1a2e] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                className="px-4 py-2 text-sm font-medium text-muted hover:text-foreground transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
               >
                 Cancel
               </button>
@@ -361,5 +363,6 @@ export default function InviteUserModal({ hotels, onClose }: InviteUserModalProp
         )}
       </div>
     </div>
+    </Portal>
   );
 }

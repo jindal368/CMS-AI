@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Portal from "@/components/ui/Portal";
 
 interface SerializedVersion {
   id: string;
@@ -175,6 +176,7 @@ export default function VersionActions({ hotelId: _hotelId, versions }: VersionA
     <>
       {/* Confirmation dialog */}
       {confirm && (
+        <Portal>
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm">
           <div className="bg-[#ffffff] border border-[#e2dfe8] rounded-xl p-5 w-full max-w-sm mx-4 shadow-2xl">
             <h3 className="text-sm font-semibold text-[#1a1a2e] mb-2">
@@ -205,6 +207,7 @@ export default function VersionActions({ hotelId: _hotelId, versions }: VersionA
             </div>
           </div>
         </div>
+        </Portal>
       )}
 
       {/* Error banner */}

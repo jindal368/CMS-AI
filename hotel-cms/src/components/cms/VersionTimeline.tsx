@@ -113,14 +113,14 @@ export default function VersionTimeline({ hotelId }: VersionTimelineProps) {
   };
 
   return (
-    <div className="bg-[#ffffff] px-4 py-3">
+    <div className="bg-card px-4 py-3">
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
-          <span className="text-xs font-semibold text-[#7c7893] uppercase tracking-wider">
+          <span className="text-xs font-semibold text-muted uppercase tracking-wider">
             Version History
           </span>
           {!loading && (
-            <span className="text-xs text-[#9994ad] bg-[#f0eef5] px-2 py-0.5 rounded-full">
+            <span className="text-xs text-[#9994ad] bg-elevated px-2 py-0.5 rounded-full">
               {versions.length} versions
             </span>
           )}
@@ -128,7 +128,7 @@ export default function VersionTimeline({ hotelId }: VersionTimelineProps) {
         <button
           onClick={fetchVersions}
           disabled={loading}
-          className="p-1 rounded-lg text-[#7c7893] hover:text-[#1a1a2e] hover:bg-[#f0eef5] transition-colors disabled:opacity-50"
+          className="p-1 rounded-lg text-muted hover:text-foreground hover:bg-elevated transition-colors disabled:opacity-50"
         >
           <svg
             viewBox="0 0 20 20"
@@ -143,7 +143,7 @@ export default function VersionTimeline({ hotelId }: VersionTimelineProps) {
       {loading ? (
         <div className="flex items-center gap-3 py-2">
           {[...Array(4)].map((_, i) => (
-            <div key={i} className="h-16 w-48 bg-[#f0eef5] rounded-xl animate-pulse shrink-0" />
+            <div key={i} className="h-16 w-48 bg-elevated rounded-xl animate-pulse shrink-0" />
           ))}
         </div>
       ) : error ? (
@@ -152,8 +152,8 @@ export default function VersionTimeline({ hotelId }: VersionTimelineProps) {
         </div>
       ) : versions.length === 0 ? (
         <div className="flex items-center gap-3 py-2">
-          <div className="px-4 py-3 rounded-xl bg-[#f0eef5] border border-[#e2dfe8]">
-            <p className="text-xs text-[#7c7893]">No versions yet</p>
+          <div className="px-4 py-3 rounded-xl bg-elevated border border-border">
+            <p className="text-xs text-muted">No versions yet</p>
             <p className="text-xs text-[#9994ad] mt-0.5">Use AI actions to generate versions</p>
           </div>
         </div>
@@ -169,15 +169,15 @@ export default function VersionTimeline({ hotelId }: VersionTimelineProps) {
                 key={version.id}
                 className={`shrink-0 w-56 rounded-xl border p-3 transition-all ${
                   isFirst
-                    ? "bg-[#f0eef5] border-[#e2dfe8]"
-                    : "bg-[#f8f7fa] border-[#f0eef5]"
+                    ? "bg-elevated border-border"
+                    : "bg-background border-[#f0eef5]"
                 }`}
               >
                 {/* Version number + status */}
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center gap-1.5">
                     <div className={`w-1.5 h-1.5 rounded-full ${status.dot}`} />
-                    <span className="text-xs font-bold text-[#1a1a2e]">
+                    <span className="text-xs font-bold text-foreground">
                       v{version.versionNum}
                     </span>
                     {isFirst && (

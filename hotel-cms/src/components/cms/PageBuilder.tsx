@@ -52,7 +52,7 @@ const componentTypeColors: Record<string, string> = {
   booking: "text-[#d49a12]",
   reviews: "text-[#3b7dd8]",
   map: "text-[#e85d45]",
-  footer: "text-[#7c7893]",
+  footer: "text-muted",
 };
 
 function getComponentType(variant: string): string {
@@ -253,28 +253,28 @@ export default function PageBuilder({ page, hotelId, lockedSections }: PageBuild
   return (
     <div className="flex flex-col h-full overflow-hidden">
       {/* ── Toolbar ─────────────────────────────────────────────────────────── */}
-      <div className="shrink-0 flex items-center gap-3 px-4 py-2 glass-card-static border-b border-white/30 z-10">
+      <div className="shrink-0 flex items-center gap-3 px-4 py-2 glass-card-static border-b border-border/30 z-10">
         {/* Back */}
         <Link
           href={`/hotels/${hotelId}`}
-          className="text-[#7c7893] hover:text-[#1a1a2e] transition-colors shrink-0"
+          className="text-muted hover:text-foreground transition-colors shrink-0"
         >
           <svg viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4">
             <path fillRule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clipRule="evenodd" />
           </svg>
         </Link>
 
-        <div className="w-px h-4 bg-white/40 shrink-0" />
+        <div className="w-px h-4 bg-card/40 shrink-0" />
 
         {/* Page info badge */}
         <div className="flex items-center gap-2 shrink-0">
-          <span className="text-[#7c7893] text-sm">{page.hotel.name}</span>
+          <span className="text-muted text-sm">{page.hotel.name}</span>
           <svg viewBox="0 0 20 20" fill="currentColor" className="w-3 h-3 text-[#d4d0de]">
             <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
           </svg>
           <span className="text-sm">{pageTypeIcon[page.pageType] ?? "◇"}</span>
-          <span className="text-sm font-semibold text-[#1a1a2e]">/{page.slug}</span>
-          <span className="text-xs px-1.5 py-0.5 rounded bg-white/60 text-[#7c7893] capitalize border border-white/40">
+          <span className="text-sm font-semibold text-foreground">/{page.slug}</span>
+          <span className="text-xs px-1.5 py-0.5 rounded bg-card/60 text-muted capitalize border border-border/40">
             {page.pageType}
           </span>
           {page.locale && page.locale !== "en" && (
@@ -304,7 +304,7 @@ export default function PageBuilder({ page, hotelId, lockedSections }: PageBuild
           className={`h-9 flex items-center gap-1 px-2.5 rounded-lg text-xs font-medium transition-all border shrink-0 ${
             showLogs
               ? "bg-[#7c5cbf]/15 text-[#7c5cbf] border-[#7c5cbf]/30"
-              : "bg-white/40 text-[#7c7893] border-white/40 hover:text-[#7c5cbf]"
+              : "bg-card/40 text-muted border-border/40 hover:text-[#7c5cbf]"
           }`}
           title="Toggle logs panel"
         >
@@ -320,7 +320,7 @@ export default function PageBuilder({ page, hotelId, lockedSections }: PageBuild
             className={`h-9 flex items-center gap-1 px-2.5 rounded-lg text-xs font-medium transition-all border shrink-0 ${
               showDiff
                 ? "bg-[#0fa886]/15 text-[#0fa886] border-[#0fa886]/30"
-                : "bg-white/40 text-[#7c7893] border-white/40 hover:text-[#0fa886]"
+                : "bg-card/40 text-muted border-border/40 hover:text-[#0fa886]"
             }`}
             title="Toggle diff panel"
           >
@@ -385,49 +385,50 @@ export default function PageBuilder({ page, hotelId, lockedSections }: PageBuild
       {/* ── Main 3-panel ────────────────────────────────────────────────────── */}
       <div className="flex flex-1 overflow-hidden">
         {/* Left: Sections list (w-60) */}
-        <div className="w-60 shrink-0 bg-white/50 backdrop-blur-sm border-r border-white/30 flex flex-col overflow-hidden">
-          <div className="px-3 py-2.5 border-b border-white/30 flex items-center justify-between shrink-0">
-            <span className="text-xs font-semibold text-[#7c7893] uppercase tracking-wider">Sections</span>
-            <span className="text-xs text-[#7c7893] bg-white/60 px-2 py-0.5 rounded-full border border-white/40">
+        <div className="w-60 shrink-0 bg-card/50 backdrop-blur-sm border-r border-border/30 flex flex-col overflow-hidden">
+          <div className="px-3 py-2.5 border-b border-border/30 flex items-center justify-between shrink-0">
+            <span className="text-xs font-semibold text-muted uppercase tracking-wider">Sections</span>
+            <span className="text-xs text-muted bg-card/60 px-2 py-0.5 rounded-full border border-border/40">
               {sections.length}
             </span>
           </div>
 
           <div className="flex-1 overflow-y-auto py-2 px-2 space-y-1">
             {lockedSections?.filter(s => s.position === "top").map(ls => (
-              <div key={ls.id} className="flex items-center gap-2 p-2.5 rounded-lg bg-[#f0eef5]/50 border border-dashed border-[#e2dfe8] opacity-60 cursor-not-allowed">
+              <div key={ls.id} className="flex items-center gap-2 p-2.5 rounded-lg bg-elevated/50 border border-dashed border-border opacity-60 cursor-not-allowed">
                 <span className="text-sm">🔒</span>
                 <div className="flex-1 min-w-0">
                   <span className="text-xs font-medium text-[#7c5cbf] truncate block">{ls.label}</span>
-                  <span className="text-[10px] text-[#7c7893]">{ls.componentVariant}</span>
+                  <span className="text-[10px] text-muted">{ls.componentVariant}</span>
                 </div>
               </div>
             ))}
             {sections.length === 0 ? (
               <div className="flex flex-col items-center justify-center h-full text-center px-4 py-8">
-                <div className="w-10 h-10 rounded-full bg-white/60 flex items-center justify-center mb-3 border border-white/40">
+                <div className="w-10 h-10 rounded-full bg-card/60 flex items-center justify-center mb-3 border border-border/40">
                   <svg viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5 text-[#d4d0de]">
                     <path fillRule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h6a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd" />
                   </svg>
                 </div>
-                <p className="text-xs text-[#7c7893]">No sections yet</p>
+                <p className="text-xs text-muted">No sections yet</p>
                 <p className="text-xs text-[#d4d0de] mt-1">Click &quot;Add Section&quot; to get started</p>
               </div>
             ) : (
               sections.map((section, index) => {
                 const type = getComponentType(section.componentVariant);
-                const typeColor = componentTypeColors[type] ?? "text-[#7c7893]";
+                const typeColor = componentTypeColors[type] ?? "text-muted";
                 const isSelected = selectedSection?.id === section.id;
 
                 return (
                   <div
                     key={section.id}
                     onClick={() => setSelectedSection(isSelected ? null : section)}
-                    className={`group relative flex items-center gap-2 p-2 rounded-lg cursor-pointer transition-all ${
+                    className={`group relative flex items-center gap-2 p-2 rounded-lg cursor-pointer transition-all animate-in animate-in-delay-${Math.min(index + 1, 5)} ${
                       isSelected
                         ? "bg-[#e85d45]/10 border border-[#e85d45]/30"
-                        : "bg-white/50 hover:bg-white/70 border border-white/30 hover:border-white/50"
+                        : "bg-card/50 hover:bg-elevated/70 border border-border/30 hover:border-border/50"
                     }`}
+                    style={{ transition: "transform 300ms cubic-bezier(0.16, 1, 0.3, 1), opacity 300ms ease" }}
                   >
                     {/* Drag handle */}
                     <div className="text-[#d4d0de] cursor-grab shrink-0">
@@ -461,7 +462,7 @@ export default function PageBuilder({ page, hotelId, lockedSections }: PageBuild
                       <button
                         onClick={(e) => { e.stopPropagation(); handleMoveUp(index); }}
                         disabled={index === 0}
-                        className="p-1 rounded text-[#7c7893] hover:text-[#1a1a2e] hover:bg-white/60 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                        className="p-1 rounded text-muted hover:text-foreground hover:bg-elevated/60 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
                         title="Move up"
                       >
                         <svg viewBox="0 0 20 20" fill="currentColor" className="w-3 h-3">
@@ -471,7 +472,7 @@ export default function PageBuilder({ page, hotelId, lockedSections }: PageBuild
                       <button
                         onClick={(e) => { e.stopPropagation(); handleMoveDown(index); }}
                         disabled={index === sections.length - 1}
-                        className="p-1 rounded text-[#7c7893] hover:text-[#1a1a2e] hover:bg-white/60 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                        className="p-1 rounded text-muted hover:text-foreground hover:bg-elevated/60 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
                         title="Move down"
                       >
                         <svg viewBox="0 0 20 20" fill="currentColor" className="w-3 h-3">
@@ -483,7 +484,7 @@ export default function PageBuilder({ page, hotelId, lockedSections }: PageBuild
                         className={`p-1 rounded transition-colors ${
                           section.isVisible
                             ? "text-[#0fa886] hover:bg-[#0fa886]/10"
-                            : "text-[#d4d0de] hover:text-[#7c7893] hover:bg-white/60"
+                            : "text-[#d4d0de] hover:text-muted hover:bg-elevated/60"
                         }`}
                         title={section.isVisible ? "Hide section" : "Show section"}
                       >
@@ -516,10 +517,10 @@ export default function PageBuilder({ page, hotelId, lockedSections }: PageBuild
           </div>
 
           {/* Add section footer */}
-          <div className="px-2 py-2.5 border-t border-white/30 shrink-0">
+          <div className="px-2 py-2.5 border-t border-border/30 shrink-0">
             <button
               onClick={() => setShowAddModal(true)}
-              className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg border border-dashed border-white/50 hover:border-[#e85d45]/40 text-[#7c7893] hover:text-[#e85d45] text-xs font-medium transition-all"
+              className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg border border-dashed border-border/50 hover:border-[#e85d45]/40 text-muted hover:text-[#e85d45] text-xs font-medium transition-all"
             >
               <svg viewBox="0 0 20 20" fill="currentColor" className="w-3.5 h-3.5">
                 <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" />
@@ -527,11 +528,11 @@ export default function PageBuilder({ page, hotelId, lockedSections }: PageBuild
               Add Section
             </button>
             {lockedSections?.filter(s => s.position === "bottom").map(ls => (
-              <div key={ls.id} className="flex items-center gap-2 p-2.5 rounded-lg bg-[#f0eef5]/50 border border-dashed border-[#e2dfe8] opacity-60 cursor-not-allowed mt-1">
+              <div key={ls.id} className="flex items-center gap-2 p-2.5 rounded-lg bg-elevated/50 border border-dashed border-border opacity-60 cursor-not-allowed mt-1">
                 <span className="text-sm">🔒</span>
                 <div className="flex-1 min-w-0">
                   <span className="text-xs font-medium text-[#7c5cbf] truncate block">{ls.label}</span>
-                  <span className="text-[10px] text-[#7c7893]">{ls.componentVariant}</span>
+                  <span className="text-[10px] text-muted">{ls.componentVariant}</span>
                 </div>
               </div>
             ))}
@@ -541,14 +542,14 @@ export default function PageBuilder({ page, hotelId, lockedSections }: PageBuild
         {/* Center: Preview with floating panels */}
         <div className="flex-1 flex flex-col relative overflow-hidden">
           {/* URL bar */}
-          <div className="shrink-0 px-3 py-1.5 bg-white/40 border-b border-white/20 flex items-center justify-between">
-            <div className="flex items-center gap-2 text-xs text-[#7c7893] font-mono">
+          <div className="shrink-0 px-3 py-1.5 bg-card/40 border-b border-border/20 flex items-center justify-between">
+            <div className="flex items-center gap-2 text-xs text-muted font-mono">
               <div className="flex gap-1.5">
                 <div className="w-2.5 h-2.5 rounded-full bg-[#e85d45]/50" />
                 <div className="w-2.5 h-2.5 rounded-full bg-[#d49a12]/50" />
                 <div className="w-2.5 h-2.5 rounded-full bg-[#0fa886]/50" />
               </div>
-              <div className="flex items-center gap-1.5 px-2.5 py-1 bg-white/60 rounded border border-white/40">
+              <div className="flex items-center gap-1.5 px-2.5 py-1 bg-card/60 rounded border border-border/40">
                 <svg viewBox="0 0 20 20" fill="currentColor" className="w-3 h-3 shrink-0 text-[#9994ad]">
                   <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
                 </svg>
@@ -560,7 +561,7 @@ export default function PageBuilder({ page, hotelId, lockedSections }: PageBuild
                 href={previewUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-1 px-2 py-1 rounded text-xs text-[#7c7893] hover:text-[#0fa886] hover:bg-white/60 transition-colors"
+                className="flex items-center gap-1 px-2 py-1 rounded text-xs text-muted hover:text-[#0fa886] hover:bg-elevated/60 transition-colors"
               >
                 <svg viewBox="0 0 20 20" fill="currentColor" className="w-3 h-3">
                   <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z" />
@@ -570,7 +571,7 @@ export default function PageBuilder({ page, hotelId, lockedSections }: PageBuild
               </a>
               <button
                 onClick={refreshPreview}
-                className="p-1 rounded text-[#7c7893] hover:text-[#1a1a2e] hover:bg-white/60 transition-colors"
+                className="p-1 rounded text-muted hover:text-foreground hover:bg-elevated/60 transition-colors"
                 title="Refresh preview"
               >
                 <svg viewBox="0 0 20 20" fill="currentColor" className="w-3.5 h-3.5">
@@ -586,6 +587,7 @@ export default function PageBuilder({ page, hotelId, lockedSections }: PageBuild
               ref={iframeRef}
               src={previewUrl}
               className="absolute inset-0 w-full h-full border-0"
+              style={{ transition: "opacity 300ms ease" }}
               title="Page preview"
             />
             <FloatingLogs
@@ -604,7 +606,7 @@ export default function PageBuilder({ page, hotelId, lockedSections }: PageBuild
 
         {/* Right: Section Editor (conditional) */}
         {selectedSection && (
-          <div className="w-80 shrink-0 bg-white/60 backdrop-blur-sm border-l border-white/30 overflow-y-auto">
+          <div className="w-80 shrink-0 bg-card/60 backdrop-blur-sm border-l border-border/30 overflow-y-auto">
             <SectionEditor
               section={selectedSection}
               onUpdate={handleSectionUpdated}

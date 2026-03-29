@@ -82,7 +82,7 @@ const tierInfo: Record<
 };
 
 const logColors: Record<LogEntry["type"], string> = {
-  info: "text-[#7c7893]",
+  info: "text-muted",
   step: "text-[#3b7dd8]",
   success: "text-[#0fa886]",
   error: "text-[#e85d45]",
@@ -336,12 +336,12 @@ export const AICommandInput = forwardRef<HTMLInputElement, AICommandInputProps>(
             onKeyDown={(e) => e.key === "Enter" && phase === "idle" && handleClassify()}
             placeholder="⌘K Ask AI to change anything..."
             disabled={isDisabled}
-            className="flex-1 h-9 w-full pl-3 pr-8 text-sm rounded-lg bg-white/60 border border-white/50 focus:border-[#7c5cbf]/50 focus:ring-1 focus:ring-[#7c5cbf]/20 text-[#1a1a2e] placeholder-[#9994ad] outline-none transition-all disabled:opacity-60"
+            className="flex-1 h-9 w-full pl-3 pr-8 text-sm rounded-lg bg-card/60 border border-border/50 focus:border-[#7c5cbf]/50 focus:ring-1 focus:ring-[#7c5cbf]/20 text-foreground placeholder-muted outline-none transition-all disabled:opacity-60"
           />
           {command && phase === "idle" && (
             <button
               onClick={() => setCommand("")}
-              className="absolute right-2 top-1/2 -translate-y-1/2 text-[#9994ad] hover:text-[#7c7893]"
+              className="absolute right-2 top-1/2 -translate-y-1/2 text-[#9994ad] hover:text-muted"
             >
               <svg viewBox="0 0 20 20" fill="currentColor" className="w-3.5 h-3.5">
                 <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
@@ -404,7 +404,7 @@ export const AICommandInput = forwardRef<HTMLInputElement, AICommandInputProps>(
         {(phase === "done" || phase === "error") && (
           <button
             onClick={handleReset}
-            className="h-9 px-3 rounded-lg bg-white/60 hover:bg-white/80 text-[#7c7893] hover:text-[#1a1a2e] text-xs font-medium border border-white/50 transition-colors whitespace-nowrap"
+            className="h-9 px-3 rounded-lg bg-card/60 hover:bg-elevated/80 text-muted hover:text-foreground text-xs font-medium border border-border/50 transition-colors whitespace-nowrap"
           >
             {phase === "error" && errorMsg ? "Error — Reset" : "New Command"}
           </button>
@@ -439,17 +439,17 @@ export function FloatingLogs({ logs, onClear, onClose, show }: FloatingLogsProps
   };
 
   return (
-    <div className="floating-panel absolute bottom-3 right-3 w-80 max-h-[40%] z-20 flex flex-col overflow-hidden">
+    <div className="floating-panel absolute bottom-3 right-3 w-80 max-h-[40%] z-20 flex flex-col overflow-hidden animate-slide-right">
       {/* Header */}
-      <div className="flex items-center justify-between px-3 py-2 border-b border-white/40 shrink-0">
+      <div className="flex items-center justify-between px-3 py-2 border-b border-border/40 shrink-0">
         <span className="text-[10px] font-semibold text-[#9994ad] uppercase tracking-widest">
           Logs {logs.length > 0 && `(${logs.length})`}
         </span>
         <div className="flex items-center gap-2">
-          <button onClick={onClear} className="text-[10px] text-[#9994ad] hover:text-[#7c7893] transition-colors">
+          <button onClick={onClear} className="text-[10px] text-[#9994ad] hover:text-muted transition-colors">
             Clear
           </button>
-          <button onClick={onClose} className="text-[#9994ad] hover:text-[#1a1a2e] transition-colors">
+          <button onClick={onClose} className="text-[#9994ad] hover:text-foreground transition-colors">
             <svg viewBox="0 0 20 20" fill="currentColor" className="w-3.5 h-3.5">
               <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
             </svg>
@@ -488,16 +488,16 @@ export function FloatingDiff({ diffs, onClose, show }: FloatingDiffProps) {
   if (!show) return null;
 
   return (
-    <div className="floating-panel absolute bottom-3 left-3 w-[360px] max-h-[40%] z-20 flex flex-col overflow-hidden">
+    <div className="floating-panel absolute bottom-3 left-3 w-[360px] max-h-[40%] z-20 flex flex-col overflow-hidden animate-slide-left">
       {/* Header */}
-      <div className="flex items-center justify-between px-3 py-2 border-b border-white/40 shrink-0">
+      <div className="flex items-center justify-between px-3 py-2 border-b border-border/40 shrink-0">
         <div className="flex items-center gap-2">
           <span className="text-[10px] font-semibold text-[#9994ad] uppercase tracking-widest">Changes</span>
           {diffs.length > 0 && (
             <span className="text-[10px] text-[#0fa886]">+{diffs.length} modified</span>
           )}
         </div>
-        <button onClick={onClose} className="text-[#9994ad] hover:text-[#1a1a2e] transition-colors">
+        <button onClick={onClose} className="text-[#9994ad] hover:text-foreground transition-colors">
           <svg viewBox="0 0 20 20" fill="currentColor" className="w-3.5 h-3.5">
             <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
           </svg>
@@ -510,9 +510,9 @@ export function FloatingDiff({ diffs, onClose, show }: FloatingDiffProps) {
           <p className="text-[#9994ad] text-center py-2">No changes yet.</p>
         ) : (
           diffs.map((diff, i) => (
-            <div key={i} className="mb-2 rounded-lg border border-[#e2dfe8] overflow-hidden">
-              <div className="px-3 py-1 bg-[#f0eef5] text-[10px] font-semibold text-[#7c7893]">{diff.field}</div>
-              <div className="px-3 py-1.5 bg-[#fef2f2] border-b border-[#e2dfe8] flex gap-2">
+            <div key={i} className="mb-2 rounded-lg border border-border overflow-hidden">
+              <div className="px-3 py-1 bg-elevated text-[10px] font-semibold text-muted">{diff.field}</div>
+              <div className="px-3 py-1.5 bg-[#fef2f2] border-b border-border flex gap-2">
                 <span className="text-[#e85d45] shrink-0 font-bold">−</span>
                 <span className="text-[#b91c1c] break-all">{diff.oldValue}</span>
               </div>

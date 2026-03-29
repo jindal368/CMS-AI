@@ -74,7 +74,7 @@ export default function DeleteHotelButton({ hotelId, hotelName }: Props) {
         <button
           onClick={handleCancel}
           disabled={stage === "deleting"}
-          className="px-3 py-1.5 rounded-lg bg-[#f0eef5] hover:bg-[#e2dfe8] border border-[#e2dfe8] text-[#7c7893] hover:text-[#1a1a2e] text-xs font-medium transition-colors disabled:opacity-50"
+          className="px-3 py-1.5 rounded-lg bg-elevated hover:bg-border border border-border text-muted hover:text-foreground text-xs font-medium transition-colors disabled:opacity-50"
         >
           Cancel
         </button>

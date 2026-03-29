@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { toast } from "@/components/ui/Toast";
 
 interface PublishButtonProps {
   hotelId: string;
@@ -30,6 +31,12 @@ export default function PublishButton({
       const res = await fetch(endpoint, { method: "POST" });
       if (res.ok) {
         router.refresh();
+        toast(
+          isPublished ? "Hotel unpublished" : "Hotel published successfully!",
+          isPublished ? "info" : "success"
+        );
+      } else {
+        toast("Failed to update publish status", "error");
       }
     } finally {
       setLoading(false);
@@ -42,7 +49,7 @@ export default function PublishButton({
       {isPublished ? (
         <span
           className="inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full"
-          style={{ background: "#0fa88620", color: "#0fa886" }}
+          style={{ background: "#0fa88620", color: "#0fa886", transition: "background-color 500ms ease, color 500ms ease" }}
         >
           <span
             className="w-1.5 h-1.5 rounded-full"
@@ -53,7 +60,7 @@ export default function PublishButton({
       ) : (
         <span
           className="inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full"
-          style={{ background: "#7c789320", color: "#7c7893" }}
+          style={{ background: "#7c789320", color: "var(--muted)", transition: "background-color 500ms ease, color 500ms ease" }}
         >
           <span
             className="w-1.5 h-1.5 rounded-full"
@@ -71,7 +78,7 @@ export default function PublishButton({
           className="inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg border transition-opacity disabled:opacity-50"
           style={{
             borderColor: "rgba(124,120,147,0.35)",
-            color: "#7c7893",
+            color: "var(--muted)",
             background: "transparent",
           }}
         >
@@ -128,7 +135,7 @@ export default function PublishButton({
           href={`/site/${orgSlug}/${hotelSlug}/`}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-1 text-xs font-medium transition-opacity hover:opacity-70"
+          className="inline-flex items-center gap-1 text-xs font-medium transition-opacity hover:opacity-70 animate-fade"
           style={{ color: "#0fa886" }}
         >
           View Live

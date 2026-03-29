@@ -112,7 +112,7 @@ function StatusBadge({ status }: { status: string }) {
     return (
       <span
         className="inline-flex items-center text-[10px] font-semibold px-2 py-0.5 rounded-full"
-        style={{ background: "#7c789320", color: "#7c7893" }}
+        style={{ background: "#7c789320", color: "var(--muted)" }}
       >
         Skipped
       </span>
@@ -265,12 +265,12 @@ function ResponsePanel({
     <div className="glass-card-static rounded-xl p-4 space-y-3">
       <div className="flex items-center justify-between gap-2">
         <div className="flex items-center gap-2">
-          <p className="text-sm font-semibold text-[#1a1a2e]">AI Response</p>
+          <p className="text-sm font-semibold text-foreground">AI Response</p>
           <SentimentBadge sentiment={sentiment} />
         </div>
         <button
           onClick={onClose}
-          className="text-xs text-[#7c7893] hover:text-[#1a1a2e] transition-colors"
+          className="text-xs text-muted hover:text-foreground transition-colors"
         >
           ✕
         </button>
@@ -280,7 +280,7 @@ function ResponsePanel({
         rows={5}
         value={responseText}
         onChange={(e) => setResponseText(e.target.value)}
-        className="w-full text-sm px-3 py-2 rounded-lg border border-[#e2dfe8] bg-white/80 text-[#1a1a2e] placeholder:text-[#7c7893] focus:outline-none focus:ring-2 focus:ring-[#7c5cbf]/30 focus:border-[#7c5cbf] transition-colors resize-none"
+        className="w-full text-sm px-3 py-2 rounded-lg border border-border bg-card/80 text-foreground placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-[#7c5cbf]/30 focus:border-[#7c5cbf] transition-colors resize-none"
       />
 
       {error && <p className="text-xs text-[#e85d45]">{error}</p>}
@@ -331,7 +331,7 @@ function ResponsePanel({
           onClick={handleSkip}
           disabled={saving || regenerating}
           className="flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg border transition-colors disabled:opacity-60"
-          style={{ borderColor: "#7c7893", color: "#7c7893" }}
+          style={{ borderColor: "#7c7893", color: "var(--muted)" }}
         >
           Skip
         </button>
@@ -373,12 +373,12 @@ function ReviewCard({ review }: { review: Review }) {
       >
         <div className="flex-1 min-w-0 space-y-1">
           <div className="flex items-center flex-wrap gap-2">
-            <span className="text-sm font-semibold text-[#1a1a2e]">
+            <span className="text-sm font-semibold text-foreground">
               {review.guestName}
             </span>
             <StarRow rating={review.rating} size="xs" />
             <SourceBadge source={review.source} />
-            <span className="text-[11px] text-[#7c7893]">
+            <span className="text-[11px] text-muted">
               {relativeTime(review.createdAt)}
             </span>
           </div>
@@ -390,7 +390,7 @@ function ReviewCard({ review }: { review: Review }) {
         <svg
           viewBox="0 0 20 20"
           fill="currentColor"
-          className={`w-4 h-4 text-[#7c7893] shrink-0 transition-transform ${expanded ? "rotate-180" : ""}`}
+          className={`w-4 h-4 text-muted shrink-0 transition-transform ${expanded ? "rotate-180" : ""}`}
         >
           <path
             fillRule="evenodd"
@@ -402,22 +402,22 @@ function ReviewCard({ review }: { review: Review }) {
 
       {/* Review text preview */}
       {!expanded && (
-        <p className="text-xs text-[#7c7893] leading-relaxed">{truncated}</p>
+        <p className="text-xs text-muted leading-relaxed">{truncated}</p>
       )}
 
       {/* Expanded */}
       {expanded && (
         <div className="space-y-3 pt-1">
-          <p className="text-sm text-[#1a1a2e] leading-relaxed">
+          <p className="text-sm text-foreground leading-relaxed">
             {review.reviewText}
           </p>
 
           {review.aiResponse && (
             <div className="space-y-1">
-              <p className="text-[11px] font-semibold uppercase tracking-wider text-[#7c7893]">
+              <p className="text-[11px] font-semibold uppercase tracking-wider text-muted">
                 AI Response
               </p>
-              <p className="text-xs text-[#1a1a2e] leading-relaxed bg-white/60 rounded-lg px-3 py-2">
+              <p className="text-xs text-foreground leading-relaxed bg-card/60 rounded-lg px-3 py-2">
                 {review.aiResponse}
               </p>
             </div>
@@ -425,17 +425,17 @@ function ReviewCard({ review }: { review: Review }) {
 
           {review.finalResponse && review.finalResponse !== review.aiResponse && (
             <div className="space-y-1">
-              <p className="text-[11px] font-semibold uppercase tracking-wider text-[#7c7893]">
+              <p className="text-[11px] font-semibold uppercase tracking-wider text-muted">
                 Final Response
               </p>
-              <p className="text-xs text-[#1a1a2e] leading-relaxed bg-white/60 rounded-lg px-3 py-2">
+              <p className="text-xs text-foreground leading-relaxed bg-card/60 rounded-lg px-3 py-2">
                 {review.finalResponse}
               </p>
             </div>
           )}
 
           {review.respondedAt && (
-            <p className="text-[11px] text-[#7c7893]">
+            <p className="text-[11px] text-muted">
               Responded {relativeTime(review.respondedAt)}
             </p>
           )}
@@ -546,12 +546,12 @@ function AddReviewForm({ hotelId, onSuccess, onCancel }: AddReviewFormProps) {
       onSubmit={handleSubmit}
       className="glass-card-static rounded-xl p-5 space-y-4"
     >
-      <p className="text-sm font-semibold text-[#1a1a2e]">Add Review</p>
+      <p className="text-sm font-semibold text-foreground">Add Review</p>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         {/* Guest name */}
         <div className="space-y-1.5">
-          <label className="text-xs font-medium text-[#7c7893]">
+          <label className="text-xs font-medium text-muted">
             Guest Name
           </label>
           <input
@@ -560,17 +560,17 @@ function AddReviewForm({ hotelId, onSuccess, onCancel }: AddReviewFormProps) {
             onChange={(e) => setGuestName(e.target.value)}
             placeholder="e.g. John Smith"
             required
-            className="w-full text-sm px-3 py-2 rounded-lg border border-[#e2dfe8] bg-white/80 text-[#1a1a2e] placeholder:text-[#7c7893] focus:outline-none focus:ring-2 focus:ring-[#e85d45]/30 focus:border-[#e85d45] transition-colors"
+            className="w-full text-sm px-3 py-2 rounded-lg border border-border bg-card/80 text-foreground placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-[#e85d45]/30 focus:border-[#e85d45] transition-colors"
           />
         </div>
 
         {/* Source */}
         <div className="space-y-1.5">
-          <label className="text-xs font-medium text-[#7c7893]">Source</label>
+          <label className="text-xs font-medium text-muted">Source</label>
           <select
             value={source}
             onChange={(e) => setSource(e.target.value)}
-            className="w-full text-sm px-3 py-2 rounded-lg border border-[#e2dfe8] bg-white/80 text-[#1a1a2e] focus:outline-none focus:ring-2 focus:ring-[#e85d45]/30 focus:border-[#e85d45] transition-colors"
+            className="w-full text-sm px-3 py-2 rounded-lg border border-border bg-card/80 text-foreground focus:outline-none focus:ring-2 focus:ring-[#e85d45]/30 focus:border-[#e85d45] transition-colors"
           >
             <option value="google">Google</option>
             <option value="tripadvisor">TripAdvisor</option>
@@ -583,7 +583,7 @@ function AddReviewForm({ hotelId, onSuccess, onCancel }: AddReviewFormProps) {
 
       {/* Star rating */}
       <div className="space-y-1.5">
-        <label className="text-xs font-medium text-[#7c7893]">Rating</label>
+        <label className="text-xs font-medium text-muted">Rating</label>
         <div className="flex items-center gap-1">
           {[1, 2, 3, 4, 5].map((n) => (
             <button
@@ -597,28 +597,28 @@ function AddReviewForm({ hotelId, onSuccess, onCancel }: AddReviewFormProps) {
             </button>
           ))}
           {rating > 0 && (
-            <span className="ml-2 text-xs text-[#7c7893]">{rating} / 5</span>
+            <span className="ml-2 text-xs text-muted">{rating} / 5</span>
           )}
         </div>
       </div>
 
       {/* Review date */}
       <div className="space-y-1.5">
-        <label className="text-xs font-medium text-[#7c7893]">
+        <label className="text-xs font-medium text-muted">
           Review Date{" "}
-          <span className="text-[#7c7893] font-normal">(optional)</span>
+          <span className="text-muted font-normal">(optional)</span>
         </label>
         <input
           type="date"
           value={reviewDate}
           onChange={(e) => setReviewDate(e.target.value)}
-          className="text-sm px-3 py-2 rounded-lg border border-[#e2dfe8] bg-white/80 text-[#1a1a2e] focus:outline-none focus:ring-2 focus:ring-[#e85d45]/30 focus:border-[#e85d45] transition-colors"
+          className="text-sm px-3 py-2 rounded-lg border border-border bg-card/80 text-foreground focus:outline-none focus:ring-2 focus:ring-[#e85d45]/30 focus:border-[#e85d45] transition-colors"
         />
       </div>
 
       {/* Review text */}
       <div className="space-y-1.5">
-        <label className="text-xs font-medium text-[#7c7893]">
+        <label className="text-xs font-medium text-muted">
           Review Text
         </label>
         <textarea
@@ -627,7 +627,7 @@ function AddReviewForm({ hotelId, onSuccess, onCancel }: AddReviewFormProps) {
           onChange={(e) => setReviewText(e.target.value)}
           placeholder="Guest's review…"
           required
-          className="w-full text-sm px-3 py-2 rounded-lg border border-[#e2dfe8] bg-white/80 text-[#1a1a2e] placeholder:text-[#7c7893] focus:outline-none focus:ring-2 focus:ring-[#e85d45]/30 focus:border-[#e85d45] transition-colors resize-none"
+          className="w-full text-sm px-3 py-2 rounded-lg border border-border bg-card/80 text-foreground placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-[#e85d45]/30 focus:border-[#e85d45] transition-colors resize-none"
         />
       </div>
 
@@ -657,7 +657,7 @@ function AddReviewForm({ hotelId, onSuccess, onCancel }: AddReviewFormProps) {
           type="button"
           onClick={onCancel}
           className="text-xs font-medium px-3 py-2 rounded-lg border transition-colors"
-          style={{ borderColor: "#e2dfe8", color: "#7c7893" }}
+          style={{ borderColor: "var(--border)", color: "var(--muted)" }}
         >
           Cancel
         </button>
@@ -680,21 +680,21 @@ function StatsBar({ stats }: { stats: Stats }) {
     <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
       {/* Total */}
       <div className="glass-card-static rounded-xl px-4 py-3 space-y-1">
-        <p className="text-[11px] font-semibold uppercase tracking-wider text-[#7c7893]">
+        <p className="text-[11px] font-semibold uppercase tracking-wider text-muted">
           Total Reviews
         </p>
-        <p className="text-2xl font-bold text-[#1a1a2e] tabular-nums">
+        <p className="text-2xl font-bold text-foreground tabular-nums">
           {stats.total}
         </p>
       </div>
 
       {/* Avg Rating */}
       <div className="glass-card-static rounded-xl px-4 py-3 space-y-1">
-        <p className="text-[11px] font-semibold uppercase tracking-wider text-[#7c7893]">
+        <p className="text-[11px] font-semibold uppercase tracking-wider text-muted">
           Avg Rating
         </p>
         <div className="flex items-center gap-2">
-          <p className="text-2xl font-bold text-[#1a1a2e] tabular-nums">
+          <p className="text-2xl font-bold text-foreground tabular-nums">
             {stats.avgRating > 0 ? stats.avgRating.toFixed(1) : "—"}
           </p>
           {stats.avgRating > 0 && (
@@ -717,7 +717,7 @@ function StatsBar({ stats }: { stats: Stats }) {
 
       {/* Response Rate */}
       <div className="glass-card-static rounded-xl px-4 py-3 space-y-1">
-        <p className="text-[11px] font-semibold uppercase tracking-wider text-[#7c7893]">
+        <p className="text-[11px] font-semibold uppercase tracking-wider text-muted">
           Response Rate
         </p>
         <p
@@ -730,7 +730,7 @@ function StatsBar({ stats }: { stats: Stats }) {
 
       {/* Pending */}
       <div className="glass-card-static rounded-xl px-4 py-3 space-y-1">
-        <p className="text-[11px] font-semibold uppercase tracking-wider text-[#7c7893]">
+        <p className="text-[11px] font-semibold uppercase tracking-wider text-muted">
           Pending
         </p>
         <p
@@ -784,7 +784,7 @@ export default function ReviewsManager({
   ];
 
   return (
-    <div className="bg-[#ffffff] border border-[#e2dfe8] rounded-xl overflow-hidden">
+    <div className="bg-card border border-border rounded-xl overflow-hidden">
       <div className="px-5 pt-4">
         <HotelTabs hotelId={hotelId} />
       </div>
@@ -793,7 +793,7 @@ export default function ReviewsManager({
         {/* Header */}
         <div className="flex items-center justify-between gap-3 flex-wrap">
           <div className="flex items-center gap-2">
-            <h2 className="text-base font-bold text-[#1a1a2e]">
+            <h2 className="text-base font-bold text-foreground">
               Reviews Workbench
             </h2>
             <span
@@ -859,13 +859,13 @@ export default function ReviewsManager({
           <div className="space-y-2">
             <div className="glass-card-static rounded-xl p-4 space-y-2">
               <div className="flex items-center gap-2 flex-wrap">
-                <span className="text-sm font-semibold text-[#1a1a2e]">
+                <span className="text-sm font-semibold text-foreground">
                   {pendingNewReview.guestName}
                 </span>
                 <StarRow rating={pendingNewReview.rating} size="xs" />
                 <SentimentBadge sentiment={pendingNewReview.sentiment} tiny />
               </div>
-              <p className="text-xs text-[#7c7893]">{pendingNewReview.reviewText}</p>
+              <p className="text-xs text-muted">{pendingNewReview.reviewText}</p>
             </div>
             <ResponsePanel
               reviewId={pendingNewReview.id}
@@ -881,7 +881,7 @@ export default function ReviewsManager({
         )}
 
         {/* Filter tabs */}
-        <div className="flex items-center gap-1 border-b border-[#e2dfe8]">
+        <div className="flex items-center gap-1 border-b border-border">
           {filterTabs.map((tab) => {
             const isActive = activeFilter === tab.key;
             return (
@@ -891,7 +891,7 @@ export default function ReviewsManager({
                 className={`flex items-center gap-1.5 px-3 py-2 text-xs font-medium border-b-2 -mb-px transition-colors ${
                   isActive
                     ? "border-[#e85d45] text-[#e85d45]"
-                    : "border-transparent text-[#7c7893] hover:text-[#1a1a2e]"
+                    : "border-transparent text-muted hover:text-foreground"
                 }`}
               >
                 {tab.label}
@@ -931,13 +931,13 @@ export default function ReviewsManager({
                 />
               </svg>
             </div>
-            <p className="text-sm font-semibold text-[#1a1a2e]">
+            <p className="text-sm font-semibold text-foreground">
               {activeFilter === "all"
                 ? "No reviews yet"
                 : `No ${activeFilter} reviews`}
             </p>
             {activeFilter === "all" && (
-              <p className="text-xs text-[#7c7893] max-w-xs">
+              <p className="text-xs text-muted max-w-xs">
                 Add reviews to generate AI-powered responses and track guest
                 satisfaction for {hotelName}.
               </p>

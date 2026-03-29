@@ -19,7 +19,7 @@ const CATEGORY_COLORS: Record<string, string> = {
   boutique: "text-[#7c5cbf] bg-[#7c5cbf]/10",
   business: "text-[#3b7dd8] bg-[#3b7dd8]/10",
   resort: "text-[#0fa886] bg-[#0fa886]/10",
-  budget: "text-[#7c7893] bg-[#7c7893]/10",
+  budget: "text-muted bg-[#7c7893]/10",
 };
 
 const PRIORITY_COLORS: Record<Action["priority"], string> = {
@@ -47,7 +47,7 @@ function getRelativeTime(lastUpdated: string | null): {
   color: string;
 } {
   if (!lastUpdated) {
-    return { label: "Never updated", color: "#7c7893" };
+    return { label: "Never updated", color: "var(--muted)" };
   }
   const days = Math.floor(
     (Date.now() - new Date(lastUpdated).getTime()) / (1000 * 60 * 60 * 24)
@@ -109,10 +109,10 @@ export default async function DashboardPage() {
       <div className="space-y-6 max-w-7xl">
         <div className="glass-card-static p-5 flex items-center justify-between">
           <div>
-            <p className="text-xs font-medium uppercase tracking-wider text-[#7c7893]">
+            <p className="text-xs font-medium uppercase tracking-wider text-muted">
               Organization
             </p>
-            <p className="text-base font-semibold text-[#1a1a2e] mt-0.5">
+            <p className="text-base font-semibold text-foreground mt-0.5">
               {orgName}
             </p>
           </div>
@@ -135,10 +135,10 @@ export default async function DashboardPage() {
               />
             </svg>
           </div>
-          <p className="text-base font-semibold text-[#1a1a2e]">
+          <p className="text-base font-semibold text-foreground">
             No properties yet.
           </p>
-          <p className="text-sm text-[#7c7893] mt-1">
+          <p className="text-sm text-muted mt-1">
             Create your first hotel to get started.
           </p>
           <Link
@@ -167,63 +167,32 @@ export default async function DashboardPage() {
   // ─── Main layout ─────────────────────────────────────────────────────────
 
   return (
-    <div className="space-y-6 max-w-7xl">
-      {/* Org Overview Bar */}
-      <div className="glass-card-static p-5 flex flex-wrap items-center justify-between gap-4">
-        <div>
-          <p className="text-xs font-medium uppercase tracking-wider text-[#7c7893]">
-            Organization
-          </p>
-          <p className="text-base font-semibold text-[#1a1a2e] mt-0.5">
-            {orgName}
-          </p>
+    <div className="space-y-8 max-w-[1600px]">
+      {/* Org Overview Stats */}
+      <div className="grid grid-cols-3 gap-5 animate-in">
+        <div className="glass-card-static p-5">
+          <p className="text-[11px] font-medium tracking-wide uppercase text-[#86868b]">Organization</p>
+          <p className="text-2xl font-semibold tracking-tight text-foreground mt-1">{orgName}</p>
         </div>
-        <div className="flex items-center gap-3">
-          {/* Property count */}
-          <div className="flex items-center gap-1.5">
-            <span
-              className="inline-flex items-center justify-center px-2.5 py-0.5 rounded-full text-xs font-semibold"
-              style={{ background: "#e85d4520", color: "#e85d45" }}
-            >
-              {hotels.length}{" "}
-              {hotels.length === 1 ? "property" : "properties"}
-            </span>
+        <div className="glass-card-static p-5">
+          <p className="text-[11px] font-medium tracking-wide uppercase text-[#86868b]">Properties</p>
+          <div className="flex items-baseline gap-3 mt-1">
+            <span className="text-2xl font-semibold tracking-tight text-foreground">{hotelHealthPairs.length}</span>
+            <span className="text-sm text-muted">Avg grade: <span className="font-semibold" style={{ color: avgGradeResult.gradeColor }}>{avgGradeResult.grade}</span></span>
           </div>
-
-          {/* Average grade */}
-          <div className="flex items-center gap-1.5">
-            <span className="text-xs text-[#7c7893]">Avg grade</span>
-            <span
-              className="inline-flex items-center justify-center w-7 h-7 rounded-full text-xs font-bold"
-              style={{
-                background: avgGradeResult.gradeColor + "20",
-                color: avgGradeResult.gradeColor,
-              }}
-            >
-              {avgGradeResult.grade}
-            </span>
-          </div>
-
-          {/* Actions count */}
-          {actions.length > 0 && (
-            <span
-              className="inline-flex items-center justify-center px-2.5 py-0.5 rounded-full text-xs font-semibold"
-              style={{ background: "#e85d4520", color: "#e85d45" }}
-            >
-              {actions.length} action{actions.length !== 1 ? "s" : ""}
-            </span>
-          )}
+        </div>
+        <div className="glass-card-static p-5">
+          <p className="text-[11px] font-medium tracking-wide uppercase text-[#86868b]">Actions Required</p>
+          <p className="text-2xl font-semibold tracking-tight text-foreground mt-1">{actions.length}</p>
         </div>
       </div>
 
-      {/* Two-column layout */}
-      <div className="flex flex-col lg:flex-row gap-6">
-        {/* Left: Property Grid */}
-        <div className="flex-1 min-w-0">
-          <h2 className="text-sm font-semibold text-[#1a1a2e] mb-3">
+      <div className="space-y-8">
+        {/* Property Grid */}
+          <h2 className="text-xl font-semibold tracking-tight text-foreground mb-3 animate-in animate-in-delay-1">
             Properties ({hotelHealthPairs.length})
           </h2>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
             {hotelHealthPairs.map(({ hotel, health }, index) => {
               const gradient =
                 AVATAR_GRADIENTS[index % AVATAR_GRADIENTS.length];
@@ -238,7 +207,7 @@ export default async function DashboardPage() {
                 <Link
                   key={hotel.id}
                   href={`/hotels/${hotel.id}`}
-                  className="glass-card p-4 flex flex-col gap-3 no-underline"
+                  className={`glass-card p-5 flex flex-col gap-3 no-underline animate-in animate-in-delay-${Math.min(index + 1, 5)}`}
                 >
                   {/* Top row: avatar + name + category */}
                   <div className="flex items-start justify-between gap-2">
@@ -252,12 +221,12 @@ export default async function DashboardPage() {
                       >
                         {hotel.name.charAt(0).toUpperCase()}
                       </div>
-                      <p className="font-semibold text-[#1a1a2e] truncate leading-tight">
+                      <p className="font-semibold text-foreground truncate leading-tight">
                         {hotel.name}
                       </p>
                     </div>
                     <span
-                      className={`shrink-0 text-xs px-2 py-0.5 rounded-full font-medium capitalize ${CATEGORY_COLORS[hotel.category] ?? "text-[#7c7893] bg-[#7c7893]/10"}`}
+                      className={`shrink-0 text-xs px-2 py-0.5 rounded-full font-medium capitalize ${CATEGORY_COLORS[hotel.category] ?? "text-muted bg-[#7c7893]/10"}`}
                     >
                       {hotel.category}
                     </span>
@@ -265,7 +234,7 @@ export default async function DashboardPage() {
 
                   {/* Location */}
                   {location && (
-                    <p className="text-xs text-[#7c7893] -mt-1 truncate">
+                    <p className="text-xs text-muted -mt-1 truncate">
                       {location}
                     </p>
                   )}
@@ -315,7 +284,7 @@ export default async function DashboardPage() {
                       ) : (
                         <span
                           className="inline-flex items-center gap-1 text-xs font-medium px-2 py-0.5 rounded-full"
-                          style={{ background: "#7c789315", color: "#7c7893" }}
+                          style={{ background: "#7c789315", color: "var(--muted)" }}
                         >
                           <span
                             className="w-1.5 h-1.5 rounded-full shrink-0"
@@ -337,11 +306,11 @@ export default async function DashboardPage() {
 
                   {/* Stats row */}
                   <div
-                    className="flex items-center text-xs text-[#7c7893] pt-2"
+                    className="flex items-center text-xs text-muted pt-2"
                     style={{ borderTop: "1px solid rgba(124,120,147,0.12)" }}
                   >
                     <span className="flex-1 text-center">
-                      <span className="font-semibold text-[#1a1a2e]">
+                      <span className="font-semibold text-foreground">
                         {hotel.pages.length}
                       </span>{" "}
                       pages
@@ -351,7 +320,7 @@ export default async function DashboardPage() {
                       style={{ background: "rgba(124,120,147,0.12)" }}
                     />
                     <span className="flex-1 text-center">
-                      <span className="font-semibold text-[#1a1a2e]">
+                      <span className="font-semibold text-foreground">
                         {hotel.rooms.length}
                       </span>{" "}
                       rooms
@@ -361,7 +330,7 @@ export default async function DashboardPage() {
                       style={{ background: "rgba(124,120,147,0.12)" }}
                     />
                     <span className="flex-1 text-center">
-                      <span className="font-semibold text-[#1a1a2e]">
+                      <span className="font-semibold text-foreground">
                         {hotel.media.length}
                       </span>{" "}
                       media
@@ -371,15 +340,13 @@ export default async function DashboardPage() {
               );
             })}
           </div>
-        </div>
 
-        {/* Right: Action Queue */}
-        <div className="w-full lg:w-80 shrink-0">
-          <div className="lg:sticky lg:top-6">
+        {/* Action Queue */}
+        <div className="animate-in animate-in-delay-2">
             <div className="glass-card-static p-5">
               {/* Header */}
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-sm font-semibold text-[#1a1a2e]">
+                <h2 className="text-xl font-semibold tracking-tight text-foreground">
                   Action Queue
                 </h2>
                 <span
@@ -410,7 +377,7 @@ export default async function DashboardPage() {
                       />
                     </svg>
                   </div>
-                  <p className="text-sm text-[#7c7893]">
+                  <p className="text-sm text-muted">
                     All clear! Your properties are in great shape.
                   </p>
                 </div>
@@ -455,10 +422,10 @@ export default async function DashboardPage() {
                               className="glass-card flex items-start justify-between gap-2 p-3 no-underline"
                             >
                               <div className="min-w-0">
-                                <p className="text-xs font-bold text-[#1a1a2e] truncate">
+                                <p className="text-xs font-bold text-foreground truncate">
                                   {action.hotelName}
                                 </p>
-                                <p className="text-xs text-[#7c7893] mt-0.5 leading-snug">
+                                <p className="text-xs text-muted mt-0.5 leading-snug">
                                   {action.message}
                                 </p>
                               </div>
@@ -482,7 +449,6 @@ export default async function DashboardPage() {
                 </div>
               )}
             </div>
-          </div>
         </div>
       </div>
     </div>

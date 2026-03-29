@@ -110,7 +110,7 @@ function ChangePill({ change }: { change: Change }) {
   return (
     <span
       className="inline-flex items-center text-[11px] font-medium px-2 py-0.5 rounded-full"
-      style={{ background: "#7c789320", color: "#7c7893" }}
+      style={{ background: "#7c789320", color: "var(--muted)" }}
     >
       {type}
     </span>
@@ -174,21 +174,21 @@ function CompetitorCard({ competitor }: { competitor: Competitor }) {
       {/* Top row */}
       <div className="flex items-start justify-between gap-3 flex-wrap">
         <div className="flex-1 min-w-0">
-          <p className="text-sm font-semibold text-[#1a1a2e] truncate">{competitor.name}</p>
+          <p className="text-sm font-semibold text-foreground truncate">{competitor.name}</p>
           <a
             href={competitor.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-xs text-[#7c7893] hover:text-[#1a1a2e] transition-colors truncate block"
+            className="text-xs text-muted hover:text-foreground transition-colors truncate block"
           >
             {competitor.url}
           </a>
           {competitor.latestScan ? (
-            <p className="text-[11px] text-[#7c7893] mt-0.5">
+            <p className="text-[11px] text-muted mt-0.5">
               Last scanned {relativeTime(competitor.latestScan.scannedAt)}
             </p>
           ) : (
-            <p className="text-[11px] text-[#7c7893] mt-0.5">Not scanned yet</p>
+            <p className="text-[11px] text-muted mt-0.5">Not scanned yet</p>
           )}
         </div>
 
@@ -255,15 +255,15 @@ function CompetitorCard({ competitor }: { competitor: Competitor }) {
 
       {/* Changes */}
       <div>
-        <p className="text-[11px] font-semibold uppercase tracking-wider text-[#7c7893] mb-2">
+        <p className="text-[11px] font-semibold uppercase tracking-wider text-muted mb-2">
           Changes
         </p>
         {!competitor.latestScan ? (
-          <p className="text-xs text-[#7c7893] italic">Not scanned yet</p>
+          <p className="text-xs text-muted italic">Not scanned yet</p>
         ) : changes.length === 0 ? (
           <span
             className="inline-flex items-center text-[11px] font-medium px-2 py-0.5 rounded-full"
-            style={{ background: "#7c789320", color: "#7c7893" }}
+            style={{ background: "#7c789320", color: "var(--muted)" }}
           >
             No Changes
           </span>
@@ -279,20 +279,20 @@ function CompetitorCard({ competitor }: { competitor: Competitor }) {
       {/* Insights */}
       {insights.length > 0 && (
         <div>
-          <p className="text-[11px] font-semibold uppercase tracking-wider text-[#7c7893] mb-2">
+          <p className="text-[11px] font-semibold uppercase tracking-wider text-muted mb-2">
             Insights
           </p>
           <div className="space-y-1.5">
             {insights.map((insight, idx) => (
               <div
                 key={idx}
-                className="flex items-start gap-2 bg-white/40 rounded-lg px-3 py-2"
+                className="flex items-start gap-2 bg-card/40 rounded-lg px-3 py-2"
               >
                 <span
                   className="mt-1.5 w-2 h-2 rounded-full shrink-0"
                   style={{ background: PRIORITY_DOT[insight.priority] ?? "#7c7893" }}
                 />
-                <p className="text-xs text-[#1a1a2e] leading-relaxed">{insight.suggestion}</p>
+                <p className="text-xs text-foreground leading-relaxed">{insight.suggestion}</p>
               </div>
             ))}
           </div>
@@ -367,7 +367,7 @@ export default function CompetitorsManager({ hotelId, competitors, hotelName }: 
   }
 
   return (
-    <div className="bg-[#ffffff] border border-[#e2dfe8] rounded-xl overflow-hidden">
+    <div className="bg-card border border-border rounded-xl overflow-hidden">
       <div className="px-5 pt-4">
         <HotelTabs hotelId={hotelId} />
       </div>
@@ -376,7 +376,7 @@ export default function CompetitorsManager({ hotelId, competitors, hotelName }: 
         {/* Header */}
         <div className="flex items-center justify-between gap-3 flex-wrap">
           <div className="flex items-center gap-2">
-            <h2 className="text-base font-bold text-[#1a1a2e]">Competitive Intelligence</h2>
+            <h2 className="text-base font-bold text-foreground">Competitive Intelligence</h2>
             <span
               className="text-xs font-semibold px-2 py-0.5 rounded-full tabular-nums"
               style={{ background: "#7c5cbf18", color: "#7c5cbf" }}
@@ -483,29 +483,29 @@ export default function CompetitorsManager({ hotelId, competitors, hotelName }: 
             onSubmit={handleAdd}
             className="glass-card-static rounded-xl p-5 space-y-4"
           >
-            <p className="text-sm font-semibold text-[#1a1a2e]">Add Competitor</p>
+            <p className="text-sm font-semibold text-foreground">Add Competitor</p>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-[#7c7893]">Name</label>
+                <label className="text-xs font-medium text-muted">Name</label>
                 <input
                   type="text"
                   value={addName}
                   onChange={(e) => setAddName(e.target.value)}
                   placeholder="Competitor name"
                   required
-                  className="w-full text-sm px-3 py-2 rounded-lg border border-[#e2dfe8] bg-white/80 text-[#1a1a2e] placeholder:text-[#7c7893] focus:outline-none focus:ring-2 focus:ring-[#e85d45]/30 focus:border-[#e85d45] transition-colors"
+                  className="w-full text-sm px-3 py-2 rounded-lg border border-border bg-card/80 text-foreground placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-[#e85d45]/30 focus:border-[#e85d45] transition-colors"
                 />
               </div>
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-[#7c7893]">URL</label>
+                <label className="text-xs font-medium text-muted">URL</label>
                 <input
                   type="url"
                   value={addUrl}
                   onChange={(e) => setAddUrl(e.target.value)}
                   placeholder="https://competitor.com"
                   required
-                  className="w-full text-sm px-3 py-2 rounded-lg border border-[#e2dfe8] bg-white/80 text-[#1a1a2e] placeholder:text-[#7c7893] focus:outline-none focus:ring-2 focus:ring-[#e85d45]/30 focus:border-[#e85d45] transition-colors"
+                  className="w-full text-sm px-3 py-2 rounded-lg border border-border bg-card/80 text-foreground placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-[#e85d45]/30 focus:border-[#e85d45] transition-colors"
                 />
               </div>
             </div>
@@ -562,8 +562,8 @@ export default function CompetitorsManager({ hotelId, competitors, hotelName }: 
                 />
               </svg>
             </div>
-            <p className="text-sm font-semibold text-[#1a1a2e]">No competitors yet</p>
-            <p className="text-xs text-[#7c7893] max-w-xs">
+            <p className="text-sm font-semibold text-foreground">No competitors yet</p>
+            <p className="text-xs text-muted max-w-xs">
               Add competitors to monitor what they&apos;re doing. You can track up to 5 competitor websites per hotel.
             </p>
           </div>

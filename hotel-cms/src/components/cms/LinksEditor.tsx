@@ -10,9 +10,9 @@ type Props = {
 };
 
 const inputClass =
-  "w-full bg-[#f8f7fa] border border-[#e2dfe8] focus:border-[#7c5cbf] focus:outline-none rounded-lg px-4 py-2.5 text-sm text-[#1a1a2e] placeholder:text-[#b0abc0] transition-colors";
+  "w-full bg-background border border-border focus:border-[#7c5cbf] focus:outline-none rounded-lg px-4 py-2.5 text-sm text-foreground placeholder:text-[#b0abc0] transition-colors";
 
-const labelClass = "block text-xs font-medium text-[#7c7893] mb-1.5";
+const labelClass = "block text-xs font-medium text-muted mb-1.5";
 
 function isAuto(value: string | undefined): boolean {
   return !value || value === "auto";
@@ -110,7 +110,7 @@ export default function LinksEditor({ hotelId, links, contactInfo }: Props) {
     <div className="space-y-6">
       {/* Booking & Contact */}
       <div>
-        <p className="text-xs font-semibold text-[#7c7893] uppercase tracking-wider mb-3">
+        <p className="text-xs font-semibold text-muted uppercase tracking-wider mb-3">
           Booking &amp; Contact
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -141,7 +141,7 @@ export default function LinksEditor({ hotelId, links, contactInfo }: Props) {
 
       {/* Social Media */}
       <div>
-        <p className="text-xs font-semibold text-[#7c7893] uppercase tracking-wider mb-3">
+        <p className="text-xs font-semibold text-muted uppercase tracking-wider mb-3">
           Social Media
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -183,7 +183,7 @@ export default function LinksEditor({ hotelId, links, contactInfo }: Props) {
 
       {/* Auto-derived */}
       <div>
-        <p className="text-xs font-semibold text-[#7c7893] uppercase tracking-wider mb-3">
+        <p className="text-xs font-semibold text-muted uppercase tracking-wider mb-3">
           Auto-Derived (from Contact Info)
         </p>
         <div className="space-y-3">
@@ -299,7 +299,7 @@ function AutoField({
             className={`inline-flex items-center gap-1 text-[10px] font-medium px-2 py-0.5 rounded-full border transition-colors ${
               isOverridden
                 ? "bg-[#7c5cbf]/10 border-[#7c5cbf]/30 text-[#7c5cbf]"
-                : "bg-[#f0eef5] border-[#e2dfe8] text-[#7c7893] hover:border-[#7c5cbf]/30 hover:text-[#7c5cbf]"
+                : "bg-elevated border-border text-muted hover:border-[#7c5cbf]/30 hover:text-[#7c5cbf]"
             }`}
           >
             {isOverridden ? "Override on" : "Override"}
@@ -316,7 +316,7 @@ function AutoField({
             placeholder={placeholder}
           />
         ) : (
-          <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#f0eef5] border border-[#e2dfe8] text-xs text-[#7c7893]">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-elevated border border-border text-xs text-muted">
             <svg viewBox="0 0 20 20" fill="currentColor" className="w-3 h-3 shrink-0 text-[#b0abc0]">
               <path
                 fillRule="evenodd"

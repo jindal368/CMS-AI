@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { COMPONENT_REGISTRY } from "@/lib/component-registry";
+import Portal from "@/components/ui/Portal";
 
 interface Section {
   id: string;
@@ -35,7 +36,7 @@ const typeColors: Record<string, { bg: string; text: string; border: string; ico
   booking: { bg: "bg-[#d49a12]/10", text: "text-[#d49a12]", border: "border-[#d49a12]/20", icon: "◈" },
   reviews: { bg: "bg-[#3b7dd8]/10", text: "text-[#3b7dd8]", border: "border-[#3b7dd8]/20", icon: "★" },
   map:     { bg: "bg-[#e85d45]/10", text: "text-[#e85d45]", border: "border-[#e85d45]/20", icon: "◎" },
-  footer:  { bg: "bg-[#7c7893]/10", text: "text-[#7c7893]", border: "border-[#7c7893]/20", icon: "≡" },
+  footer:  { bg: "bg-[#7c7893]/10", text: "text-muted", border: "border-[#7c7893]/20", icon: "≡" },
 };
 
 const ALL_TYPES = ["all", "hero", "rooms", "gallery", "booking", "reviews", "map", "footer"];
@@ -89,26 +90,27 @@ export default function AddSectionModal({
   };
 
   return (
+    <Portal>
     <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4">
       {/* Backdrop */}
       <div
-        className="absolute inset-0 bg-black/30 backdrop-blur-sm"
+        className="absolute inset-0 bg-black/50 backdrop-blur-sm animate-fade"
         onClick={onClose}
       />
 
       {/* Modal */}
-      <div className="relative bg-[#ffffff] border border-[#e2dfe8] rounded-2xl shadow-2xl w-full max-w-3xl max-h-[80vh] flex flex-col overflow-hidden">
+      <div className="relative bg-card border border-border rounded-2xl shadow-2xl w-full max-w-3xl max-h-[80vh] flex flex-col overflow-hidden animate-modal">
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-[#e2dfe8] shrink-0">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-border shrink-0">
           <div>
-            <h2 className="text-base font-semibold text-[#1a1a2e]">Add Section</h2>
-            <p className="text-xs text-[#7c7893] mt-0.5">
+            <h2 className="text-base font-semibold text-foreground">Add Section</h2>
+            <p className="text-xs text-muted mt-0.5">
               Choose a component to add to your page
             </p>
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 rounded-lg text-[#7c7893] hover:text-[#1a1a2e] hover:bg-[#f0eef5] transition-colors"
+            className="p-1.5 rounded-lg text-muted hover:text-foreground hover:bg-elevated transition-colors"
           >
             <svg viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
               <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
@@ -117,7 +119,7 @@ export default function AddSectionModal({
         </div>
 
         {/* Filter tabs */}
-        <div className="flex items-center gap-1 px-6 py-3 border-b border-[#e2dfe8] overflow-x-auto shrink-0">
+        <div className="flex items-center gap-1 px-6 py-3 border-b border-border overflow-x-auto shrink-0">
           {ALL_TYPES.map((type) => {
             const info = typeColors[type];
             const isActive = selectedType === type;
@@ -130,7 +132,7 @@ export default function AddSectionModal({
                     ? type === "all"
                       ? "bg-[#e85d45]/10 text-[#e85d45] border border-[#e85d45]/30"
                       : `${info.bg} ${info.text} border ${info.border}`
-                    : "bg-[#f0eef5] text-[#7c7893] hover:text-[#5a5670] border border-transparent"
+                    : "bg-elevated text-muted hover:text-foreground border border-transparent"
                 }`}
               >
                 {type !== "all" && info && (
@@ -155,7 +157,7 @@ export default function AddSectionModal({
         {/* Grid */}
         <div className="flex-1 overflow-y-auto p-6">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-            {filtered.map((component) => {
+            {filtered.map((component, i) => {
               const info = typeColors[component.type] ?? typeColors.footer;
               const tier = tierInfo[component.tierRequirement] ?? tierInfo[0];
               const isAdding = adding === component.variant;
@@ -165,7 +167,7 @@ export default function AddSectionModal({
                   key={component.variant}
                   onClick={() => handleAdd(component.variant)}
                   disabled={!!adding}
-                  className="group relative flex flex-col items-start p-4 rounded-xl bg-[#f0eef5] hover:bg-[#e8e5f0] border border-[#e2dfe8] hover:border-[#d4d0de] transition-all text-left disabled:cursor-not-allowed disabled:opacity-60"
+                  className={`group relative flex flex-col items-start p-4 rounded-xl bg-elevated hover:bg-background border border-border hover:border-border transition-all text-left disabled:cursor-not-allowed disabled:opacity-60 animate-in animate-in-delay-${Math.min(i + 1, 5)}`}
                 >
                   {/* Type icon + tier badge */}
                   <div className="flex items-center justify-between w-full mb-3">
@@ -183,7 +185,7 @@ export default function AddSectionModal({
                   </h3>
 
                   {/* Description */}
-                  <p className="text-xs text-[#7c7893] leading-relaxed mb-3 flex-1">
+                  <p className="text-xs text-muted leading-relaxed mb-3 flex-1">
                     {component.description}
                   </p>
 
@@ -192,13 +194,13 @@ export default function AddSectionModal({
                     {component.categoryAffinity.slice(0, 3).map((cat) => (
                       <span
                         key={cat}
-                        className="text-xs px-1.5 py-0.5 rounded-full bg-[#e2dfe8] text-[#9994ad] capitalize"
+                        className="text-xs px-1.5 py-0.5 rounded-full bg-border text-muted capitalize"
                       >
                         {cat}
                       </span>
                     ))}
                     {component.categoryAffinity.length > 3 && (
-                      <span className="text-xs px-1.5 py-0.5 rounded-full bg-[#e2dfe8] text-[#9994ad]">
+                      <span className="text-xs px-1.5 py-0.5 rounded-full bg-border text-muted">
                         +{component.categoryAffinity.length - 3}
                       </span>
                     )}
@@ -206,7 +208,7 @@ export default function AddSectionModal({
 
                   {/* Add overlay */}
                   <div className={`absolute inset-0 rounded-xl flex items-center justify-center transition-opacity ${
-                    isAdding ? "opacity-100 bg-[#f0eef5]/80" : "opacity-0 group-hover:opacity-0"
+                    isAdding ? "opacity-100 bg-elevated/80" : "opacity-0 group-hover:opacity-0"
                   }`}>
                     {isAdding && (
                       <svg className="w-5 h-5 text-[#e85d45] animate-spin" fill="none" viewBox="0 0 24 24">
@@ -231,5 +233,6 @@ export default function AddSectionModal({
         </div>
       </div>
     </div>
+    </Portal>
   );
 }

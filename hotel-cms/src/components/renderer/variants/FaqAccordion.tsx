@@ -47,7 +47,7 @@ export default function FaqAccordion({
   };
 
   return (
-    <section className="py-20 px-6 bg-white">
+    <section className="py-20 px-6 bg-white animate-on-scroll">
       <div className="max-w-3xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12">
@@ -87,10 +87,11 @@ export default function FaqAccordion({
                 </span>
               </button>
               <div
-                className="overflow-hidden transition-all duration-300 ease-in-out"
+                className="overflow-hidden"
                 style={{
                   maxHeight: openIndex === i ? "500px" : "0px",
                   opacity: openIndex === i ? 1 : 0,
+                  transition: "max-height 400ms cubic-bezier(0.16, 1, 0.3, 1), opacity 300ms ease 100ms",
                 }}
               >
                 <p className="pb-5 text-stone-500 font-light leading-relaxed text-sm">

@@ -34,7 +34,7 @@ const statusBadge: Record<string, { label: string; text: string; bg: string; dot
   },
   ended: {
     label: "Ended",
-    text: "text-[#7c7893]",
+    text: "text-muted",
     bg: "bg-[#7c7893]/10",
     dot: "bg-[#7c7893]",
   },
@@ -78,12 +78,12 @@ export default async function CampaignsPage() {
   }));
 
   return (
-    <div className="space-y-6 max-w-4xl">
+    <div className="space-y-8 max-w-6xl">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between animate-in">
         <div>
-          <h2 className="text-2xl font-bold tracking-tight text-[#1a1a2e]">Campaigns</h2>
-          <p className="text-sm text-[#7c7893] mt-0.5">
+          <h2 className="text-2xl font-bold tracking-tight text-foreground">Campaigns</h2>
+          <p className="text-sm text-muted mt-0.5">
             {serializedCampaigns.length}{" "}
             {serializedCampaigns.length === 1 ? "campaign" : "campaigns"}
           </p>
@@ -94,20 +94,20 @@ export default async function CampaignsPage() {
       {/* Campaign list */}
       {serializedCampaigns.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-20 glass-card-static rounded-xl text-center">
-          <div className="w-16 h-16 rounded-full bg-[#f0eef5] flex items-center justify-center mb-4">
-            <svg viewBox="0 0 20 20" fill="currentColor" className="w-8 h-8 text-[#7c7893]">
+          <div className="w-16 h-16 rounded-full bg-elevated flex items-center justify-center mb-4">
+            <svg viewBox="0 0 20 20" fill="currentColor" className="w-8 h-8 text-muted">
               <path d="M18 3a1 1 0 00-1.196-.98l-10 2A1 1 0 006 5v6a1 1 0 00.804.98l10 2A1 1 0 0018 13V3zM4 7.5A1.5 1.5 0 002.5 9v2A1.5 1.5 0 004 12.5h1V7.5H4z" />
             </svg>
           </div>
-          <h3 className="text-base font-semibold text-[#1a1a2e] mb-1">No campaigns yet</h3>
-          <p className="text-sm text-[#7c7893] mb-4 max-w-sm">
+          <h3 className="text-base font-semibold text-foreground mb-1">No campaigns yet</h3>
+          <p className="text-sm text-muted mb-4 max-w-sm">
             Create your first promotional campaign to syndicate content across all properties.
           </p>
           <CampaignsPageClient hotels={serializedHotels} showButtonOnly />
         </div>
       ) : (
-        <div className="grid grid-cols-1 gap-4">
-          {serializedCampaigns.map((campaign) => {
+        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-5">
+          {serializedCampaigns.map((campaign, index) => {
             const badge = statusBadge[campaign.status] ?? statusBadge.ended;
             const briefTruncated =
               campaign.brief.length > 100
@@ -123,13 +123,13 @@ export default async function CampaignsPage() {
               <Link
                 key={campaign.id}
                 href={`/campaigns/${campaign.id}`}
-                className="group block glass-card rounded-xl p-5 transition-all"
+                className={`group block glass-card rounded-xl p-5 transition-all animate-in animate-in-delay-${Math.min(index + 1, 5)}`}
               >
                 <div className="flex items-start justify-between gap-4">
                   {/* Left: title + brief */}
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-2.5 flex-wrap mb-1.5">
-                      <h3 className="text-sm font-semibold text-[#1a1a2e] group-hover:text-white transition-colors">
+                      <h3 className="text-sm font-semibold text-foreground group-hover:text-white transition-colors">
                         {campaign.title}
                       </h3>
                       <span
@@ -139,7 +139,7 @@ export default async function CampaignsPage() {
                         {badge.label}
                       </span>
                     </div>
-                    <p className="text-xs text-[#7c7893] leading-relaxed line-clamp-2">
+                    <p className="text-xs text-muted leading-relaxed line-clamp-2">
                       {briefTruncated}
                     </p>
                   </div>
@@ -147,18 +147,18 @@ export default async function CampaignsPage() {
                   {/* Right: meta stats */}
                   <div className="flex items-center gap-5 shrink-0 text-right">
                     <div>
-                      <p className="text-sm font-bold text-[#1a1a2e] tabular-nums">{targetLabel}</p>
-                      <p className="text-xs text-[#7c7893]">targeted</p>
+                      <p className="text-sm font-bold text-foreground tabular-nums">{targetLabel}</p>
+                      <p className="text-xs text-muted">targeted</p>
                     </div>
                     <div>
-                      <p className="text-sm font-bold text-[#1a1a2e] tabular-nums">{deployedCount}</p>
-                      <p className="text-xs text-[#7c7893]">deployed</p>
+                      <p className="text-sm font-bold text-foreground tabular-nums">{deployedCount}</p>
+                      <p className="text-xs text-muted">deployed</p>
                     </div>
                   </div>
                 </div>
 
                 {/* Footer row */}
-                <div className="mt-3 pt-3 border-t border-[#e2dfe8] flex items-center justify-between text-xs text-[#7c7893]">
+                <div className="mt-3 pt-3 border-t border-border flex items-center justify-between text-xs text-muted">
                   <span>Created by {campaign.createdByName}</span>
                   <span>{relativeDate(campaign.createdAt)}</span>
                 </div>
