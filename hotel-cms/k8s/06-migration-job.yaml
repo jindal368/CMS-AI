@@ -1,0 +1,68 @@
+# Run this ONCE after deploying or when schema changes:
+#   kubectl apply -f k8s/06-migration-job.yaml
+#   kubectl logs -n hotel-cms job/hotel-cms-migrate -f
+#
+# To re-run after schema changes, delete and recreate:
+#   kubectl delete job hotel-cms-migrate -n hotel-cms
+#   kubectl apply -f k8s/06-migration-job.yaml
+
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: hotel-cms-migrate
+  namespace: hotel-cms
+spec:
+  backoffLimit: 3
+  ttlSecondsAfterFinished: 300
+  template:
+    spec:
+      serviceAccountName: hotel-cms-sa
+      restartPolicy: Never
+      initContainers:
+        # Fetch DB connection string from Secrets Manager
+        - name: fetch-secrets
+          image: amazon/aws-cli:latest
+          command: ["sh", "-c"]
+          args:
+            - |
+              SECRET_JSON=$(aws secretsmanager get-secret-value \
+                --secret-id "$SECRET_NAME" \
+                --region "$AWS_REGION" \
+                --query SecretString --output text)
+
+              echo "export DATABASE_URL=\"$(echo $SECRET_JSON | python3 -c "import sys,json;print(json.load(sys.stdin)['ALCMS_DATABASE_URL'])")\"" > /shared/env
+
+              echo "[migrate] Fetched DATABASE_URL from Secrets Manager"
+          env:
+            - name: SECRET_NAME
+              value: "hotel-cms/production"
+            - name: AWS_REGION
+              value: "ap-south-1"
+          volumeMounts:
+            - name: shared-env
+              mountPath: /shared
+      containers:
+        - name: migrate
+          image: REPLACE_ECR_URI:latest
+          command: ["sh", "-c"]
+          args:
+            - |
+              source /shared/env
+              echo "[migrate] Running prisma migrate deploy..."
+              npx prisma migrate deploy
+              echo "[migrate] Done."
+          volumeMounts:
+            - name: shared-env
+              mountPath: /shared
+              readOnly: true
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 256Mi
+      volumes:
+        - name: shared-env
+          emptyDir:
+            medium: Memory
