@@ -1,0 +1,15 @@
+node_modules
+.next
+.git
+*.md
+*.png
+*.html
+hotel-cms/
+.playwright-mcp/
+ai-logs-panel.png
+hotel-cms-architecture.html
+docs/
+test-*.png
+light-theme-*.png
+premium-*.png
+page-builder-*.png

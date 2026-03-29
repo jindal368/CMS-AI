@@ -1,0 +1,90 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hotel-cms
+  namespace: hotel-cms
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: hotel-cms
+  template:
+    metadata:
+      labels:
+        app: hotel-cms
+    spec:
+      serviceAccountName: hotel-cms-sa
+      initContainers:
+        # Fetches secrets from AWS Secrets Manager → writes /shared/env
+        - name: fetch-secrets
+          image: amazon/aws-cli:latest
+          command: ["sh", "-c"]
+          args:
+            - |
+              SECRET_JSON=$(aws secretsmanager get-secret-value \
+                --secret-id "$SECRET_NAME" \
+                --region "$AWS_REGION" \
+                --query SecretString --output text)
+
+              echo "export DATABASE_URL=\"$(echo $SECRET_JSON | python3 -c "import sys,json;print(json.load(sys.stdin)['DATABASE_URL'])")\"" > /shared/env
+              echo "export OPENROUTER_API_KEY=\"$(echo $SECRET_JSON | python3 -c "import sys,json;print(json.load(sys.stdin)['OPENROUTER_API_KEY'])")\"" >> /shared/env
+
+              echo "[fetch-secrets] Loaded secrets from $SECRET_NAME"
+          env:
+            - name: SECRET_NAME
+              value: "hotel-cms/production"
+            - name: AWS_REGION
+              value: "ap-south-1"
+          volumeMounts:
+            - name: shared-env
+              mountPath: /shared
+      containers:
+        - name: hotel-cms
+          image: REPLACE_ECR_URI:latest
+          command: ["sh", "-c"]
+          args: ["source /shared/env && node server.js"]
+          ports:
+            - containerPort: 3000
+          env:
+            - name: NODE_ENV
+              value: "production"
+          volumeMounts:
+            - name: shared-env
+              mountPath: /shared
+              readOnly: true
+          readinessProbe:
+            httpGet:
+              path: /login
+              port: 3000
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /login
+              port: 3000
+            initialDelaySeconds: 20
+            periodSeconds: 15
+          resources:
+            requests:
+              cpu: 250m
+              memory: 256Mi
+            limits:
+              cpu: 1000m
+              memory: 512Mi
+      volumes:
+        - name: shared-env
+          emptyDir:
+            medium: Memory
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hotel-cms
+  namespace: hotel-cms
+spec:
+  selector:
+    app: hotel-cms
+  ports:
+    - port: 80
+      targetPort: 3000
+  type: ClusterIP
