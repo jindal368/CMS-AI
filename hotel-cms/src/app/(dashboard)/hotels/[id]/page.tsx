@@ -1,10 +1,13 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/db";
+import { getSessionOrRedirect } from "@/lib/auth";
 import HotelTabs from "@/components/hotel-tabs";
-import PageActions from "@/components/cms/PageActions";
 import EditHotelForm from "@/components/cms/EditHotelForm";
 import DeleteHotelButton from "@/components/cms/DeleteHotelButton";
+import LinksEditor from "@/components/cms/LinksEditor";
+import LocalePageSection from "@/components/cms/LocalePageSection";
+import PublishButton from "@/components/cms/PublishButton";
 
 export const dynamic = 'force-dynamic';
 
@@ -26,9 +29,14 @@ export default async function HotelPage(props: {
   params: Promise<{ id: string }>;
 }) {
   const { id } = await props.params;
-  const hotel = await getHotel(id);
+  const [hotel, { org }] = await Promise.all([
+    getHotel(id),
+    getSessionOrRedirect(),
+  ]);
 
   if (!hotel) notFound();
+
+  const orgSlug = (org as any)?.slug ?? "";
 
   // Serialize Prisma model for client components (Dates converted to ISO strings upstream)
   const serializedHotel = {
@@ -46,7 +54,37 @@ export default async function HotelPage(props: {
       title?: string;
       description?: string;
     },
+    links: (hotel.links ?? {}) as Record<string, string>,
   };
+
+  const publishedAt = hotel.publishedAt ? hotel.publishedAt.toISOString() : null;
+  const hotelSlug = hotel.hotelSlug ?? null;
+
+  const enabledLocales = (() => {
+    try {
+      const raw = hotel.enabledLocales;
+      if (Array.isArray(raw)) return raw as string[];
+      if (typeof raw === "string") return JSON.parse(raw) as string[];
+      return ["en"];
+    } catch {
+      return ["en"];
+    }
+  })();
+
+  const defaultLocale = hotel.defaultLocale ?? "en";
+
+  const allPages = hotel.pages.map((page) => ({
+    id: page.id,
+    hotelId: page.hotelId,
+    slug: page.slug,
+    locale: page.locale,
+    pageType: page.pageType,
+    sortOrder: page.sortOrder,
+    metaTags: page.metaTags as Record<string, string> | null,
+    createdAt: page.createdAt.toISOString(),
+    updatedAt: page.updatedAt.toISOString(),
+    _count: { sections: page._count.sections },
+  }));
 
   return (
     <div className="space-y-6 max-w-5xl">
@@ -81,6 +119,9 @@ export default async function HotelPage(props: {
           <div>
             <h2 className="text-lg font-bold text-[#1a1a2e] leading-tight">{hotel.name}</h2>
             <p className="text-xs text-[#7c7893] capitalize">{hotel.category}</p>
+            {hotelSlug && (
+              <p className="text-xs text-[#7c7893]/60 mt-0.5">slug: {hotelSlug}</p>
+            )}
           </div>
         </div>
 
@@ -101,35 +142,48 @@ export default async function HotelPage(props: {
               </div>
             ))}
           </div>
-          <DeleteHotelButton hotelId={hotel.id} hotelName={hotel.name} />
+          <div className="flex items-center gap-3 flex-wrap">
+            <PublishButton
+              hotelId={hotel.id}
+              publishedAt={publishedAt}
+              hotelSlug={hotelSlug}
+              orgSlug={orgSlug}
+            />
+            <DeleteHotelButton hotelId={hotel.id} hotelName={hotel.name} />
+          </div>
         </div>
 
         {/* Edit / view form */}
         <EditHotelForm hotel={serializedHotel} />
       </div>
 
-      {/* Tab navigation */}
+      {/* Smart Links */}
+      <div className="glass-card-static rounded-xl overflow-hidden">
+        <div className="px-5 py-4 border-b border-white/30">
+          <h3 className="text-sm font-semibold text-[#1a1a2e]">Smart Links</h3>
+          <p className="text-xs text-[#7c7893] mt-0.5">Configure booking, social media, and contact links</p>
+        </div>
+        <div className="p-5">
+          <LinksEditor
+            hotelId={id}
+            links={(serializedHotel.links || {}) as Record<string, string>}
+            contactInfo={(serializedHotel.contactInfo || {}) as Record<string, any>}
+          />
+        </div>
+      </div>
+
+      {/* Tab navigation + locale-aware pages section */}
       <div className="glass-card-static rounded-xl overflow-hidden">
         <div className="px-5 pt-4">
           <HotelTabs hotelId={id} />
         </div>
 
-        {/* Pages tab content */}
         <div className="p-5">
-          <PageActions
+          <LocalePageSection
             hotelId={id}
-            pages={hotel.pages.map((page) => ({
-              id: page.id,
-              hotelId: page.hotelId,
-              slug: page.slug,
-              locale: page.locale,
-              pageType: page.pageType,
-              sortOrder: page.sortOrder,
-              metaTags: page.metaTags as Record<string, string> | null,
-              createdAt: page.createdAt.toISOString(),
-              updatedAt: page.updatedAt.toISOString(),
-              _count: { sections: page._count.sections },
-            }))}
+            allPages={allPages}
+            enabledLocales={enabledLocales}
+            defaultLocale={defaultLocale}
           />
         </div>
       </div>

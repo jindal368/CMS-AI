@@ -2,16 +2,20 @@ import { NextRequest } from "next/server";
 import { prisma } from "@/lib/db";
 import { MediaAssetCreateSchema } from "@/lib/schemas";
 import { parseBody, errorResponse, successResponse } from "@/lib/api-utils";
+import { requireAuth } from "@/lib/auth";
 
 const MediaAssetUpdateSchema = MediaAssetCreateSchema.partial().omit({
   hotelId: true,
 });
 
 export async function GET(
-  _request: NextRequest,
+  request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const auth = await requireAuth(request);
+    if (auth.response) return auth.response;
+
     const { id } = await params;
 
     const asset = await prisma.mediaAsset.findUnique({ where: { id } });
@@ -29,6 +33,14 @@ export async function PUT(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const auth = await requireAuth(request);
+    if (auth.response) return auth.response;
+
+    // Require at least editor role
+    if (!["admin", "editor"].includes(auth.user.role)) {
+      return errorResponse("Forbidden", 403);
+    }
+
     const { id } = await params;
     const { data, error } = await parseBody(request, MediaAssetUpdateSchema);
     if (error) return error;
@@ -56,10 +68,18 @@ export async function PUT(
 }
 
 export async function DELETE(
-  _request: NextRequest,
+  request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const auth = await requireAuth(request);
+    if (auth.response) return auth.response;
+
+    // Require at least editor role
+    if (!["admin", "editor"].includes(auth.user.role)) {
+      return errorResponse("Forbidden", 403);
+    }
+
     const { id } = await params;
 
     const existing = await prisma.mediaAsset.findUnique({ where: { id } });

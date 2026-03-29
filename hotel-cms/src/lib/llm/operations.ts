@@ -93,6 +93,13 @@ export interface UpdateBrandVoiceOp {
   brandVoice: string;
 }
 
+export interface TranslateSiteOp {
+  op: "translate_site";
+  hotelId: string;
+  targetLocale: string;
+  targetLanguage: string;
+}
+
 export type CmsOperation =
   | UpdateTextOp
   | UpdatePropsOp
@@ -106,7 +113,8 @@ export type CmsOperation =
   | ReplaceHtmlOp
   | ClearOverridesOp
   | SaveMemoryOp
-  | UpdateBrandVoiceOp;
+  | UpdateBrandVoiceOp
+  | TranslateSiteOp;
 
 export interface OperationResult {
   op: string;
@@ -122,6 +130,7 @@ export interface TrustedContext {
   hotelId: string;
   pageId?: string;
   sectionIds: string[]; // valid section IDs for the current page
+  lockedSectionIds: string[];
 }
 
 /**
@@ -150,6 +159,17 @@ export async function executeOperations(
 
     // Override IDs with trusted values
     operation = sanitizeOperation(operation, trusted);
+
+    // Skip operations targeting locked sections
+    const targetId = (operation as any).sectionId;
+    if (targetId && trusted.lockedSectionIds.includes(targetId)) {
+      results.push({
+        op: operation.op,
+        success: false,
+        details: { error: "Cannot modify locked section (managed by organization admin)" },
+      });
+      continue;
+    }
 
     try {
       const result = await executeSingle(operation);
@@ -232,6 +252,10 @@ function sanitizeOperation(op: CmsOperation, trusted: TrustedContext): CmsOperat
       op.hotelId = trusted.hotelId;
       return op;
 
+    case "translate_site":
+      op.hotelId = trusted.hotelId;
+      return op;
+
     default:
       return op;
   }
@@ -265,6 +289,8 @@ async function executeSingle(op: CmsOperation): Promise<OperationResult> {
       return executeSaveMemory(op);
     case "update_brand_voice":
       return executeUpdateBrandVoice(op);
+    case "translate_site":
+      return executeTranslateSite(op);
     default:
       return {
         op: (op as CmsOperation).op,
@@ -595,6 +621,16 @@ async function executeUpdateBrandVoice(op: UpdateBrandVoiceOp): Promise<Operatio
   };
 }
 
+async function executeTranslateSite(op: TranslateSiteOp): Promise<OperationResult> {
+  const { translateHotelSite } = await import("@/lib/i18n/translate");
+  const result = await translateHotelSite(op.hotelId, op.targetLocale, op.targetLanguage);
+  return {
+    op: "translate_site",
+    success: true,
+    details: { ...result, locale: op.targetLocale, language: op.targetLanguage },
+  };
+}
+
 /**
  * Build the operations schema documentation for inclusion in LLM prompts.
  * This tells the LLM exactly what operations it can emit.
@@ -648,6 +684,9 @@ AVAILABLE OPERATIONS:
 
 13. update_brand_voice — Update the hotel's brand voice description
     { "op": "update_brand_voice", "hotelId": "<id>", "brandVoice": "<brand voice description>" }
+
+14. translate_site — Translate entire hotel website to another language
+    { "op": "translate_site", "hotelId": "<id>", "targetLocale": "<2-letter code>", "targetLanguage": "<language name>" }
 
 CRITICAL APPROACH RULES:
 - For ANY visual/style change (background, colors, layout, spacing, gradients, images): ALWAYS use replace_html

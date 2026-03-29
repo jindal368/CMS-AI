@@ -117,6 +117,7 @@ export async function executeLLMTier(
         orderBy: { sortOrder: "asc" },
         include: { sections: { orderBy: { sortOrder: "asc" } } },
       },
+      org: true,
     },
   });
   if (!hotel) throw new Error(`Hotel ${hotelId} not found`);
@@ -246,6 +247,7 @@ export async function executeLLMTier(
     hotelId,
     pageId: currentPage?.id,
     sectionIds: pageSections.map((s) => s.id),
+    lockedSectionIds: ((hotel as any).org?.lockedSections || []).map((s: any) => s.id) as string[],
   };
 
   // Execute all operations with trusted IDs

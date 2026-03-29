@@ -37,24 +37,51 @@ enum VersionStatus {
   rolled_back
 }
 
+enum UserRole {
+  admin
+  editor
+  viewer
+}
+
+enum CampaignStatus {
+  draft
+  active
+  ended
+}
+
+enum ReviewStatus {
+  pending
+  responded
+  skipped
+}
+
 // ─── Hotel ───────────────────────────────────────────────
 
 model Hotel {
-  id            String        @id @default(uuid())
-  name          String
-  category      HotelCategory
-  contactInfo   Json          @map("contact_info")   // { phone, email, address, coordinates }
-  seoConfig     Json          @default("{}") @map("seo_config")  // { title, description, keywords }
-  defaultLocale String        @default("en") @map("default_locale")
-  createdAt     DateTime      @default(now()) @map("created_at")
-  updatedAt     DateTime      @updatedAt @map("updated_at")
+  id             String        @id @default(uuid())
+  name           String
+  category       HotelCategory
+  contactInfo    Json          @map("contact_info") // { phone, email, address, coordinates }
+  seoConfig      Json          @default("{}") @map("seo_config") // { title, description, keywords }
+  links          Json          @default("{}") @map("links")
+  hotelSlug      String?       @map("hotel_slug")
+  publishedAt    DateTime?     @map("published_at")
+  enabledLocales Json          @default("[\"en\"]") @map("enabled_locales")
+  defaultLocale  String        @default("en") @map("default_locale")
+  createdAt      DateTime      @default(now()) @map("created_at")
+  updatedAt      DateTime      @updatedAt @map("updated_at")
+  orgId          String?       @map("org_id")
+  org            Organization? @relation(fields: [orgId], references: [id])
 
-  theme   Theme?
-  pages   Page[]
-  rooms   Room[]
-  media   MediaAsset[]
-  versions SchemaVersion[]
-  context  HotelContext?
+  theme       Theme?
+  pages       Page[]
+  rooms       Room[]
+  media       MediaAsset[]
+  versions    SchemaVersion[]
+  context     HotelContext?
+  seoAudit    SeoAudit?
+  competitors Competitor[]
+  reviews     Review[]
 
   @@map("hotels")
 }
@@ -64,10 +91,10 @@ model Hotel {
 model Theme {
   id           String @id @default(uuid())
   hotelId      String @unique @map("hotel_id")
-  colorTokens  Json   @map("color_tokens")   // { primary, secondary, accent, bg, text }
-  typography   Json                           // { heading_font, body_font, scale }
-  spacing      Json                           // "compact" | "balanced" | "spacious" or custom
-  baseTemplate String @map("base_template")   // luxury | boutique | business | resort
+  colorTokens  Json   @map("color_tokens") // { primary, secondary, accent, bg, text }
+  typography   Json // { heading_font, body_font, scale }
+  spacing      Json // "compact" | "balanced" | "spacious" or custom
+  baseTemplate String @map("base_template") // luxury | boutique | business | resort
 
   hotel Hotel @relation(fields: [hotelId], references: [id], onDelete: Cascade)
 
@@ -97,12 +124,12 @@ model Page {
 // ─── Section ─────────────────────────────────────────────
 
 model Section {
-  id               String  @id @default(uuid())
-  pageId           String  @map("page_id")
-  sortOrder        Int     @default(0) @map("sort_order")
-  isVisible        Boolean @default(true) @map("is_visible")
-  componentVariant String  @map("component_variant") // references Component.variant
-  props            Json    @default("{}") // component-specific props
+  id               String   @id @default(uuid())
+  pageId           String   @map("page_id")
+  sortOrder        Int      @default(0) @map("sort_order")
+  isVisible        Boolean  @default(true) @map("is_visible")
+  componentVariant String   @map("component_variant") // references Component.variant
+  props            Json     @default("{}") // component-specific props
   customCss        String?  @map("custom_css")
   customHtml       String?  @map("custom_html")
   customMode       Boolean  @default(false) @map("custom_mode")
@@ -117,15 +144,15 @@ model Section {
 // ─── Component (Registry) ────────────────────────────────
 
 model Component {
-  id             String @id @default(uuid())
-  type           String // hero, rooms, gallery, booking, reviews, map, footer
-  variant        String @unique // hero_cinematic, hero_editorial, etc.
-  defaultProps   Json   @map("default_props")
-  propSchema     Json   @map("prop_schema") // JSON Schema for prop validation
-  renderTemplate String @map("render_template") // template identifier
-  categoryAffinity Json @default("[]") @map("category_affinity") // ["luxury", "boutique"]
-  tierRequirement  Int  @default(0) @map("tier_requirement") // 0-3
-  description    String @default("")
+  id               String @id @default(uuid())
+  type             String // hero, rooms, gallery, booking, reviews, map, footer
+  variant          String @unique // hero_cinematic, hero_editorial, etc.
+  defaultProps     Json   @map("default_props")
+  propSchema       Json   @map("prop_schema") // JSON Schema for prop validation
+  renderTemplate   String @map("render_template") // template identifier
+  categoryAffinity Json   @default("[]") @map("category_affinity") // ["luxury", "boutique"]
+  tierRequirement  Int    @default(0) @map("tier_requirement") // 0-3
+  description      String @default("")
 
   @@map("components")
 }
@@ -133,15 +160,15 @@ model Component {
 // ─── Room ────────────────────────────────────────────────
 
 model Room {
-  id          String @id @default(uuid())
-  hotelId     String @map("hotel_id")
+  id          String   @id @default(uuid())
+  hotelId     String   @map("hotel_id")
   name        String
-  description String @default("")
-  pricing     Json   // { base_price, currency, seasonal_rates }
-  amenities   Json   @default("[]") // ["wifi", "pool", "minibar"]
-  maxGuests   Int    @default(2) @map("max_guests")
-  images      Json   @default("[]") // array of media asset IDs
-  sortOrder   Int    @default(0) @map("sort_order")
+  description String   @default("")
+  pricing     Json // { base_price, currency, seasonal_rates }
+  amenities   Json     @default("[]") // ["wifi", "pool", "minibar"]
+  maxGuests   Int      @default(2) @map("max_guests")
+  images      Json     @default("[]") // array of media asset IDs
+  sortOrder   Int      @default(0) @map("sort_order")
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
 
@@ -153,14 +180,14 @@ model Room {
 // ─── Media Asset ─────────────────────────────────────────
 
 model MediaAsset {
-  id        String @id @default(uuid())
-  hotelId   String @map("hotel_id")
+  id        String   @id @default(uuid())
+  hotelId   String   @map("hotel_id")
   url       String
-  altText   String @default("") @map("alt_text")
-  tags      Json   @default("[]") // ["pool", "lobby", "room", "exterior"]
-  variants  Json   @default("{}") // { thumbnail, "400w", "800w", "1200w", "1600w", webp, avif }
-  mimeType  String @default("image/jpeg") @map("mime_type")
-  fileSize  Int    @default(0) @map("file_size")
+  altText   String   @default("") @map("alt_text")
+  tags      Json     @default("[]") // ["pool", "lobby", "room", "exterior"]
+  variants  Json     @default("{}") // { thumbnail, "400w", "800w", "1200w", "1600w", webp, avif }
+  mimeType  String   @default("image/jpeg") @map("mime_type")
+  fileSize  Int      @default(0) @map("file_size")
   createdAt DateTime @default(now()) @map("created_at")
 
   hotel Hotel @relation(fields: [hotelId], references: [id], onDelete: Cascade)
@@ -171,16 +198,16 @@ model MediaAsset {
 // ─── Schema Version ──────────────────────────────────────
 
 model SchemaVersion {
-  id         String        @id @default(uuid())
-  hotelId    String        @map("hotel_id")
-  versionNum Int           @map("version_num")
-  diffPatch  Json          @map("diff_patch") // RFC 6902 JSON patch
-  snapshot   Json          @default("{}") // full state at this version
-  modelTier  Int           @default(0) @map("model_tier") // 0-3
-  modelUsed  String        @default("none") @map("model_used") // haiku, sonnet, opus, none
-  description String       @default("")
-  status     VersionStatus @default(draft)
-  createdAt  DateTime      @default(now()) @map("created_at")
+  id          String        @id @default(uuid())
+  hotelId     String        @map("hotel_id")
+  versionNum  Int           @map("version_num")
+  diffPatch   Json          @map("diff_patch") // RFC 6902 JSON patch
+  snapshot    Json          @default("{}") // full state at this version
+  modelTier   Int           @default(0) @map("model_tier") // 0-3
+  modelUsed   String        @default("none") @map("model_used") // haiku, sonnet, opus, none
+  description String        @default("")
+  status      VersionStatus @default(draft)
+  createdAt   DateTime      @default(now()) @map("created_at")
 
   hotel Hotel @relation(fields: [hotelId], references: [id], onDelete: Cascade)
 
@@ -205,4 +232,148 @@ model HotelContext {
   hotel Hotel @relation(fields: [hotelId], references: [id], onDelete: Cascade)
 
   @@map("hotel_contexts")
+}
+
+// ─── SEO Audit ────────────────────────────────────────────
+
+model SeoAudit {
+  id          String   @id @default(uuid())
+  hotelId     String   @unique @map("hotel_id")
+  score       Int      @default(100)
+  issues      Json     @default("[]")
+  lastAuditAt DateTime @default(now()) @map("last_audit_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  hotel Hotel @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+
+  @@map("seo_audits")
+}
+
+// ─── Campaign ─────────────────────────────────────────────
+
+model Campaign {
+  id              String         @id @default(uuid())
+  orgId           String         @map("org_id")
+  title           String
+  brief           String
+  status          CampaignStatus @default(draft)
+  targetHotels    Json           @default("[]") @map("target_hotels")
+  createdSections Json           @default("[]") @map("created_sections")
+  createdById     String         @map("created_by_id")
+  createdAt       DateTime       @default(now()) @map("created_at")
+  updatedAt       DateTime       @updatedAt @map("updated_at")
+
+  org       Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  createdBy User         @relation(fields: [createdById], references: [id])
+
+  @@map("campaigns")
+}
+
+// ─── Competitor ───────────────────────────────────────────
+
+model Competitor {
+  id           String    @id @default(uuid())
+  hotelId      String    @map("hotel_id")
+  name         String
+  url          String
+  lastSnapshot Json      @default("{}") @map("last_snapshot")
+  lastScanAt   DateTime? @map("last_scan_at")
+  createdAt    DateTime  @default(now()) @map("created_at")
+
+  hotel Hotel            @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+  scans CompetitorScan[]
+
+  @@map("competitors")
+}
+
+model CompetitorScan {
+  id             String   @id @default(uuid())
+  competitorId   String   @map("competitor_id")
+  changes        Json     @default("[]")
+  insights       Json     @default("[]")
+  snapshotBefore Json     @default("{}") @map("snapshot_before")
+  snapshotAfter  Json     @default("{}") @map("snapshot_after")
+  scannedAt      DateTime @default(now()) @map("scanned_at")
+
+  competitor Competitor @relation(fields: [competitorId], references: [id], onDelete: Cascade)
+
+  @@map("competitor_scans")
+}
+
+// ─── Review ───────────────────────────────────────────────
+
+model Review {
+  id            String       @id @default(uuid())
+  hotelId       String       @map("hotel_id")
+  guestName     String       @map("guest_name")
+  reviewText    String       @map("review_text")
+  rating        Int
+  source        String       @default("google")
+  reviewDate    DateTime?    @map("review_date")
+  sentiment     String       @default("neutral")
+  aiResponse    String?      @map("ai_response")
+  finalResponse String?      @map("final_response")
+  status        ReviewStatus @default(pending)
+  respondedAt   DateTime?    @map("responded_at")
+  createdAt     DateTime     @default(now()) @map("created_at")
+
+  hotel Hotel @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+
+  @@map("reviews")
+}
+
+// ─── Organization ─────────────────────────────────────────
+
+model Organization {
+  id              String   @id @default(uuid())
+  name            String
+  slug            String   @unique
+  apiKey          String   @unique @default(uuid()) @map("api_key")
+  logo            String?
+  brandGuidelines String?  @map("brand_guidelines")
+  brandTheme      Json?    @map("brand_theme")
+  lockedSections  Json     @default("[]") @map("locked_sections")
+  customDomain    String?  @unique @map("custom_domain")
+  published       Boolean  @default(false)
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  users     User[]
+  hotels    Hotel[]
+  campaigns Campaign[]
+
+  @@map("organizations")
+}
+
+// ─── User ─────────────────────────────────────────────────
+
+model User {
+  id           String    @id @default(uuid())
+  orgId        String    @map("org_id")
+  email        String    @unique
+  name         String
+  passwordHash String    @map("password_hash")
+  role         UserRole  @default(editor)
+  hotelAccess  Json      @default("[]") @map("hotel_access")
+  lastLoginAt  DateTime? @map("last_login_at")
+  createdAt    DateTime  @default(now()) @map("created_at")
+
+  org       Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  sessions  Session[]
+  campaigns Campaign[]
+
+  @@map("users")
+}
+
+// ─── Session ──────────────────────────────────────────────
+
+model Session {
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
+  token     String   @unique
+  expiresAt DateTime @map("expires_at")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
 }

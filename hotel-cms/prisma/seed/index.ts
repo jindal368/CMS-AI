@@ -17,7 +17,28 @@ async function main() {
   await prisma.theme.deleteMany();
   await prisma.component.deleteMany();
   await prisma.hotel.deleteMany();
+  await prisma.session.deleteMany({});
+  await prisma.user.deleteMany({});
+  await prisma.organization.deleteMany({});
   console.log("Cleared.");
+
+  // ─── Organization & Admin User ──────────────────────────────────────────
+  console.log("Seeding organization and admin...");
+  const org = await prisma.organization.create({
+    data: { name: "Demo Hotel Group", slug: "demo-hotel-group" }
+  });
+  const bcryptjs = require("bcryptjs");
+  const adminUser = await prisma.user.create({
+    data: {
+      orgId: org.id,
+      email: "admin@hotelcms.com",
+      name: "Admin",
+      passwordHash: await bcryptjs.hash("admin123", 12),
+      role: "admin",
+      hotelAccess: [] as any,
+    }
+  });
+  console.log("Created org:", org.name, "| Admin: admin@hotelcms.com / admin123");
 
   // ─── Component Registry ─────────────────────────────────────────────────
   console.log("Seeding component registry...");
@@ -41,6 +62,7 @@ async function main() {
   console.log("Seeding hotel: The Meridian...");
   const hotel = await prisma.hotel.create({
     data: {
+      orgId: org.id,
       name: "The Meridian",
       category: "boutique",
       contactInfo: {

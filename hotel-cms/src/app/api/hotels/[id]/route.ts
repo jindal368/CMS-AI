@@ -3,13 +3,17 @@ import { prisma } from "@/lib/db";
 import { parseBody, errorResponse, successResponse } from "@/lib/api-utils";
 import { HotelUpdateSchema } from "@/lib/schemas";
 import { createVersion } from "@/lib/versioning";
+import { requireHotelAccess, requireRole } from "@/lib/auth";
 
 export async function GET(
-  _request: NextRequest,
+  request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const { id } = await params;
+
+    const auth = await requireHotelAccess(request, id);
+    if (auth.response) return auth.response;
 
     const hotel = await prisma.hotel.findUnique({
       where: { id },
@@ -42,6 +46,14 @@ export async function PUT(
   try {
     const { id } = await params;
 
+    const auth = await requireHotelAccess(request, id);
+    if (auth.response) return auth.response;
+
+    // Require at least editor role
+    if (!["admin", "editor"].includes(auth.user.role)) {
+      return errorResponse("Forbidden", 403);
+    }
+
     const existing = await prisma.hotel.findUnique({ where: { id } });
     if (!existing) {
       return errorResponse("Hotel not found", 404);
@@ -55,6 +67,7 @@ export async function PUT(
       category: existing.category,
       contactInfo: existing.contactInfo,
       seoConfig: existing.seoConfig,
+      links: existing.links,
       defaultLocale: existing.defaultLocale,
     };
 
@@ -65,6 +78,7 @@ export async function PUT(
         ...(data.category !== undefined && { category: data.category }),
         ...(data.contactInfo !== undefined && { contactInfo: data.contactInfo }),
         ...(data.seoConfig !== undefined && { seoConfig: data.seoConfig }),
+        ...(data.links !== undefined && { links: data.links }),
         ...(data.defaultLocale !== undefined && {
           defaultLocale: data.defaultLocale,
         }),
@@ -76,6 +90,7 @@ export async function PUT(
       category: updated.category,
       contactInfo: updated.contactInfo,
       seoConfig: updated.seoConfig,
+      links: updated.links,
       defaultLocale: updated.defaultLocale,
     };
 
@@ -94,11 +109,19 @@ export async function PUT(
 }
 
 export async function DELETE(
-  _request: NextRequest,
+  request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const { id } = await params;
+
+    const auth = await requireHotelAccess(request, id);
+    if (auth.response) return auth.response;
+
+    // Require admin role for deletion
+    if (auth.user.role !== "admin") {
+      return errorResponse("Forbidden", 403);
+    }
 
     const existing = await prisma.hotel.findUnique({ where: { id } });
     if (!existing) {

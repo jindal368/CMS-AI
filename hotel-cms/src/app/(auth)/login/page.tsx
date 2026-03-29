@@ -1,0 +1,124 @@
+"use client";
+
+import { useState } from "react";
+import Link from "next/link";
+
+export default function LoginPage() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+
+    try {
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setError(data.error || "Login failed. Please try again.");
+        return;
+      }
+
+      window.location.href = "/dashboard";
+    } catch {
+      setError("Network error. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  return (
+    <div className="w-full max-w-md glass-card-static p-8">
+      {/* Logo */}
+      <div className="flex items-center gap-3 mb-8">
+        <div
+          className="w-9 h-9 rounded-lg flex items-center justify-center text-white font-bold text-lg shrink-0"
+          style={{ background: "linear-gradient(135deg, #e85d45, #7c5cbf)" }}
+        >
+          H
+        </div>
+        <span className="text-xl font-semibold" style={{ color: "#1a1a2e" }}>
+          hotelCMS
+        </span>
+      </div>
+
+      <h1 className="text-2xl font-bold mb-1" style={{ color: "#1a1a2e" }}>
+        Sign in to your account
+      </h1>
+      <p className="text-sm mb-6" style={{ color: "#7c7893" }}>
+        Welcome back. Enter your credentials to continue.
+      </p>
+
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+        <div className="flex flex-col gap-1.5">
+          <label className="text-sm font-medium" style={{ color: "#1a1a2e" }}>
+            Email
+          </label>
+          <input
+            type="email"
+            required
+            autoComplete="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="you@example.com"
+            className="bg-[#f8f7fa] border border-[#e2dfe8] focus:border-[#7c5cbf] rounded-lg px-4 py-2.5 text-sm outline-none transition-colors"
+          />
+        </div>
+
+        <div className="flex flex-col gap-1.5">
+          <label className="text-sm font-medium" style={{ color: "#1a1a2e" }}>
+            Password
+          </label>
+          <input
+            type="password"
+            required
+            autoComplete="current-password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="••••••••"
+            className="bg-[#f8f7fa] border border-[#e2dfe8] focus:border-[#7c5cbf] rounded-lg px-4 py-2.5 text-sm outline-none transition-colors"
+          />
+        </div>
+
+        {error && (
+          <p className="text-sm text-red-600">{error}</p>
+        )}
+
+        <button
+          type="submit"
+          disabled={loading}
+          className="w-full py-2.5 rounded-lg text-sm font-semibold text-white flex items-center justify-center gap-2 transition-opacity disabled:opacity-70"
+          style={{ background: "linear-gradient(135deg, #e85d45, #c94d37)" }}
+        >
+          {loading ? (
+            <>
+              <svg className="animate-spin w-4 h-4" viewBox="0 0 24 24" fill="none">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />
+              </svg>
+              Signing in...
+            </>
+          ) : (
+            "Sign In"
+          )}
+        </button>
+      </form>
+
+      <p className="mt-6 text-center text-sm" style={{ color: "#7c7893" }}>
+        Don&apos;t have an account?{" "}
+        <Link href="/register" className="font-medium" style={{ color: "#7c5cbf" }}>
+          Create one
+        </Link>
+      </p>
+    </div>
+  );
+}

@@ -32,9 +32,17 @@ interface PageData {
   metaTags: Record<string, unknown>;
 }
 
+interface LockedSection {
+  id: string;
+  label: string;
+  position: string;
+  componentVariant: string;
+}
+
 interface PageBuilderProps {
   page: PageData;
   hotelId: string;
+  lockedSections?: LockedSection[];
 }
 
 const componentTypeColors: Record<string, string> = {
@@ -56,7 +64,7 @@ const pageTypeIcon: Record<string, string> = {
   dining: "◈", spa: "◉", events: "◆", custom: "◇",
 };
 
-export default function PageBuilder({ page, hotelId }: PageBuilderProps) {
+export default function PageBuilder({ page, hotelId, lockedSections }: PageBuilderProps) {
   const [sections, setSections] = useState<Section[]>(page.sections);
   const [selectedSection, setSelectedSection] = useState<Section | null>(null);
   const [showAddModal, setShowAddModal] = useState(false);
@@ -269,9 +277,9 @@ export default function PageBuilder({ page, hotelId }: PageBuilderProps) {
           <span className="text-xs px-1.5 py-0.5 rounded bg-white/60 text-[#7c7893] capitalize border border-white/40">
             {page.pageType}
           </span>
-          {page.locale !== "en" && (
-            <span className="text-xs px-1.5 py-0.5 rounded bg-[#3b7dd8]/10 text-[#3b7dd8] uppercase border border-[#3b7dd8]/20">
-              {page.locale}
+          {page.locale && page.locale !== "en" && (
+            <span className="px-2 py-0.5 rounded-full bg-[#7c5cbf]/15 text-[#7c5cbf] text-xs font-semibold">
+              {page.locale.toUpperCase()}
             </span>
           )}
         </div>
@@ -386,6 +394,15 @@ export default function PageBuilder({ page, hotelId }: PageBuilderProps) {
           </div>
 
           <div className="flex-1 overflow-y-auto py-2 px-2 space-y-1">
+            {lockedSections?.filter(s => s.position === "top").map(ls => (
+              <div key={ls.id} className="flex items-center gap-2 p-2.5 rounded-lg bg-[#f0eef5]/50 border border-dashed border-[#e2dfe8] opacity-60 cursor-not-allowed">
+                <span className="text-sm">🔒</span>
+                <div className="flex-1 min-w-0">
+                  <span className="text-xs font-medium text-[#7c5cbf] truncate block">{ls.label}</span>
+                  <span className="text-[10px] text-[#7c7893]">{ls.componentVariant}</span>
+                </div>
+              </div>
+            ))}
             {sections.length === 0 ? (
               <div className="flex flex-col items-center justify-center h-full text-center px-4 py-8">
                 <div className="w-10 h-10 rounded-full bg-white/60 flex items-center justify-center mb-3 border border-white/40">
@@ -509,6 +526,15 @@ export default function PageBuilder({ page, hotelId }: PageBuilderProps) {
               </svg>
               Add Section
             </button>
+            {lockedSections?.filter(s => s.position === "bottom").map(ls => (
+              <div key={ls.id} className="flex items-center gap-2 p-2.5 rounded-lg bg-[#f0eef5]/50 border border-dashed border-[#e2dfe8] opacity-60 cursor-not-allowed mt-1">
+                <span className="text-sm">🔒</span>
+                <div className="flex-1 min-w-0">
+                  <span className="text-xs font-medium text-[#7c5cbf] truncate block">{ls.label}</span>
+                  <span className="text-[10px] text-[#7c7893]">{ls.componentVariant}</span>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
 

@@ -99,11 +99,14 @@ export const MediaVariants = z.object({
 
 // ─── Model Schemas ───────────────────────────────────────
 
+export const LinksSchema = z.record(z.string(), z.string());
+
 export const HotelCreateSchema = z.object({
   name: z.string().min(1).max(200),
   category: HotelCategory,
   contactInfo: ContactInfo,
   seoConfig: SeoConfig.optional().default({}),
+  links: LinksSchema.optional().default({}),
   defaultLocale: z.string().default("en"),
 });
 

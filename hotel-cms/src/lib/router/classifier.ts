@@ -33,7 +33,7 @@ const TIER_0_PATTERNS: { pattern: RegExp; action: string }[] = [
 
 const TIER_1_PATTERNS: { pattern: RegExp; action: string }[] = [
   { pattern: /\b(rewrite|rephrase|improve|make.*better)\b.*\b(headline|title|heading|text|copy)\b/i, action: "rewrite_text" },
-  { pattern: /\b(translate|translation)\b/i, action: "translate" },
+  { pattern: /\b(translate|translation)\b.*\b(to|into|in)\b/i, action: "translate" },
   { pattern: /\b(generate|create|write)\b.*\b(meta|seo|tag|description)\b/i, action: "generate_meta" },
   { pattern: /\b(draft|write|respond)\b.*\b(review|response|reply)\b/i, action: "draft_review_response" },
   { pattern: /\b(suggest|recommend)\b.*\b(headline|title|tagline)\b/i, action: "suggest_text" },

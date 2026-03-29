@@ -6,12 +6,14 @@ export interface BookingStickyProps {
   cta?: string;
   showPrice?: boolean;
   externalUrl?: string;
+  phoneLink?: string;
 }
 
 export default function BookingSticky({
   cta = "Check Availability",
   showPrice = true,
   externalUrl = "",
+  phoneLink = "#",
 }: BookingStickyProps) {
   const [visible, setVisible] = useState(false);
 
@@ -58,7 +60,7 @@ export default function BookingSticky({
 
         <div className="flex items-center gap-3">
           <a
-            href="tel:+1800000000"
+            href={phoneLink || "#"}
             className="hidden sm:inline-flex items-center gap-2 text-stone-300 hover:text-white text-sm transition-colors"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

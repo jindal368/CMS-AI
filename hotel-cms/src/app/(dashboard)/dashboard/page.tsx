@@ -1,33 +1,20 @@
 import Link from "next/link";
+import { getSessionOrRedirect } from "@/lib/auth";
 import { prisma } from "@/lib/db";
+import { computeHotelHealth, computeAverageGrade } from "@/lib/health-score";
+import { generateActions, Action } from "@/lib/action-queue";
 
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
-async function getStats() {
-  const [totalHotels, totalPages, totalRooms, totalMedia] = await Promise.all([
-    prisma.hotel.count(),
-    prisma.page.count(),
-    prisma.room.count(),
-    prisma.mediaAsset.count(),
-  ]);
-  return { totalHotels, totalPages, totalRooms, totalMedia };
-}
+// ─── Helpers ─────────────────────────────────────────────────────────────────
 
-async function getRecentHotels() {
-  return prisma.hotel.findMany({
-    orderBy: { createdAt: "desc" },
-    take: 5,
-    select: {
-      id: true,
-      name: true,
-      category: true,
-      createdAt: true,
-      _count: { select: { pages: true } },
-    },
-  });
-}
+const AVATAR_GRADIENTS = [
+  { from: "#e85d45", to: "#d49a12" },
+  { from: "#3b7dd8", to: "#7c5cbf" },
+  { from: "#0fa886", to: "#d49a12" },
+];
 
-const categoryColors: Record<string, string> = {
+const CATEGORY_COLORS: Record<string, string> = {
   luxury: "text-[#d49a12] bg-[#d49a12]/10",
   boutique: "text-[#7c5cbf] bg-[#7c5cbf]/10",
   business: "text-[#3b7dd8] bg-[#3b7dd8]/10",
@@ -35,295 +22,466 @@ const categoryColors: Record<string, string> = {
   budget: "text-[#7c7893] bg-[#7c7893]/10",
 };
 
-const hotelAvatarGradients = [
-  { bg: "linear-gradient(135deg, #e85d45, #d49a12)", shadow: "rgba(232, 93, 69, 0.3)" },
-  { bg: "linear-gradient(135deg, #7c5cbf, #3b7dd8)", shadow: "rgba(124, 92, 191, 0.3)" },
-  { bg: "linear-gradient(135deg, #0fa886, #3b7dd8)", shadow: "rgba(15, 168, 134, 0.3)" },
-  { bg: "linear-gradient(135deg, #d49a12, #e85d45)", shadow: "rgba(212, 154, 18, 0.3)" },
-  { bg: "linear-gradient(135deg, #3b7dd8, #7c5cbf)", shadow: "rgba(59, 125, 216, 0.3)" },
-];
+const PRIORITY_COLORS: Record<Action["priority"], string> = {
+  critical: "#dc2626",
+  warning: "#d49a12",
+  info: "#3b7dd8",
+};
+
+const PRIORITY_LABELS: Record<Action["priority"], string> = {
+  critical: "Critical",
+  warning: "Warning",
+  info: "Info",
+};
+
+function getSeoColor(score: number): string {
+  if (score >= 90) return "#0fa886";
+  if (score >= 80) return "#3b7dd8";
+  if (score >= 65) return "#d49a12";
+  if (score >= 50) return "#e85d45";
+  return "#dc2626";
+}
+
+function getRelativeTime(lastUpdated: string | null): {
+  label: string;
+  color: string;
+} {
+  if (!lastUpdated) {
+    return { label: "Never updated", color: "#7c7893" };
+  }
+  const days = Math.floor(
+    (Date.now() - new Date(lastUpdated).getTime()) / (1000 * 60 * 60 * 24)
+  );
+  if (days === 0) return { label: "Updated today", color: "#0fa886" };
+  if (days <= 7) return { label: `Updated ${days}d ago`, color: "#0fa886" };
+  if (days <= 30) return { label: `Updated ${days}d ago`, color: "#d49a12" };
+  return { label: `Updated ${days}d ago`, color: "#dc2626" };
+}
+
+// ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default async function DashboardPage() {
-  const stats = await getStats();
-  const recentHotels = await getRecentHotels();
+  const { user, org } = await getSessionOrRedirect();
 
-  const statCards = [
-    {
-      label: "Total Hotels",
-      value: stats.totalHotels,
-      accent: "#e85d45",
-      gradientFrom: "#e85d45",
-      gradientTo: "#e85d4530",
-      emoji: "🏨",
-      icon: (
-        <svg viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
-          <path
-            fillRule="evenodd"
-            d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4zm3 1h2v2H7V5zm2 4H7v2h2V9zm2-4h2v2h-2V5zm2 4h-2v2h2V9z"
-            clipRule="evenodd"
-          />
-        </svg>
-      ),
+  const hotels = await prisma.hotel.findMany({
+    where: { orgId: (user as any).orgId },
+    include: {
+      theme: true,
+      pages: { include: { sections: true } },
+      rooms: true,
+      media: true,
+      versions: true,
+      context: true,
+      seoAudit: true,
     },
-    {
-      label: "Total Pages",
-      value: stats.totalPages,
-      accent: "#7c5cbf",
-      gradientFrom: "#7c5cbf",
-      gradientTo: "#7c5cbf30",
-      emoji: "📄",
-      icon: (
-        <svg viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
-          <path
-            fillRule="evenodd"
-            d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z"
-            clipRule="evenodd"
-          />
-        </svg>
-      ),
-    },
-    {
-      label: "Total Rooms",
-      value: stats.totalRooms,
-      accent: "#0fa886",
-      gradientFrom: "#0fa886",
-      gradientTo: "#0fa88630",
-      emoji: "🛏️",
-      icon: (
-        <svg viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
-          <path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z" />
-        </svg>
-      ),
-    },
-    {
-      label: "Total Media",
-      value: stats.totalMedia,
-      accent: "#3b7dd8",
-      gradientFrom: "#3b7dd8",
-      gradientTo: "#3b7dd830",
-      emoji: "🖼️",
-      icon: (
-        <svg viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
-          <path
-            fillRule="evenodd"
-            d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"
-            clipRule="evenodd"
-          />
-        </svg>
-      ),
-    },
-  ];
+    orderBy: { createdAt: "asc" },
+  });
+
+  // Compute health for each hotel
+  const hotelHealthPairs = hotels.map((hotel) => ({
+    hotel,
+    health: computeHotelHealth(hotel),
+  }));
+
+  // Sort worst-first (ascending score)
+  hotelHealthPairs.sort((a, b) => a.health.score - b.health.score);
+
+  // Compute average grade across all hotels
+  const avgGradeResult = computeAverageGrade(
+    hotelHealthPairs.map((p) => p.health)
+  );
+
+  // Generate action queue
+  const actions = generateActions(hotels);
+
+  // Group actions by priority
+  const criticalActions = actions.filter((a) => a.priority === "critical");
+  const warningActions = actions.filter((a) => a.priority === "warning");
+  const infoActions = actions.filter((a) => a.priority === "info");
+
+  const orgName =
+    (org as any)?.name ?? (user as any)?.orgId ?? "Your Organization";
+
+  // ─── Empty state ──────────────────────────────────────────────────────────
+
+  if (hotels.length === 0) {
+    return (
+      <div className="space-y-6 max-w-7xl">
+        <div className="glass-card-static p-5 flex items-center justify-between">
+          <div>
+            <p className="text-xs font-medium uppercase tracking-wider text-[#7c7893]">
+              Organization
+            </p>
+            <p className="text-base font-semibold text-[#1a1a2e] mt-0.5">
+              {orgName}
+            </p>
+          </div>
+        </div>
+
+        <div className="flex flex-col items-center justify-center py-20 text-center glass-card p-10">
+          <div
+            className="w-14 h-14 rounded-2xl flex items-center justify-center mb-4"
+            style={{ background: "linear-gradient(135deg, #e85d45, #d49a12)" }}
+          >
+            <svg
+              viewBox="0 0 20 20"
+              fill="currentColor"
+              className="w-7 h-7 text-white"
+            >
+              <path
+                fillRule="evenodd"
+                d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4zm3 1h2v2H7V5zm2 4H7v2h2V9zm2-4h2v2h-2V5zm2 4h-2v2h2V9z"
+                clipRule="evenodd"
+              />
+            </svg>
+          </div>
+          <p className="text-base font-semibold text-[#1a1a2e]">
+            No properties yet.
+          </p>
+          <p className="text-sm text-[#7c7893] mt-1">
+            Create your first hotel to get started.
+          </p>
+          <Link
+            href="/hotels"
+            className="mt-5 inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium text-white transition-opacity hover:opacity-90"
+            style={{ background: "linear-gradient(135deg, #e85d45, #d49a12)" }}
+          >
+            <svg
+              viewBox="0 0 20 20"
+              fill="currentColor"
+              className="w-4 h-4"
+            >
+              <path
+                fillRule="evenodd"
+                d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+                clipRule="evenodd"
+              />
+            </svg>
+            Create a hotel
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  // ─── Main layout ─────────────────────────────────────────────────────────
 
   return (
-    <div className="space-y-6 max-w-6xl">
-      {/* Header */}
-      <div>
-        <h2 className="text-2xl font-bold tracking-tight text-[#1a1a2e]">Overview</h2>
-        <p className="text-sm text-[#7c7893] mt-0.5">
-          Manage your hotel properties and content
-        </p>
-      </div>
-
-      {/* Stats grid */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        {statCards.map((card) => (
-          <div
-            key={card.label}
-            className="glass-card p-4 space-y-3"
-          >
-            <div className="flex items-center justify-between">
-              <div
-                className="w-7 h-7 rounded-lg flex items-center justify-center text-sm"
-                style={{
-                  background: `linear-gradient(135deg, ${card.gradientFrom}30, ${card.gradientTo}10)`,
-                  color: card.accent,
-                }}
-              >
-                {card.icon}
-              </div>
-            </div>
-            <div>
-              <p
-                className="text-2xl font-bold tabular-nums"
-                style={{ color: card.accent, letterSpacing: '-0.5px' }}
-              >
-                {card.value}
-              </p>
-              <p className="text-xs font-medium uppercase tracking-wider text-[#7c7893] mt-0.5">
-                {card.label}
-              </p>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* Bottom two-column layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        {/* Recent activity */}
-        <div className="lg:col-span-2 glass-card p-5">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-sm font-semibold text-[#1a1a2e]">
-              Recent Hotels
-            </h3>
-            <Link
-              href="/hotels"
-              className="text-xs text-[#e85d45] hover:text-[#f5866e] transition-colors"
+    <div className="space-y-6 max-w-7xl">
+      {/* Org Overview Bar */}
+      <div className="glass-card-static p-5 flex flex-wrap items-center justify-between gap-4">
+        <div>
+          <p className="text-xs font-medium uppercase tracking-wider text-[#7c7893]">
+            Organization
+          </p>
+          <p className="text-base font-semibold text-[#1a1a2e] mt-0.5">
+            {orgName}
+          </p>
+        </div>
+        <div className="flex items-center gap-3">
+          {/* Property count */}
+          <div className="flex items-center gap-1.5">
+            <span
+              className="inline-flex items-center justify-center px-2.5 py-0.5 rounded-full text-xs font-semibold"
+              style={{ background: "#e85d4520", color: "#e85d45" }}
             >
-              View all
-            </Link>
+              {hotels.length}{" "}
+              {hotels.length === 1 ? "property" : "properties"}
+            </span>
           </div>
 
-          {recentHotels.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-10 text-center">
-              <div className="w-10 h-10 rounded-full bg-[#f0eef5] flex items-center justify-center mb-3">
-                <svg
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  className="w-5 h-5 text-[#7c7893]"
+          {/* Average grade */}
+          <div className="flex items-center gap-1.5">
+            <span className="text-xs text-[#7c7893]">Avg grade</span>
+            <span
+              className="inline-flex items-center justify-center w-7 h-7 rounded-full text-xs font-bold"
+              style={{
+                background: avgGradeResult.gradeColor + "20",
+                color: avgGradeResult.gradeColor,
+              }}
+            >
+              {avgGradeResult.grade}
+            </span>
+          </div>
+
+          {/* Actions count */}
+          {actions.length > 0 && (
+            <span
+              className="inline-flex items-center justify-center px-2.5 py-0.5 rounded-full text-xs font-semibold"
+              style={{ background: "#e85d4520", color: "#e85d45" }}
+            >
+              {actions.length} action{actions.length !== 1 ? "s" : ""}
+            </span>
+          )}
+        </div>
+      </div>
+
+      {/* Two-column layout */}
+      <div className="flex flex-col lg:flex-row gap-6">
+        {/* Left: Property Grid */}
+        <div className="flex-1 min-w-0">
+          <h2 className="text-sm font-semibold text-[#1a1a2e] mb-3">
+            Properties ({hotelHealthPairs.length})
+          </h2>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            {hotelHealthPairs.map(({ hotel, health }, index) => {
+              const gradient =
+                AVATAR_GRADIENTS[index % AVATAR_GRADIENTS.length];
+              const contactInfo = (hotel.contactInfo as any) ?? {};
+              const city: string = contactInfo.city ?? contactInfo.address?.city ?? "";
+              const country: string =
+                contactInfo.country ?? contactInfo.address?.country ?? "";
+              const location = [city, country].filter(Boolean).join(", ");
+              const relTime = getRelativeTime(health.lastUpdated);
+
+              return (
+                <Link
+                  key={hotel.id}
+                  href={`/hotels/${hotel.id}`}
+                  className="glass-card p-4 flex flex-col gap-3 no-underline"
                 >
-                  <path
-                    fillRule="evenodd"
-                    d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4zm3 1h2v2H7V5zm2 4H7v2h2V9zm2-4h2v2h-2V5zm2 4h-2v2h2V9z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              </div>
-              <p className="text-sm text-[#7c7893]">No hotels yet</p>
-              <p className="text-xs text-[#7c7893]/60 mt-1">
-                Create your first hotel to get started
-              </p>
-            </div>
-          ) : (
-            <div className="space-y-2">
-              {recentHotels.map((hotel, index) => {
-                const gradient = hotelAvatarGradients[index % hotelAvatarGradients.length];
-                return (
-                  <Link
-                    key={hotel.id}
-                    href={`/hotels/${hotel.id}`}
-                    className="flex items-center justify-between p-3 rounded-lg hover:bg-[#f0eef5]/60 transition-colors group"
-                  >
-                    <div className="flex items-center gap-3">
+                  {/* Top row: avatar + name + category */}
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="flex items-center gap-3 min-w-0">
                       <div
-                        className="w-8 h-8 rounded-xl flex items-center justify-center text-xs font-bold text-white shrink-0"
+                        className="w-9 h-9 rounded-xl flex items-center justify-center text-sm font-bold text-white shrink-0"
                         style={{
-                          background: gradient.bg,
-                          boxShadow: `0 2px 8px ${gradient.shadow}`,
+                          background: `linear-gradient(135deg, ${gradient.from}, ${gradient.to})`,
+                          boxShadow: `0 2px 8px ${gradient.from}40`,
                         }}
                       >
                         {hotel.name.charAt(0).toUpperCase()}
                       </div>
-                      <div>
-                        <p className="text-sm font-medium text-[#1a1a2e]">
-                          {hotel.name}
-                        </p>
-                        <p className="text-xs text-[#7c7893]">
-                          {hotel._count.pages}{" "}
-                          {hotel._count.pages === 1 ? "page" : "pages"}
-                        </p>
-                      </div>
+                      <p className="font-semibold text-[#1a1a2e] truncate leading-tight">
+                        {hotel.name}
+                      </p>
                     </div>
                     <span
-                      className={`text-xs px-2 py-0.5 rounded-full font-medium capitalize ${categoryColors[hotel.category] ?? "text-[#7c7893] bg-[#7c7893]/10"}`}
+                      className={`shrink-0 text-xs px-2 py-0.5 rounded-full font-medium capitalize ${CATEGORY_COLORS[hotel.category] ?? "text-[#7c7893] bg-[#7c7893]/10"}`}
                     >
                       {hotel.category}
                     </span>
-                  </Link>
-                );
-              })}
-            </div>
-          )}
+                  </div>
+
+                  {/* Location */}
+                  {location && (
+                    <p className="text-xs text-[#7c7893] -mt-1 truncate">
+                      {location}
+                    </p>
+                  )}
+
+                  {/* Grade + relative time */}
+                  <div className="flex items-center justify-between">
+                    {/* Grade badge + SEO pill + publish status */}
+                    <div className="flex items-center gap-1.5">
+                      <span
+                        className="w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold"
+                        style={{
+                          background: health.gradeColor + "20",
+                          color: health.gradeColor,
+                        }}
+                      >
+                        {health.grade}
+                      </span>
+                      <span
+                        className="text-sm font-semibold tabular-nums"
+                        style={{ color: health.gradeColor }}
+                      >
+                        {health.score}
+                      </span>
+                      {hotel.seoAudit && (() => {
+                        const seoColor = getSeoColor(hotel.seoAudit.score);
+                        return (
+                          <span
+                            style={{ color: seoColor, background: seoColor + "15" }}
+                            className="text-xs px-2 py-0.5 rounded-full font-medium"
+                          >
+                            SEO {hotel.seoAudit.score}
+                          </span>
+                        );
+                      })()}
+                      {/* Publish status indicator */}
+                      {hotel.publishedAt ? (
+                        <span
+                          className="inline-flex items-center gap-1 text-xs font-medium px-2 py-0.5 rounded-full"
+                          style={{ background: "#0fa88615", color: "#0fa886" }}
+                        >
+                          <span
+                            className="w-1.5 h-1.5 rounded-full shrink-0"
+                            style={{ background: "#0fa886" }}
+                          />
+                          Live
+                        </span>
+                      ) : (
+                        <span
+                          className="inline-flex items-center gap-1 text-xs font-medium px-2 py-0.5 rounded-full"
+                          style={{ background: "#7c789315", color: "#7c7893" }}
+                        >
+                          <span
+                            className="w-1.5 h-1.5 rounded-full shrink-0"
+                            style={{ background: "#7c7893" }}
+                          />
+                          Draft
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Relative time */}
+                    <span
+                      className="text-xs font-medium"
+                      style={{ color: relTime.color }}
+                    >
+                      {relTime.label}
+                    </span>
+                  </div>
+
+                  {/* Stats row */}
+                  <div
+                    className="flex items-center text-xs text-[#7c7893] pt-2"
+                    style={{ borderTop: "1px solid rgba(124,120,147,0.12)" }}
+                  >
+                    <span className="flex-1 text-center">
+                      <span className="font-semibold text-[#1a1a2e]">
+                        {hotel.pages.length}
+                      </span>{" "}
+                      pages
+                    </span>
+                    <span
+                      className="self-stretch w-px"
+                      style={{ background: "rgba(124,120,147,0.12)" }}
+                    />
+                    <span className="flex-1 text-center">
+                      <span className="font-semibold text-[#1a1a2e]">
+                        {hotel.rooms.length}
+                      </span>{" "}
+                      rooms
+                    </span>
+                    <span
+                      className="self-stretch w-px"
+                      style={{ background: "rgba(124,120,147,0.12)" }}
+                    />
+                    <span className="flex-1 text-center">
+                      <span className="font-semibold text-[#1a1a2e]">
+                        {hotel.media.length}
+                      </span>{" "}
+                      media
+                    </span>
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
         </div>
 
-        {/* Quick actions */}
-        <div className="glass-card p-5">
-          <h3 className="text-sm font-semibold text-[#1a1a2e] mb-4">
-            Quick Actions
-          </h3>
-          <div className="space-y-2">
-            <Link
-              href="/hotels"
-              className="flex items-center gap-3 w-full p-3 rounded-lg transition-colors group"
-              style={{ background: 'linear-gradient(135deg, rgba(232,93,69,0.12), rgba(245,134,110,0.06))' }}
-            >
-              <div
-                className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
-                style={{ background: 'linear-gradient(135deg, #e85d45, #f5866e)' }}
-              >
-                <svg
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  className="w-4 h-4 text-white"
+        {/* Right: Action Queue */}
+        <div className="w-full lg:w-80 shrink-0">
+          <div className="lg:sticky lg:top-6">
+            <div className="glass-card-static p-5">
+              {/* Header */}
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-sm font-semibold text-[#1a1a2e]">
+                  Action Queue
+                </h2>
+                <span
+                  className="inline-flex items-center justify-center px-2 py-0.5 rounded-full text-xs font-bold"
+                  style={{ background: "#e85d4520", color: "#e85d45" }}
                 >
-                  <path
-                    fillRule="evenodd"
-                    d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
-                    clipRule="evenodd"
-                  />
-                </svg>
+                  {actions.length}
+                </span>
               </div>
-              <div className="text-left">
-                <p className="text-sm font-medium text-[#1a1a2e]">
-                  Create Hotel
-                </p>
-                <p className="text-xs text-[#7c7893]">Add a new property</p>
-              </div>
-            </Link>
 
-            <Link
-              href="/components"
-              className="flex items-center gap-3 w-full p-3 rounded-lg transition-colors group"
-              style={{ background: 'linear-gradient(135deg, rgba(124,92,191,0.12), rgba(99,73,163,0.06))' }}
-            >
-              <div
-                className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
-                style={{ background: 'linear-gradient(135deg, #7c5cbf, #6349a3)' }}
-              >
-                <svg
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  className="w-4 h-4 text-white"
-                >
-                  <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM14 11a1 1 0 011 1v1h1a1 1 0 110 2h-1v1a1 1 0 11-2 0v-1h-1a1 1 0 110-2h1v-1a1 1 0 011-1z" />
-                </svg>
-              </div>
-              <div className="text-left">
-                <p className="text-sm font-medium text-[#1a1a2e]">
-                  Browse Components
-                </p>
-                <p className="text-xs text-[#7c7893]">Explore the registry</p>
-              </div>
-            </Link>
+              {/* Empty state */}
+              {actions.length === 0 ? (
+                <div className="flex flex-col items-center justify-center py-8 text-center gap-3">
+                  <div
+                    className="w-10 h-10 rounded-full flex items-center justify-center"
+                    style={{ background: "#0fa88620" }}
+                  >
+                    <svg
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                      className="w-5 h-5"
+                      style={{ color: "#0fa886" }}
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </div>
+                  <p className="text-sm text-[#7c7893]">
+                    All clear! Your properties are in great shape.
+                  </p>
+                </div>
+              ) : (
+                <div className="space-y-5">
+                  {(
+                    [
+                      { key: "critical" as const, items: criticalActions },
+                      { key: "warning" as const, items: warningActions },
+                      { key: "info" as const, items: infoActions },
+                    ] as const
+                  )
+                    .filter(({ items }) => items.length > 0)
+                    .map(({ key, items }) => (
+                      <div key={key}>
+                        {/* Priority label */}
+                        <div className="flex items-center gap-1.5 mb-2">
+                          <span
+                            className="w-2 h-2 rounded-full shrink-0"
+                            style={{ background: PRIORITY_COLORS[key] }}
+                          />
+                          <span
+                            className="text-xs font-semibold uppercase tracking-wider"
+                            style={{ color: PRIORITY_COLORS[key] }}
+                          >
+                            {PRIORITY_LABELS[key]}
+                          </span>
+                          <span
+                            className="text-xs ml-auto"
+                            style={{ color: PRIORITY_COLORS[key] + "99" }}
+                          >
+                            {items.length}
+                          </span>
+                        </div>
 
-            <Link
-              href="/hotels"
-              className="flex items-center gap-3 w-full p-3 rounded-lg transition-colors group"
-              style={{ background: 'linear-gradient(135deg, rgba(15,168,134,0.12), rgba(11,130,104,0.06))' }}
-            >
-              <div
-                className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
-                style={{ background: 'linear-gradient(135deg, #0fa886, #0b8268)' }}
-              >
-                <svg
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  className="w-4 h-4 text-white"
-                >
-                  <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
-                  <path
-                    fillRule="evenodd"
-                    d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              </div>
-              <div className="text-left">
-                <p className="text-sm font-medium text-[#1a1a2e]">
-                  Manage Content
-                </p>
-                <p className="text-xs text-[#7c7893]">Edit pages & sections</p>
-              </div>
-            </Link>
+                        {/* Action items */}
+                        <div className="space-y-2">
+                          {items.map((action) => (
+                            <Link
+                              key={action.id}
+                              href={action.link}
+                              className="glass-card flex items-start justify-between gap-2 p-3 no-underline"
+                            >
+                              <div className="min-w-0">
+                                <p className="text-xs font-bold text-[#1a1a2e] truncate">
+                                  {action.hotelName}
+                                </p>
+                                <p className="text-xs text-[#7c7893] mt-0.5 leading-snug">
+                                  {action.message}
+                                </p>
+                              </div>
+                              <svg
+                                viewBox="0 0 20 20"
+                                fill="currentColor"
+                                className="w-3.5 h-3.5 shrink-0 mt-0.5"
+                                style={{ color: PRIORITY_COLORS[key] }}
+                              >
+                                <path
+                                  fillRule="evenodd"
+                                  d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                  clipRule="evenodd"
+                                />
+                              </svg>
+                            </Link>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>

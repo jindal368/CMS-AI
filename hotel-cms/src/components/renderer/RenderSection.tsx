@@ -10,6 +10,21 @@ import BookingSticky from "./variants/BookingSticky";
 import ReviewsWall from "./variants/ReviewsWall";
 import MapImmersive from "./variants/MapImmersive";
 import FooterRich from "./variants/FooterRich";
+import DiningShowcase from "./variants/DiningShowcase";
+import AmenitiesGrid from "./variants/AmenitiesGrid";
+import ContactForm from "./variants/ContactForm";
+import FaqAccordion from "./variants/FaqAccordion";
+import CtaBanner from "./variants/CtaBanner";
+import SpaWellness from "./variants/SpaWellness";
+import EventsVenues from "./variants/EventsVenues";
+import TeamSpotlight from "./variants/TeamSpotlight";
+import TestimonialCarousel from "./variants/TestimonialCarousel";
+import NearbyAttractions from "./variants/NearbyAttractions";
+import PricingTable from "./variants/PricingTable";
+import SocialFeed from "./variants/SocialFeed";
+import CountdownPromo from "./variants/CountdownPromo";
+import VideoSection from "./variants/VideoSection";
+import BlogPreview from "./variants/BlogPreview";
 
 export interface SectionData {
   id: string;
@@ -91,6 +106,66 @@ export default function RenderSection({ section }: RenderSectionProps) {
 
     case "footer_rich":
       rendered = <FooterRich {...props} />;
+      break;
+
+    case "dining_showcase":
+      rendered = <DiningShowcase {...props} />;
+      break;
+
+    case "amenities_grid":
+      rendered = <AmenitiesGrid {...props} />;
+      break;
+
+    case "contact_form":
+      rendered = <ContactForm {...props} />;
+      break;
+
+    case "faq_accordion":
+      rendered = <FaqAccordion {...props} />;
+      break;
+
+    case "cta_banner":
+      rendered = <CtaBanner {...props} />;
+      break;
+
+    case "spa_wellness":
+      rendered = <SpaWellness {...props} />;
+      break;
+
+    case "events_venues":
+      rendered = <EventsVenues {...props} />;
+      break;
+
+    case "team_spotlight":
+      rendered = <TeamSpotlight {...props} />;
+      break;
+
+    case "testimonial_carousel":
+      rendered = <TestimonialCarousel {...props} />;
+      break;
+
+    case "nearby_attractions":
+      rendered = <NearbyAttractions {...props} />;
+      break;
+
+    case "pricing_table":
+      rendered = <PricingTable {...props} />;
+      break;
+
+    case "social_feed":
+      rendered = <SocialFeed {...props} />;
+      break;
+
+    case "countdown_promo":
+      rendered = <CountdownPromo {...props} />;
+      break;
+
+    case "video_section":
+      rendered = <VideoSection {...props} />;
+      break;
+
+    case "blog_preview":
+      rendered = <BlogPreview {...props} />;
       break;
 
     default:

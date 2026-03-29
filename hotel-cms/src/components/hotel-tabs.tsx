@@ -16,6 +16,9 @@ export default function HotelTabs({ hotelId }: HotelTabsProps) {
     { label: "Media", href: `/hotels/${hotelId}/media` },
     { label: "Theme", href: `/hotels/${hotelId}/theme` },
     { label: "Versions", href: `/hotels/${hotelId}/versions` },
+    { label: "SEO", href: `/hotels/${hotelId}/seo` },
+    { label: "Competitors", href: `/hotels/${hotelId}/competitors` },
+    { label: "Reviews", href: `/hotels/${hotelId}/reviews` },
   ];
 
   return (

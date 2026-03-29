@@ -15,6 +15,7 @@ export interface RoomsGridProps {
   showPrice?: boolean;
   showAmenities?: boolean;
   cta?: string;
+  ctaLink?: string;
   rooms?: RoomData[];
 }
 
@@ -45,6 +46,7 @@ export default function RoomsGrid({
   showPrice = true,
   showAmenities = true,
   cta = "View Room",
+  ctaLink = "#",
   rooms = [],
 }: RoomsGridProps) {
   const gridCols = colMap[columns] ?? colMap[3];
@@ -147,7 +149,7 @@ export default function RoomsGrid({
                 )}
 
                 <Link
-                  href="#booking"
+                  href={ctaLink || "#"}
                   className="inline-block text-xs tracking-[0.15em] uppercase text-stone-800 border-b border-stone-300 pb-0.5 hover:border-stone-800 transition-colors duration-200 font-medium"
                 >
                   {cta} →

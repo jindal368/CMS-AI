@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>hotelCMS — Documentation</title>
+  <title>hotelCMS — Documentation v3.0</title>
+  <meta name="description" content="AI-Powered Hotel Website Builder for Chains. Build and manage hotel websites across your entire portfolio with AI that understands your brand." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
@@ -194,7 +195,7 @@
       flex: 1;
       min-width: 0;
       padding: 48px 40px 80px;
-      max-width: 900px;
+      max-width: 920px;
     }
 
     /* ─── SECTIONS ─── */
@@ -286,7 +287,7 @@
     .hero-desc {
       font-size: 16px;
       color: rgba(255,255,255,0.5);
-      max-width: 520px;
+      max-width: 560px;
       line-height: 1.7;
       margin-bottom: 36px;
     }
@@ -313,6 +314,38 @@
     .hero-pill-dot {
       width: 5px; height: 5px;
       border-radius: 50%;
+    }
+
+    /* ─── STATS ROW ─── */
+    .stats-row {
+      display: flex;
+      gap: 32px;
+      margin-top: 32px;
+      padding-top: 28px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .stat {
+      text-align: center;
+    }
+
+    .stat-num {
+      font-size: 28px;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--coral-light), var(--purple-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1.2;
+    }
+
+    .stat-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.35);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-top: 2px;
     }
 
     /* ─── HEADINGS ─── */
@@ -364,6 +397,13 @@
       color: var(--text-2);
       line-height: 1.75;
       margin-bottom: 14px;
+    }
+
+    ul, ol {
+      color: var(--text-2);
+      padding-left: 20px;
+      margin-bottom: 14px;
+      line-height: 2;
     }
 
     /* ─── CARDS GRID ─── */
@@ -418,6 +458,10 @@
     .accent-blue { background: #eef4fd; color: #2f5fa8; }
     .accent-orange { background: #fdf5ee; color: #c46b1a; }
     .accent-pink { background: #fdf0f6; color: #b84a82; }
+    .accent-teal { background: #edf8f7; color: #1a7a6d; }
+    .accent-indigo { background: #eeedf7; color: #4338a8; }
+    .accent-amber { background: #fdf8ee; color: #a16207; }
+    .accent-rose { background: #fdf0f0; color: #be123c; }
 
     /* ─── CODE BLOCKS ─── */
     pre, code {
@@ -482,6 +526,10 @@
       margin: 20px 0;
     }
 
+    .table-scroll {
+      overflow-x: auto;
+    }
+
     table {
       width: 100%;
       border-collapse: collapse;
@@ -497,6 +545,7 @@
       padding: 12px 16px;
       text-align: left;
       border-bottom: 1px solid var(--border-light);
+      white-space: nowrap;
     }
 
     td {
@@ -624,13 +673,6 @@
       flex-shrink: 0;
     }
 
-    .arch-fork {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      align-items: flex-start;
-    }
-
     .arch-label {
       font-size: 10px;
       font-weight: 700;
@@ -699,6 +741,7 @@
     .method-post { background: var(--coral-bg); color: var(--coral-dark); }
     .method-put { background: var(--purple-bg); color: var(--purple-dark); }
     .method-delete { background: #fdeaed; color: #b52a3a; }
+    .method-patch { background: #fdf8ee; color: #a16207; }
 
     .endpoint-path {
       font-family: 'JetBrains Mono', monospace;
@@ -797,8 +840,6 @@
       flex-shrink: 0;
     }
 
-    .tech-info {}
-
     .tech-name {
       font-size: 13.5px;
       font-weight: 650;
@@ -851,13 +892,177 @@
       color: #3e2470;
     }
 
+    .callout-green {
+      background: #edf7f2;
+      border: 1px solid rgba(45,122,86,0.15);
+      color: #1a5a38;
+    }
+
     .callout-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+
+    /* ─── TOKEN LIST ─── */
+    .token-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 10px;
+      margin: 16px 0;
+    }
+
+    .token-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      background: var(--surface);
+      border: 1px solid var(--border-light);
+      border-radius: 10px;
+    }
+
+    .token-code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--coral-dark);
+      background: var(--coral-bg);
+      padding: 3px 8px;
+      border-radius: 5px;
+      white-space: nowrap;
+    }
+
+    .token-desc {
+      font-size: 12.5px;
+      color: var(--text-3);
+    }
+
+    /* ─── GRADE BADGES ─── */
+    .grade-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px; height: 28px;
+      border-radius: 7px;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+
+    .grade-a { background: #edf7f2; color: #2d7a56; }
+    .grade-b { background: #eef4fd; color: #2f5fa8; }
+    .grade-c { background: #fdf5ee; color: #c46b1a; }
+    .grade-d { background: var(--coral-bg); color: var(--coral-dark); }
+    .grade-f { background: #fdeaed; color: #b52a3a; }
+
+    /* ─── FLOW DIAGRAM STEPS ─── */
+    .flow-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      position: relative;
+      padding-left: 32px;
+    }
+
+    .flow-steps::before {
+      content: '';
+      position: absolute;
+      left: 11px;
+      top: 20px;
+      bottom: 20px;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--coral), var(--purple));
+    }
+
+    .flow-step {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 0 0 20px;
+      position: relative;
+    }
+
+    .flow-dot {
+      position: absolute;
+      left: -26px;
+      top: 6px;
+      width: 14px; height: 14px;
+      border-radius: 50%;
+      border: 2px solid var(--surface);
+      box-shadow: 0 0 0 2px var(--coral);
+      background: var(--coral);
+      flex-shrink: 0;
+    }
+
+    .flow-step:nth-child(even) .flow-dot {
+      box-shadow: 0 0 0 2px var(--purple);
+      background: var(--purple);
+    }
+
+    .flow-content {
+      background: var(--surface);
+      border: 1px solid var(--border-light);
+      border-radius: 10px;
+      padding: 12px 16px;
+      flex: 1;
+    }
+
+    .flow-title {
+      font-size: 13.5px;
+      font-weight: 650;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+
+    .flow-detail {
+      font-size: 12.5px;
+      color: var(--text-3);
+      line-height: 1.55;
+    }
 
     /* ─── DIVIDER ─── */
     .divider {
       height: 1px;
       background: linear-gradient(to right, transparent, var(--border), transparent);
       margin: 48px 0;
+    }
+
+    /* ─── LANGUAGE LIST ─── */
+    .lang-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 16px 0;
+    }
+
+    .lang-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--surface);
+      border: 1px solid var(--border-light);
+      border-radius: 8px;
+      padding: 6px 12px;
+      font-size: 12.5px;
+      font-weight: 500;
+      color: var(--text-2);
+    }
+
+    .lang-flag {
+      font-size: 14px;
+    }
+
+    /* ─── NEW BADGE ─── */
+    .new-badge {
+      display: inline-flex;
+      align-items: center;
+      font-size: 9px;
+      font-weight: 800;
+      padding: 2px 6px;
+      border-radius: 4px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      background: linear-gradient(135deg, var(--coral), var(--purple));
+      color: white;
+      margin-left: 6px;
+      vertical-align: middle;
     }
 
     /* ─── FOOTER ─── */
@@ -963,6 +1168,10 @@
       .cards-grid { grid-template-columns: 1fr; }
 
       .tech-grid { grid-template-columns: 1fr 1fr; }
+
+      .stats-row { gap: 20px; flex-wrap: wrap; }
+
+      .stat-num { font-size: 22px; }
     }
 
     @media (max-width: 600px) {
@@ -972,71 +1181,8 @@
       .tech-grid { grid-template-columns: 1fr; }
       .footer { flex-direction: column; align-items: flex-start; }
       .arch-diagram { padding: 24px 16px; }
-    }
-
-    /* ─── FLOW DIAGRAM STEPS ─── */
-    .flow-steps {
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-      position: relative;
-      padding-left: 32px;
-    }
-
-    .flow-steps::before {
-      content: '';
-      position: absolute;
-      left: 11px;
-      top: 20px;
-      bottom: 20px;
-      width: 2px;
-      background: linear-gradient(to bottom, var(--coral), var(--purple));
-    }
-
-    .flow-step {
-      display: flex;
-      align-items: flex-start;
-      gap: 16px;
-      padding: 0 0 20px;
-      position: relative;
-    }
-
-    .flow-dot {
-      position: absolute;
-      left: -26px;
-      top: 6px;
-      width: 14px; height: 14px;
-      border-radius: 50%;
-      border: 2px solid var(--surface);
-      box-shadow: 0 0 0 2px var(--coral);
-      background: var(--coral);
-      flex-shrink: 0;
-    }
-
-    .flow-step:nth-child(even) .flow-dot {
-      box-shadow: 0 0 0 2px var(--purple);
-      background: var(--purple);
-    }
-
-    .flow-content {
-      background: var(--surface);
-      border: 1px solid var(--border-light);
-      border-radius: 10px;
-      padding: 12px 16px;
-      flex: 1;
-    }
-
-    .flow-title {
-      font-size: 13.5px;
-      font-weight: 650;
-      color: var(--text);
-      margin-bottom: 4px;
-    }
-
-    .flow-detail {
-      font-size: 12.5px;
-      color: var(--text-3);
-      line-height: 1.55;
+      .token-grid { grid-template-columns: 1fr; }
+      .stats-row { gap: 16px; }
     }
   </style>
 </head>
@@ -1044,14 +1190,14 @@
 
 <!-- HEADER -->
 <header class="header">
-  <button class="mobile-menu-btn" id="menuBtn" onclick="toggleSidebar()" aria-label="Menu">☰</button>
+  <button class="mobile-menu-btn" id="menuBtn" onclick="toggleSidebar()" aria-label="Menu">&#9776;</button>
   <a href="#intro" class="header-logo">
     <div class="header-logo-icon">H</div>
     <span class="header-logo-text">hotel<span>CMS</span></span>
   </a>
   <span class="header-badge">Docs</span>
   <div class="header-spacer"></div>
-  <span class="header-version">v1.0</span>
+  <span class="header-version">v3.0</span>
 </header>
 
 <!-- SIDEBAR OVERLAY -->
@@ -1061,127 +1207,219 @@
 <nav class="sidebar" id="sidebar">
   <div class="sidebar-section">
     <div class="sidebar-label">Overview</div>
-    <a href="#intro" class="sidebar-link active"><span class="sidebar-icon">✦</span> Introduction</a>
-    <a href="#features" class="sidebar-link"><span class="sidebar-icon">⚡</span> Features</a>
-    <a href="#architecture" class="sidebar-link"><span class="sidebar-icon">🏗</span> Architecture</a>
+    <a href="#intro" class="sidebar-link active"><span class="sidebar-icon">&#10022;</span> Introduction</a>
+    <a href="#features" class="sidebar-link"><span class="sidebar-icon">&#9889;</span> Features</a>
+    <a href="#architecture" class="sidebar-link"><span class="sidebar-icon">&#9881;</span> Architecture</a>
   </div>
   <div class="sidebar-section">
     <div class="sidebar-label">Getting Started</div>
-    <a href="#getting-started" class="sidebar-link"><span class="sidebar-icon">🚀</span> Quick Start</a>
-    <a href="#operations" class="sidebar-link"><span class="sidebar-icon">⚙</span> CMS Operations</a>
+    <a href="#getting-started" class="sidebar-link"><span class="sidebar-icon">&#9654;</span> Quick Start</a>
+    <a href="#auth" class="sidebar-link"><span class="sidebar-icon">&#128274;</span> Auth &amp; Tenancy</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Core Features</div>
+    <a href="#operations" class="sidebar-link"><span class="sidebar-icon">&#9881;</span> CMS Operations</a>
+    <a href="#smart-links" class="sidebar-link"><span class="sidebar-icon">&#128279;</span> Smart Links</a>
+    <a href="#i18n" class="sidebar-link"><span class="sidebar-icon">&#127760;</span> Multi-Language</a>
+    <a href="#seo" class="sidebar-link"><span class="sidebar-icon">&#128269;</span> SEO Autopilot</a>
+    <a href="#health" class="sidebar-link"><span class="sidebar-icon">&#128200;</span> Health Scores</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">v3.0 Features</div>
+    <a href="#campaigns" class="sidebar-link"><span class="sidebar-icon">&#128227;</span> Campaigns</a>
+    <a href="#competitors" class="sidebar-link"><span class="sidebar-icon">&#128373;</span> Competitive Intel</a>
+    <a href="#reviews" class="sidebar-link"><span class="sidebar-icon">&#11088;</span> Review Response AI</a>
+    <a href="#brand-governance" class="sidebar-link"><span class="sidebar-icon">&#128737;</span> Brand Governance</a>
   </div>
   <div class="sidebar-section">
     <div class="sidebar-label">Reference</div>
-    <a href="#components" class="sidebar-link"><span class="sidebar-icon">◧</span> Component Registry</a>
-    <a href="#schema" class="sidebar-link"><span class="sidebar-icon">🗄</span> Database Schema</a>
-    <a href="#ai-flow" class="sidebar-link"><span class="sidebar-icon">🤖</span> AI Prompt Flow</a>
-    <a href="#api" class="sidebar-link"><span class="sidebar-icon">⟁</span> API Reference</a>
+    <a href="#components" class="sidebar-link"><span class="sidebar-icon">&#9639;</span> Components</a>
+    <a href="#schema" class="sidebar-link"><span class="sidebar-icon">&#128451;</span> Database Schema</a>
+    <a href="#api" class="sidebar-link"><span class="sidebar-icon">&#10033;</span> API Reference</a>
   </div>
   <div class="sidebar-section">
     <div class="sidebar-label">Appendix</div>
-    <a href="#tech-stack" class="sidebar-link"><span class="sidebar-icon">🔧</span> Tech Stack</a>
-    <a href="#shortcuts" class="sidebar-link"><span class="sidebar-icon">⌨</span> Shortcuts</a>
+    <a href="#tech-stack" class="sidebar-link"><span class="sidebar-icon">&#128295;</span> Tech Stack</a>
+    <a href="#shortcuts" class="sidebar-link"><span class="sidebar-icon">&#9000;</span> Shortcuts</a>
   </div>
 </nav>
 
 <!-- MAIN -->
 <main class="main">
 
-  <!-- ─── HERO ─── -->
+  <!-- ─── HERO / INTRODUCTION ─── -->
   <section id="intro" class="section">
     <div class="hero">
       <div class="hero-eyebrow">
         <div class="hero-eyebrow-dot"></div>
-        AI-Powered · No Code Required
+        AI-Powered &middot; Multi-Property &middot; Multi-Language
       </div>
       <h1>hotel<span>CMS</span></h1>
-      <div class="hero-tagline">AI-Powered Hotel Website Builder</div>
+      <div class="hero-tagline">AI-Powered Hotel Website Builder for Chains</div>
       <p class="hero-desc">
-        Create stunning hotel websites using pre-built components and AI that understands your brand.
-        Describe what you want in plain language — hotelCMS handles the rest. No coding required.
+        Build and manage hotel websites across your entire portfolio with AI that understands your brand.
+        Multi-property management, intelligent content generation, campaign syndication, competitive intelligence,
+        guest review AI, and one-click translations.
       </p>
       <div class="hero-pills">
-        <div class="hero-pill"><div class="hero-pill-dot" style="background:#e85d45"></div> 12 Pre-built Components</div>
+        <div class="hero-pill"><div class="hero-pill-dot" style="background:#e85d45"></div> 19 Core Features</div>
         <div class="hero-pill"><div class="hero-pill-dot" style="background:#7c5cbf"></div> 4-Tier AI Routing</div>
-        <div class="hero-pill"><div class="hero-pill-dot" style="background:#2d7a56"></div> RFC 6902 Versioning</div>
-        <div class="hero-pill"><div class="hero-pill-dot" style="background:#2f5fa8"></div> Visual Page Builder</div>
+        <div class="hero-pill"><div class="hero-pill-dot" style="background:#2d7a56"></div> 18 Operations</div>
+        <div class="hero-pill"><div class="hero-pill-dot" style="background:#2f5fa8"></div> 12 Components</div>
+        <div class="hero-pill"><div class="hero-pill-dot" style="background:#c46b1a"></div> 18 Languages</div>
+        <div class="hero-pill"><div class="hero-pill-dot" style="background:#b84a82"></div> 16 DB Models</div>
+      </div>
+      <div class="stats-row">
+        <div class="stat">
+          <div class="stat-num">12</div>
+          <div class="stat-label">Components</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">18</div>
+          <div class="stat-label">Operations</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">18</div>
+          <div class="stat-label">Languages</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">4</div>
+          <div class="stat-label">AI Tiers</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">16</div>
+          <div class="stat-label">DB Models</div>
+        </div>
       </div>
     </div>
 
     <p>
-      hotelCMS is a full-stack platform that combines a visual drag-and-drop page builder with a
-      multi-model AI engine. Hotel teams can manage their website through a CMS dashboard, while AI
-      interprets natural-language commands to modify content, swap components, adjust themes, and
-      even inject custom code — all version-controlled with instant rollback.
+      hotelCMS is a full-stack platform that combines a visual page builder with a multi-model AI engine designed
+      for hotel chains. Hotel teams manage their websites through a CMS dashboard, while AI interprets natural-language
+      commands to modify content, swap components, adjust themes, translate pages, and inject custom code &mdash; all
+      version-controlled with instant rollback.
+    </p>
+    <p>
+      v3.0 adds four major capabilities: <strong>AI Content Syndication</strong> for cross-property campaigns,
+      <strong>Competitive Intelligence</strong> for monitoring rival hotels, <strong>Guest Review Response AI</strong>
+      for sentiment-adjusted review replies, and <strong>Brand Governance</strong> for org-wide theme and section locking.
+      Manage one property or an entire fleet from a single dashboard.
     </p>
   </section>
 
-  <!-- ─── FEATURES ─── -->
+  <!-- ─── FEATURES OVERVIEW ─── -->
   <section id="features" class="section">
     <h2>
-      <div class="section-icon accent-coral">⚡</div>
+      <div class="section-icon accent-coral">&#9889;</div>
       Features Overview
     </h2>
-    <p class="section-desc">Everything you need to build, manage, and evolve a premium hotel website.</p>
+    <p class="section-desc">19 features to build, manage, and scale premium hotel websites across your portfolio.</p>
 
     <div class="cards-grid">
       <div class="card">
-        <div class="card-icon accent-coral">🧠</div>
+        <div class="card-icon accent-coral">&#129504;</div>
         <div class="card-title">Multi-LLM AI Engine</div>
-        <div class="card-desc">4-tier task routing selects the cheapest model that can handle each task. Tier 0 hits the DB directly, Tiers 1–3 escalate to increasingly capable LLMs. Every action is classified before execution.</div>
+        <div class="card-desc">4-tier task routing classifies every action and picks the cheapest model. Uses OpenRouter with Nemotron 120B free model. Tier 0 hits DB directly, Tiers 1-3 escalate to increasingly capable LLMs.</div>
       </div>
       <div class="card">
-        <div class="card-icon accent-purple">◧</div>
+        <div class="card-icon accent-purple">&#9639;</div>
         <div class="card-title">12 Pre-built Components</div>
-        <div class="card-desc">Hero (cinematic, editorial, minimal), Rooms (grid, showcase), Gallery (masonry, filmstrip), Booking (inline, sticky), Reviews wall, Map, and Footer — all production-ready.</div>
+        <div class="card-desc">Hero (cinematic, editorial, minimal), Rooms (grid, showcase), Gallery (masonry, filmstrip), Booking (inline, sticky), Reviews wall, Map, and Footer. All production-ready.</div>
       </div>
       <div class="card">
-        <div class="card-icon accent-blue">🖱</div>
+        <div class="card-icon accent-blue">&#128296;</div>
         <div class="card-title">Visual Page Builder</div>
-        <div class="card-desc">Drag sections to reorder, toggle visibility, preview live in an iframe, and fire AI commands from anywhere via the ⌘K command bar.</div>
+        <div class="card-desc">&#8984;K AI command bar, floating logs/diff panels, section management with drag-to-reorder, visibility toggles, and live preview iframe. Build pages visually or with AI.</div>
       </div>
       <div class="card">
-        <div class="card-icon accent-orange">✏</div>
+        <div class="card-icon accent-orange">&#9998;</div>
         <div class="card-title">AI Direct Code Editing</div>
-        <div class="card-desc">AI goes beyond structured CMS operations — it can inject custom CSS targeting any element or replace a section's HTML entirely for pixel-perfect custom layouts.</div>
+        <div class="card-desc">inject_css for CSS overrides, replace_html for full custom HTML. Goes beyond structured CMS &mdash; AI can produce pixel-perfect custom layouts when components aren't enough.</div>
       </div>
       <div class="card">
-        <div class="card-icon accent-green">💾</div>
-        <div class="card-title">Hotel Context & Memory</div>
-        <div class="card-desc">AI remembers your brand voice, visual style preferences, and past decisions. Each interaction contributes to a growing hotel context that makes AI responses more accurate over time.</div>
+        <div class="card-icon accent-green">&#128451;</div>
+        <div class="card-title">Hotel Context &amp; Memory</div>
+        <div class="card-desc">Per-hotel AI memory stores brand voice, style notes, and past decisions. AI gets smarter over time, producing content that matches your property's unique identity.</div>
       </div>
       <div class="card">
-        <div class="card-icon accent-coral">🕓</div>
+        <div class="card-icon accent-pink">&#128279;</div>
+        <div class="card-title">Smart Links</div>
+        <div class="card-desc">Central link registry per hotel. &#123;&#123;booking&#125;&#125;, &#123;&#123;phone&#125;&#125;, &#123;&#123;email&#125;&#125;, &#123;&#123;maps&#125;&#125;, &#123;&#123;instagram&#125;&#125; tokens auto-resolve everywhere across all components.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon accent-teal">&#127760;</div>
+        <div class="card-title">Multi-Language AI</div>
+        <div class="card-desc">"Translate to French" clones all pages and AI translates text. 18 languages supported. Locale-aware preview with language switcher widget.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon accent-indigo">&#128269;</div>
+        <div class="card-title">SEO Autopilot</div>
+        <div class="card-desc">Auto-generated sitemap.xml, schema.org JSON-LD (Hotel + Room), SEO audit with 9 checks and scoring 0-100, issues dashboard per hotel.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon accent-coral">&#128274;</div>
+        <div class="card-title">Auth &amp; Multi-Tenancy</div>
+        <div class="card-desc">Organizations, users with roles (admin/editor/viewer), per-hotel access control. Session-based auth with httpOnly cookies. Team management built in.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon accent-purple">&#128200;</div>
+        <div class="card-title">Multi-Property Dashboard</div>
+        <div class="card-desc">Fleet management view with health scores (A/B/C/D/F) per hotel, prioritized action queue with critical/warning/info levels. Manage your entire portfolio at a glance.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon accent-blue">&#128260;</div>
         <div class="card-title">Version Control</div>
-        <div class="card-desc">Every change is stored as an RFC 6902 JSON patch. View the full version timeline, compare diffs, publish, reject, or rollback to any previous state with one click.</div>
+        <div class="card-desc">RFC 6902 JSON patches, instant rollback, full version timeline with model attribution. Every change is tracked &mdash; publish, reject, or restore any state.</div>
       </div>
       <div class="card">
-        <div class="card-icon accent-purple">⚔</div>
-        <div class="card-title">Smart Merge</div>
-        <div class="card-desc">Detects and handles conflicts when structured CMS edits collide with AI custom HTML/CSS overrides, preventing silent data loss.</div>
-      </div>
-      <div class="card">
-        <div class="card-icon accent-pink">🔗</div>
-        <div class="card-title">Reference URL Generation</div>
-        <div class="card-desc">Paste a competitor or inspiration URL — the AI scrapes its structure and generates a full homepage with matching aesthetic and layout, adapted to your hotel's content.</div>
-      </div>
-      <div class="card">
-        <div class="card-icon accent-blue">🖼</div>
+        <div class="card-icon accent-orange">&#128247;</div>
         <div class="card-title">Image Pipeline</div>
-        <div class="card-desc">Upload → EXIF strip → WebP + AVIF conversion → responsive srcset generation → AI-generated alt text and semantic tags. Images are optimized for Core Web Vitals out of the box.</div>
+        <div class="card-desc">Upload &rarr; EXIF strip &rarr; WebP/AVIF conversion &rarr; responsive srcset generation &rarr; AI alt-text &amp; tagging. Optimized for Core Web Vitals out of the box.</div>
       </div>
       <div class="card">
-        <div class="card-icon accent-orange">🎨</div>
+        <div class="card-icon accent-green">&#127912;</div>
         <div class="card-title">Theme Editor</div>
-        <div class="card-desc">Color tokens, typography scales, spacing rhythm, and border radius — all editable with a live-preview swatch. Changes propagate instantly across all components.</div>
+        <div class="card-desc">Color tokens, typography, spacing, border radius, and base template. Live preview swatch. Changes propagate instantly across all components on the site.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon accent-pink">&#127760;</div>
+        <div class="card-title">URL Reference Generation</div>
+        <div class="card-desc">Give AI a URL like "hablis.com" and it scrapes the structure, then generates a homepage inspired by that site &mdash; adapted to your hotel's content and brand.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon accent-teal">&#9876;</div>
+        <div class="card-title">Smart Merge</div>
+        <div class="card-desc">Conflict detection when CMS edits collide with AI custom overrides. Keep, Discard, or Re-apply options prevent silent data loss during concurrent edits.</div>
+      </div>
+
+      <!-- v3.0 NEW FEATURES -->
+      <div class="card" style="border-color: rgba(232,93,69,0.3);">
+        <div class="card-icon accent-coral">&#128227;</div>
+        <div class="card-title">AI Content Syndication <span class="new-badge">v3.0</span></div>
+        <div class="card-desc">Write once, AI adapts for each property. Create managed campaigns with title, brief, and hotel targets. Launch deploys AI-tailored content; end removes it cleanly. Full lifecycle management.</div>
+      </div>
+      <div class="card" style="border-color: rgba(124,92,191,0.3);">
+        <div class="card-icon accent-purple">&#128373;</div>
+        <div class="card-title">Competitive Intelligence <span class="new-badge">v3.0</span></div>
+        <div class="card-desc">Monitor competitor websites, detect changes via periodic scans, and get AI-generated counter-move suggestions. Track scan history and competitive landscape per hotel.</div>
+      </div>
+      <div class="card" style="border-color: rgba(26,122,109,0.3);">
+        <div class="card-icon accent-teal">&#11088;</div>
+        <div class="card-title">Guest Review Response AI <span class="new-badge">v3.0</span></div>
+        <div class="card-desc">Paste guest reviews, AI drafts on-brand responses with sentiment-adjusted tone. Positive reviews get warm acknowledgment; negative reviews get empathetic resolution. Copy to clipboard, analytics dashboard.</div>
+      </div>
+      <div class="card" style="border-color: rgba(161,98,7,0.3);">
+        <div class="card-icon accent-amber">&#128737;</div>
+        <div class="card-title">Brand Governance Engine <span class="new-badge">v3.0</span></div>
+        <div class="card-desc">Org-level brand themes and locked sections cascade to all hotels. AI protection ensures locked content cannot be overwritten. Enforces visual and content consistency across the fleet.</div>
       </div>
     </div>
   </section>
 
-  <!-- ─── ARCHITECTURE ─── -->
+  <!-- ─── ARCHITECTURE OVERVIEW ─── -->
   <section id="architecture" class="section">
     <h2>
-      <div class="section-icon accent-purple">🏗</div>
+      <div class="section-icon accent-purple">&#9881;</div>
       Architecture Overview
     </h2>
     <p class="section-desc">hotelCMS uses a layered architecture where every user action passes through an intent classifier before reaching the database or an LLM.</p>
@@ -1191,43 +1429,52 @@
       <div class="arch-col" style="gap:12px;">
         <div class="arch-row">
           <div class="arch-node accent-coral-dark">User</div>
-          <div class="arch-arrow">→</div>
+          <div class="arch-arrow">&rarr;</div>
           <div class="arch-node">CMS Dashboard</div>
-          <div class="arch-arrow">→</div>
+          <div class="arch-arrow">&rarr;</div>
           <div class="arch-node">Intent Classifier</div>
-          <div class="arch-arrow">→</div>
+          <div class="arch-arrow">&rarr;</div>
           <div class="arch-node">Tier Router</div>
         </div>
         <div style="display:flex; align-items:center; justify-content:center; gap:16px; flex-wrap:wrap; margin-top:4px;">
-          <div class="arch-arrow" style="transform:rotate(90deg);">→</div>
+          <div class="arch-arrow" style="transform:rotate(90deg);">&rarr;</div>
         </div>
         <div class="arch-row" style="gap:12px;">
-          <div class="arch-node tier-0" style="background:rgba(45,122,86,0.2);border-color:rgba(45,122,86,0.4);color:#5fcf8a;">Tier 0: Direct DB</div>
-          <div style="color:rgba(255,255,255,0.2);font-size:13px;">│</div>
-          <div class="arch-node accent-coral-dark">Tier 1–3: LLM</div>
+          <div class="arch-node" style="background:rgba(45,122,86,0.2);border-color:rgba(45,122,86,0.4);color:#5fcf8a;">Tier 0: Direct DB</div>
+          <div style="color:rgba(255,255,255,0.2);font-size:13px;">|</div>
+          <div class="arch-node accent-coral-dark">Tier 1-3: LLM via OpenRouter</div>
         </div>
         <div style="display:flex; align-items:center; justify-content:center; gap:16px; margin-top:4px;">
-          <div class="arch-arrow" style="transform:rotate(90deg);">→</div>
+          <div class="arch-arrow" style="transform:rotate(90deg);">&rarr;</div>
         </div>
-        <div class="arch-row">
-          <div class="arch-node accent-purple-dark">Operations Executor</div>
-          <div class="arch-arrow">→</div>
+        <div class="arch-row" style="gap:8px;">
+          <div class="arch-node accent-purple-dark">Ops Executor</div>
+          <div class="arch-arrow">&rarr;</div>
           <div class="arch-node">PostgreSQL</div>
-          <div class="arch-arrow">→</div>
+          <div class="arch-arrow">&rarr;</div>
           <div class="arch-node">Renderer</div>
-          <div class="arch-arrow">→</div>
-          <div class="arch-node accent-green-dark">Live Preview</div>
+          <div class="arch-arrow">&rarr;</div>
+          <div class="arch-node accent-green-dark">Preview</div>
+        </div>
+        <div style="margin-top:20px; display:flex; justify-content:center; gap:16px; flex-wrap:wrap;">
+          <div class="arch-node" style="font-size:11px; padding:8px 12px; opacity:0.7;">13 CMS Ops</div>
+          <div class="arch-node" style="font-size:11px; padding:8px 12px; opacity:0.7;">5 Code Editing Ops</div>
+          <div class="arch-node" style="font-size:11px; padding:8px 12px; opacity:0.7;">Campaigns</div>
+          <div class="arch-node" style="font-size:11px; padding:8px 12px; opacity:0.7;">Competitors</div>
+          <div class="arch-node" style="font-size:11px; padding:8px 12px; opacity:0.7;">Reviews</div>
+          <div class="arch-node" style="font-size:11px; padding:8px 12px; opacity:0.7;">Brand Gov</div>
         </div>
       </div>
     </div>
 
     <h3>Tech Foundation</h3>
-    <p>Built on <strong>Next.js 16</strong> with App Router and Server Components for zero-JS pages by default.
+    <p>Built on <strong>Next.js 16</strong> with App Router, Server Components, and Turbopack.
     <strong>PostgreSQL</strong> with <strong>Prisma ORM</strong> for typed database access. <strong>OpenRouter</strong>
-    as the LLM gateway to swap between providers. <strong>Tailwind CSS</strong> for component styling.</p>
+    as the LLM gateway using <code>nvidia/nemotron-3-super-120b-a12b:free</code>. <strong>Tailwind CSS</strong> for component styling. <strong>bcryptjs</strong> for password hashing.</p>
 
     <h3>Tier Routing Logic</h3>
     <div class="table-wrap">
+      <div class="table-scroll">
       <table>
         <thead>
           <tr>
@@ -1240,37 +1487,38 @@
         <tbody>
           <tr>
             <td><span class="tier-badge tier-0">Tier 0</span></td>
-            <td>Rule-matched: simple text/prop updates</td>
+            <td>Rule-matched: simple text/prop updates, meta changes</td>
             <td>Direct DB write, no LLM call</td>
             <td>&lt; 50ms</td>
           </tr>
           <tr>
             <td><span class="tier-badge tier-1">Tier 1</span></td>
-            <td>Structured CMS ops, low complexity</td>
-            <td>Fast, cheap LLM (e.g. Haiku)</td>
+            <td>Structured CMS ops: swap, add/remove section, reorder</td>
+            <td>Fast, cheap LLM</td>
             <td>~400ms</td>
           </tr>
           <tr>
             <td><span class="tier-badge tier-2">Tier 2</span></td>
-            <td>Multi-step ops, theme changes, memory</td>
-            <td>Mid-tier LLM (e.g. Sonnet)</td>
+            <td>Multi-step ops: theme changes, memory, brand voice, translations</td>
+            <td>Mid-tier LLM</td>
             <td>~1.5s</td>
           </tr>
           <tr>
             <td><span class="tier-badge tier-3">Tier 3</span></td>
-            <td>Code injection, HTML replacement, complex reasoning</td>
-            <td>Frontier LLM (e.g. Opus / GPT-4o)</td>
+            <td>Code injection, HTML replacement, URL reference, complex reasoning</td>
+            <td>Frontier LLM (Nemotron 120B)</td>
             <td>~4s</td>
           </tr>
         </tbody>
       </table>
+      </div>
     </div>
   </section>
 
   <!-- ─── GETTING STARTED ─── -->
   <section id="getting-started" class="section">
     <h2>
-      <div class="section-icon accent-green">🚀</div>
+      <div class="section-icon accent-green">&#9654;</div>
       Getting Started
     </h2>
     <p class="section-desc">Get hotelCMS running locally in under 5 minutes.</p>
@@ -1282,7 +1530,7 @@
           <div class="step-title">Install PostgreSQL</div>
           <div class="step-desc">hotelCMS requires PostgreSQL 14+. Install via Homebrew (macOS), apt (Ubuntu), or use a managed service like Neon or Supabase.</div>
           <pre><code><span class="cm"># macOS</span>
-<span class="fn">brew</span> install postgresql@16 <span class="op">&&</span> <span class="fn">brew</span> services start postgresql@16
+<span class="fn">brew</span> install postgresql@16 <span class="op">&amp;&amp;</span> <span class="fn">brew</span> services start postgresql@16
 
 <span class="cm"># Ubuntu</span>
 <span class="fn">sudo</span> apt install -y postgresql postgresql-contrib</code></pre>
@@ -1303,13 +1551,10 @@
         <div class="step-num">3</div>
         <div class="step-content">
           <div class="step-title">Configure environment variables</div>
-          <div class="step-desc">Copy the example env file and fill in your credentials.</div>
-          <pre><code><span class="fn">cp</span> .env.example .env</code></pre>
+          <div class="step-desc">Create a <code>.env</code> file in the project root with these required variables.</div>
           <pre><code><span class="cm"># .env</span>
 <span class="prop">DATABASE_URL</span>=<span class="str">"postgresql://user:password@localhost:5432/hotelcms"</span>
-<span class="prop">OPENROUTER_API_KEY</span>=<span class="str">"sk-or-..."</span>
-<span class="prop">NEXTAUTH_SECRET</span>=<span class="str">"your-secret-here"</span>
-<span class="prop">NEXT_PUBLIC_APP_URL</span>=<span class="str">"http://localhost:3000"</span></code></pre>
+<span class="prop">OPENROUTER_API_KEY</span>=<span class="str">"sk-or-..."</span></code></pre>
         </div>
       </div>
 
@@ -1317,7 +1562,7 @@
         <div class="step-num">4</div>
         <div class="step-content">
           <div class="step-title">Run database migrations</div>
-          <pre><code><span class="fn">npx</span> prisma migrate dev <span class="op">--</span>name init</code></pre>
+          <pre><code><span class="fn">npx</span> prisma migrate dev</code></pre>
         </div>
       </div>
 
@@ -1325,7 +1570,7 @@
         <div class="step-num">5</div>
         <div class="step-content">
           <div class="step-title">Seed demo data</div>
-          <div class="step-desc">Populate the database with a sample hotel, pages, and components.</div>
+          <div class="step-desc">Creates a "Demo Hotel Group" organization, sample hotel, pages, components, and an admin user.</div>
           <pre><code><span class="fn">npx</span> prisma db seed</code></pre>
         </div>
       </div>
@@ -1342,26 +1587,111 @@
         <div class="step-num">7</div>
         <div class="step-content">
           <div class="step-title">Open hotelCMS</div>
-          <div class="step-desc">Navigate to the CMS dashboard in your browser.</div>
+          <div class="step-desc">Navigate to <code>http://localhost:3000</code> &mdash; it redirects to <code>/login</code>.</div>
           <pre><code>http://localhost:3000</code></pre>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">8</div>
+        <div class="step-content">
+          <div class="step-title">Log in with the seeded admin account</div>
+          <pre><code><span class="prop">Email</span>:    <span class="str">admin@hotelcms.com</span>
+<span class="prop">Password</span>: <span class="str">admin123</span></code></pre>
           <div class="callout callout-coral">
-            <div class="callout-icon">💡</div>
-            <div>Press <kbd>⌘K</kbd> anywhere in the dashboard to open the AI command bar. Try: <em>"Make the hero section cinematic with a full-bleed image"</em></div>
+            <div class="callout-icon">&#128161;</div>
+            <div>Press <kbd>&#8984;K</kbd> anywhere in the dashboard to open the AI command bar. Try: <em>"Make the hero section cinematic with a full-bleed image"</em></div>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ─── CMS OPERATIONS ─── -->
+  <!-- ─── MULTI-TENANCY & AUTH ─── -->
+  <section id="auth" class="section">
+    <h2>
+      <div class="section-icon accent-coral">&#128274;</div>
+      Multi-Tenancy &amp; Auth
+    </h2>
+    <p class="section-desc">Organizations own hotels, users belong to organizations with role-based access control.</p>
+
+    <h3>Entity Hierarchy</h3>
+    <div class="arch-diagram">
+      <div class="arch-label">Ownership Model</div>
+      <div class="arch-row" style="gap:0;">
+        <div class="arch-node accent-purple-dark">Organization</div>
+        <div class="arch-arrow">&rarr;</div>
+        <div class="arch-node accent-coral-dark">Hotels [ ]</div>
+        <div class="arch-arrow">&rarr;</div>
+        <div class="arch-node accent-green-dark">Pages, Rooms, Media</div>
+      </div>
+      <div style="margin-top:16px;">
+        <div class="arch-row" style="gap:0;">
+          <div class="arch-node accent-purple-dark">Organization</div>
+          <div class="arch-arrow">&rarr;</div>
+          <div class="arch-node">Users [ ]</div>
+          <div class="arch-arrow">&rarr;</div>
+          <div class="arch-node" style="font-size:11.5px;">role + hotelAccess</div>
+        </div>
+      </div>
+    </div>
+
+    <h3>User Roles</h3>
+    <div class="table-wrap">
+      <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Role</th>
+            <th>Permissions</th>
+            <th>Hotel Access</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>admin</strong></td>
+            <td>Full access: create/delete hotels, manage users, all CMS operations, campaigns, brand governance</td>
+            <td>All hotels in organization</td>
+          </tr>
+          <tr>
+            <td><strong>editor</strong></td>
+            <td>Content editing: pages, sections, rooms, media, AI commands, review responses</td>
+            <td>Only assigned hotels via <code>hotelAccess</code> JSON array</td>
+          </tr>
+          <tr>
+            <td><strong>viewer</strong></td>
+            <td>Read-only: view dashboard, preview pages, view competitor insights</td>
+            <td>Only assigned hotels via <code>hotelAccess</code> JSON array</td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+
+    <h3>Session-Based Auth</h3>
+    <p>Authentication uses httpOnly cookies with session tokens stored in the database. No JWT &mdash; sessions can be revoked server-side instantly.</p>
+    <ul>
+      <li><code>POST /api/auth/register</code> &mdash; Create account (assigns to organization)</li>
+      <li><code>POST /api/auth/login</code> &mdash; Validate credentials, create session</li>
+      <li><code>POST /api/auth/logout</code> &mdash; Destroy session</li>
+      <li><code>GET /api/auth/me</code> &mdash; Return current user from session</li>
+    </ul>
+
+    <h3>Team Management</h3>
+    <p>Admins can invite users, assign roles, and control hotel-level access from the Users tab. Each user's <code>hotelAccess</code> field is a JSON array of hotel IDs they can access.</p>
+  </section>
+
+  <!-- ─── CMS OPERATIONS REFERENCE ─── -->
   <section id="operations" class="section">
     <h2>
-      <div class="section-icon accent-orange">⚙</div>
+      <div class="section-icon accent-orange">&#9881;</div>
       CMS Operations Reference
     </h2>
-    <p class="section-desc">The AI emits one or more of these 13 typed operations in response to every user command. Operations are validated with Zod and executed atomically.</p>
+    <p class="section-desc">The AI emits one or more of these 18 typed operations in response to every user command. Operations are validated with Zod and executed atomically.</p>
 
+    <h3>Content Operations</h3>
     <div class="table-wrap">
+      <div class="table-scroll">
       <table>
         <thead>
           <tr>
@@ -1420,6 +1750,24 @@
             <td><span class="tier-badge tier-1">Tier 1</span></td>
             <td><code>pageId</code>, <code>sectionIds</code> (ordered)</td>
           </tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+
+    <h3>Code Editing Operations</h3>
+    <div class="table-wrap">
+      <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Operation</th>
+            <th>Description</th>
+            <th>Min Tier</th>
+            <th>Key Payload Fields</th>
+          </tr>
+        </thead>
+        <tbody>
           <tr>
             <td><code>inject_css</code></td>
             <td>Append scoped custom CSS targeting a specific section or global scope</td>
@@ -1434,10 +1782,28 @@
           </tr>
           <tr>
             <td><code>clear_overrides</code></td>
-            <td>Remove all custom CSS / HTML overrides for a section, reverting to component defaults</td>
+            <td>Remove all custom CSS/HTML overrides for a section, revert to component defaults</td>
             <td><span class="tier-badge tier-1">Tier 1</span></td>
             <td><code>sectionId</code></td>
           </tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+
+    <h3>Context &amp; Memory Operations</h3>
+    <div class="table-wrap">
+      <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Operation</th>
+            <th>Description</th>
+            <th>Min Tier</th>
+            <th>Key Payload Fields</th>
+          </tr>
+        </thead>
+        <tbody>
           <tr>
             <td><code>save_memory</code></td>
             <td>Persist a fact or preference to the hotel's AI memory store for future sessions</td>
@@ -1452,23 +1818,490 @@
           </tr>
         </tbody>
       </table>
+      </div>
+    </div>
+
+    <h3>Translation Operations</h3>
+    <div class="table-wrap">
+      <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Operation</th>
+            <th>Description</th>
+            <th>Min Tier</th>
+            <th>Key Payload Fields</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>translate_site</code></td>
+            <td>Clone all pages for a locale, AI translates text content across every section</td>
+            <td><span class="tier-badge tier-2">Tier 2</span></td>
+            <td><code>hotelId</code>, <code>targetLocale</code></td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
     </div>
 
     <div class="callout callout-purple">
-      <div class="callout-icon">ℹ</div>
-      <div>A single AI response can contain multiple operations that execute in order. For example, swapping a component and then updating its props happens in one atomic transaction.</div>
+      <div class="callout-icon">&#8505;</div>
+      <div>A single AI response can contain multiple operations that execute in order. For example, swapping a component and then updating its props happens in one atomic transaction. The LLM approach selection rules determine which tier handles the full batch.</div>
     </div>
+  </section>
+
+  <!-- ─── SMART LINKS ─── -->
+  <section id="smart-links" class="section">
+    <h2>
+      <div class="section-icon accent-pink">&#128279;</div>
+      Smart Links
+    </h2>
+    <p class="section-desc">A centralized link registry per hotel. Tokens auto-resolve everywhere across all components, so you never hard-code URLs.</p>
+
+    <h3>Available Tokens</h3>
+    <div class="token-grid">
+      <div class="token-item">
+        <span class="token-code">{{booking}}</span>
+        <span class="token-desc">Booking engine URL</span>
+      </div>
+      <div class="token-item">
+        <span class="token-code">{{phone}}</span>
+        <span class="token-desc">Primary phone number</span>
+      </div>
+      <div class="token-item">
+        <span class="token-code">{{email}}</span>
+        <span class="token-desc">Contact email address</span>
+      </div>
+      <div class="token-item">
+        <span class="token-code">{{maps}}</span>
+        <span class="token-desc">Google Maps link</span>
+      </div>
+      <div class="token-item">
+        <span class="token-code">{{whatsapp}}</span>
+        <span class="token-desc">WhatsApp chat link</span>
+      </div>
+      <div class="token-item">
+        <span class="token-code">{{instagram}}</span>
+        <span class="token-desc">Instagram profile</span>
+      </div>
+      <div class="token-item">
+        <span class="token-code">{{facebook}}</span>
+        <span class="token-desc">Facebook page</span>
+      </div>
+      <div class="token-item">
+        <span class="token-code">{{twitter}}</span>
+        <span class="token-desc">Twitter/X profile</span>
+      </div>
+      <div class="token-item">
+        <span class="token-code">{{page:slug}}</span>
+        <span class="token-desc">Internal page by slug</span>
+      </div>
+    </div>
+
+    <h3>How It Works</h3>
+    <p>Tokens are auto-derived from the hotel's <code>contactInfo</code> JSON field. When a component renders <code>{{booking}}</code>, the renderer resolves it to the hotel's actual booking URL. Update the link in one place and it propagates everywhere.</p>
+    <p>The <strong>LinksEditor</strong> in the CMS sidebar allows editing all links for a hotel in one panel. Changes take effect immediately in the preview iframe.</p>
+  </section>
+
+  <!-- ─── MULTI-LANGUAGE ─── -->
+  <section id="i18n" class="section">
+    <h2>
+      <div class="section-icon accent-teal">&#127760;</div>
+      Multi-Language AI
+    </h2>
+    <p class="section-desc">One-click translation. AI clones your pages and translates all text content to the target language.</p>
+
+    <h3>18 Supported Languages</h3>
+    <div class="lang-grid">
+      <div class="lang-pill"><span class="lang-flag">&#127468;&#127463;</span> English</div>
+      <div class="lang-pill"><span class="lang-flag">&#127467;&#127479;</span> French</div>
+      <div class="lang-pill"><span class="lang-flag">&#127465;&#127466;</span> German</div>
+      <div class="lang-pill"><span class="lang-flag">&#127466;&#127480;</span> Spanish</div>
+      <div class="lang-pill"><span class="lang-flag">&#127470;&#127481;</span> Italian</div>
+      <div class="lang-pill"><span class="lang-flag">&#127477;&#127481;</span> Portuguese</div>
+      <div class="lang-pill"><span class="lang-flag">&#127475;&#127473;</span> Dutch</div>
+      <div class="lang-pill"><span class="lang-flag">&#127479;&#127482;</span> Russian</div>
+      <div class="lang-pill"><span class="lang-flag">&#127464;&#127475;</span> Chinese</div>
+      <div class="lang-pill"><span class="lang-flag">&#127471;&#127477;</span> Japanese</div>
+      <div class="lang-pill"><span class="lang-flag">&#127472;&#127479;</span> Korean</div>
+      <div class="lang-pill"><span class="lang-flag">&#127480;&#127462;</span> Arabic</div>
+      <div class="lang-pill"><span class="lang-flag">&#127470;&#127475;</span> Hindi</div>
+      <div class="lang-pill"><span class="lang-flag">&#127481;&#127469;</span> Thai</div>
+      <div class="lang-pill"><span class="lang-flag">&#127483;&#127475;</span> Vietnamese</div>
+      <div class="lang-pill"><span class="lang-flag">&#127470;&#127465;</span> Indonesian</div>
+      <div class="lang-pill"><span class="lang-flag">&#127481;&#127479;</span> Turkish</div>
+      <div class="lang-pill"><span class="lang-flag">&#127477;&#127473;</span> Polish</div>
+    </div>
+
+    <h3>Translation Flow</h3>
+    <div class="flow-steps">
+      <div class="flow-step">
+        <div class="flow-dot"></div>
+        <div class="flow-content">
+          <div class="flow-title">1 &mdash; Trigger translation</div>
+          <div class="flow-detail">User says "Translate to French" or clicks Add Language in the CMS locale switcher. Calls <code>POST /api/i18n/translate/[hotelId]</code>.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-dot"></div>
+        <div class="flow-content">
+          <div class="flow-title">2 &mdash; Clone pages</div>
+          <div class="flow-detail">All pages are cloned with a locale suffix. Section props are deep-copied. Structure is identical to the original.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-dot"></div>
+        <div class="flow-content">
+          <div class="flow-title">3 &mdash; AI batch translate</div>
+          <div class="flow-detail">All translatable text fields across all sections are sent to the LLM in a single batch. AI preserves HTML structure and only translates visible text.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-dot"></div>
+        <div class="flow-content">
+          <div class="flow-title">4 &mdash; Store per-locale</div>
+          <div class="flow-detail">Translated pages are stored with their locale code. Preview at <code>/preview/[hotelId]/lang/[locale]/[pageSlug]</code>.</div>
+        </div>
+      </div>
+    </div>
+
+    <h3>Preview &amp; Switching</h3>
+    <p>The preview renderer includes a <strong>language switcher widget</strong> that lets you toggle between locales in real-time. The CMS also has a locale switcher and an <strong>Add Language</strong> modal for triggering new translations.</p>
+    <p>To remove a locale: <code>DELETE /api/i18n/[hotelId]/[locale]</code></p>
+  </section>
+
+  <!-- ─── SEO AUTOPILOT ─── -->
+  <section id="seo" class="section">
+    <h2>
+      <div class="section-icon accent-indigo">&#128269;</div>
+      SEO Autopilot
+    </h2>
+    <p class="section-desc">Automatic sitemap, schema.org markup, robots.txt, and a 9-check SEO audit with scoring.</p>
+
+    <h3>Auto-Generated Files</h3>
+    <div class="table-wrap">
+      <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>File</th>
+            <th>URL</th>
+            <th>Contents</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>sitemap.xml</strong></td>
+            <td><code>/sitemap/[hotelId]/sitemap.xml</code></td>
+            <td>All published pages with lastmod, changefreq, priority. Includes locale variants.</td>
+          </tr>
+          <tr>
+            <td><strong>robots.txt</strong></td>
+            <td><code>/robots/[hotelId]</code></td>
+            <td>Standard robots.txt with sitemap reference.</td>
+          </tr>
+          <tr>
+            <td><strong>Schema.org JSON-LD</strong></td>
+            <td>Injected into preview &lt;head&gt;</td>
+            <td>Hotel schema (name, address, stars, amenities) + Room schema (name, price, occupancy) auto-generated from database.</td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+
+    <h3>SEO Audit</h3>
+    <p>The audit engine runs 9 checks against each hotel and produces a score from 0-100. Results are stored per hotel and displayed in the SEO tab.</p>
+
+    <div class="table-wrap">
+      <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Check</th>
+            <th>What It Validates</th>
+            <th>Impact</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Meta titles</td><td>Every page has a unique, properly-lengthed title</td><td>High</td></tr>
+          <tr><td>Meta descriptions</td><td>Every page has a description between 120-160 chars</td><td>High</td></tr>
+          <tr><td>Image alt text</td><td>All images have descriptive alt attributes</td><td>Medium</td></tr>
+          <tr><td>Heading hierarchy</td><td>Pages use H1-H6 correctly without skipping levels</td><td>Medium</td></tr>
+          <tr><td>Schema.org markup</td><td>Hotel and Room JSON-LD is valid and complete</td><td>High</td></tr>
+          <tr><td>Sitemap presence</td><td>sitemap.xml exists and is valid XML</td><td>Medium</td></tr>
+          <tr><td>robots.txt</td><td>robots.txt exists and references sitemap</td><td>Low</td></tr>
+          <tr><td>Page performance</td><td>Page load signals (image sizes, srcset usage)</td><td>Medium</td></tr>
+          <tr><td>Mobile readiness</td><td>Viewport meta, responsive images, touch targets</td><td>High</td></tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+
+    <p>Trigger an audit: <code>GET /api/seo/audit/[hotelId]</code> (reads cached) or <code>POST /api/seo/audit/[hotelId]</code> (runs fresh audit).</p>
+  </section>
+
+  <!-- ─── HEALTH SCORE SYSTEM ─── -->
+  <section id="health" class="section">
+    <h2>
+      <div class="section-icon accent-green">&#128200;</div>
+      Health Score System
+    </h2>
+    <p class="section-desc">Every hotel gets a health score calculated from 7 weighted factors. The dashboard shows grade badges and prioritized action queues.</p>
+
+    <h3>Score Breakdown</h3>
+    <div class="table-wrap">
+      <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Factor</th>
+            <th>Max Points</th>
+            <th>Condition</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>hasTheme</strong></td><td>15</td><td>Hotel has a theme configured with colors and typography</td></tr>
+          <tr><td><strong>hasPages</strong></td><td>20</td><td>Hotel has at least one published page with sections</td></tr>
+          <tr><td><strong>hasRooms</strong></td><td>15</td><td>Hotel has room records with pricing and descriptions</td></tr>
+          <tr><td><strong>hasMedia</strong></td><td>10</td><td>Hotel has uploaded media assets</td></tr>
+          <tr><td><strong>contentFresh</strong></td><td>20</td><td>Content was updated within the last 30 days</td></tr>
+          <tr><td><strong>noPendingDrafts</strong></td><td>10</td><td>No unpublished draft versions pending review</td></tr>
+          <tr><td><strong>hasContext</strong></td><td>10</td><td>Hotel has AI context/memory entries for brand voice</td></tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+
+    <h3>Grade Mapping</h3>
+    <div style="display:flex; gap:16px; flex-wrap:wrap; margin:16px 0;">
+      <div style="display:flex; align-items:center; gap:8px;">
+        <div class="grade-badge grade-a">A</div>
+        <span style="font-size:13px; color:var(--text-2);">90-100 pts</span>
+      </div>
+      <div style="display:flex; align-items:center; gap:8px;">
+        <div class="grade-badge grade-b">B</div>
+        <span style="font-size:13px; color:var(--text-2);">80-89 pts</span>
+      </div>
+      <div style="display:flex; align-items:center; gap:8px;">
+        <div class="grade-badge grade-c">C</div>
+        <span style="font-size:13px; color:var(--text-2);">65-79 pts</span>
+      </div>
+      <div style="display:flex; align-items:center; gap:8px;">
+        <div class="grade-badge grade-d">D</div>
+        <span style="font-size:13px; color:var(--text-2);">50-64 pts</span>
+      </div>
+      <div style="display:flex; align-items:center; gap:8px;">
+        <div class="grade-badge grade-f">F</div>
+        <span style="font-size:13px; color:var(--text-2);">&lt; 50 pts</span>
+      </div>
+    </div>
+
+    <h3>Action Queue</h3>
+    <p>The dashboard generates a prioritized action queue for each hotel based on its health score deficiencies. Actions are tagged as <strong>critical</strong> (blocks publishing), <strong>warning</strong> (hurts quality), or <strong>info</strong> (improvement suggestion).</p>
+  </section>
+
+  <!-- ─── CAMPAIGNS (v3.0) ─── -->
+  <section id="campaigns" class="section">
+    <h2>
+      <div class="section-icon accent-coral">&#128227;</div>
+      AI Content Syndication <span class="new-badge">v3.0</span>
+    </h2>
+    <p class="section-desc">Write one campaign brief, AI adapts the content for each target property. Full lifecycle: create, launch, monitor, and end.</p>
+
+    <h3>Campaign Lifecycle</h3>
+    <div class="flow-steps">
+      <div class="flow-step">
+        <div class="flow-dot"></div>
+        <div class="flow-content">
+          <div class="flow-title">1 &mdash; Create campaign</div>
+          <div class="flow-detail">Set a title (e.g. "Summer Escape 2026"), write a brief describing the promotion, and select target hotels. Stored as a <code>Campaign</code> record with status <code>draft</code>.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-dot"></div>
+        <div class="flow-content">
+          <div class="flow-title">2 &mdash; Launch campaign</div>
+          <div class="flow-detail">AI reads the brief and each hotel's context, then generates tailored promotional content per property. A boutique beach resort gets different messaging than a downtown business hotel. Status moves to <code>active</code>.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-dot"></div>
+        <div class="flow-content">
+          <div class="flow-title">3 &mdash; Monitor deployment</div>
+          <div class="flow-detail">The campaign dashboard shows per-hotel deployment status: pending, deployed, or failed. Retry available for failures.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-dot"></div>
+        <div class="flow-content">
+          <div class="flow-title">4 &mdash; End campaign</div>
+          <div class="flow-detail">Click "End Campaign" to remove promotional content from all participating hotels in one step. Status moves to <code>ended</code>. Clean removal, no manual cleanup.</div>
+        </div>
+      </div>
+    </div>
+
+    <h3>Data Model</h3>
+    <p>The <code>Campaign</code> Prisma model stores: <code>title</code>, <code>brief</code>, <code>hotelIds</code> (JSON array), <code>status</code> (draft/active/ended), <code>deployments</code> (JSON with per-hotel results), and <code>organizationId</code>.</p>
+
+    <h3>API Endpoints</h3>
+    <ul>
+      <li><code>GET /api/campaigns</code> &mdash; List all campaigns for the organization</li>
+      <li><code>POST /api/campaigns</code> &mdash; Create a new campaign</li>
+      <li><code>GET /api/campaigns/[id]</code> &mdash; Get campaign details with deployment status</li>
+      <li><code>PUT /api/campaigns/[id]</code> &mdash; Update campaign title, brief, or target hotels</li>
+      <li><code>DELETE /api/campaigns/[id]</code> &mdash; Delete a campaign</li>
+      <li><code>POST /api/campaigns/[id]/launch</code> &mdash; Launch: AI generates and deploys content</li>
+      <li><code>POST /api/campaigns/[id]/end</code> &mdash; End: removes campaign content from all hotels</li>
+    </ul>
+  </section>
+
+  <!-- ─── COMPETITIVE INTELLIGENCE (v3.0) ─── -->
+  <section id="competitors" class="section">
+    <h2>
+      <div class="section-icon accent-purple">&#128373;</div>
+      Competitive Intelligence <span class="new-badge">v3.0</span>
+    </h2>
+    <p class="section-desc">Monitor competitor hotel websites. Detect changes and get AI-generated strategic counter-move suggestions.</p>
+
+    <h3>How It Works</h3>
+    <div class="flow-steps">
+      <div class="flow-step">
+        <div class="flow-dot"></div>
+        <div class="flow-content">
+          <div class="flow-title">1 &mdash; Add competitors</div>
+          <div class="flow-detail">Enter a competitor's name and website URL. The competitor is linked to a specific hotel in your portfolio for targeted analysis.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-dot"></div>
+        <div class="flow-content">
+          <div class="flow-title">2 &mdash; Scan competitor sites</div>
+          <div class="flow-detail">Trigger a scan manually or for all competitors at once. The system fetches the competitor's website, extracts content, and stores a snapshot as a <code>CompetitorScan</code>.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-dot"></div>
+        <div class="flow-content">
+          <div class="flow-title">3 &mdash; AI analysis</div>
+          <div class="flow-detail">AI compares the competitor's content against your hotel's site and generates insights: what they changed, what they do better, and recommended counter-moves.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-dot"></div>
+        <div class="flow-content">
+          <div class="flow-title">4 &mdash; Track over time</div>
+          <div class="flow-detail">Scan history is preserved. Compare snapshots over time to detect pricing changes, new promotions, or content strategy shifts.</div>
+        </div>
+      </div>
+    </div>
+
+    <h3>Data Model</h3>
+    <p><code>Competitor</code> stores: <code>name</code>, <code>websiteUrl</code>, <code>hotelId</code>, <code>notes</code>, <code>lastScannedAt</code>. <code>CompetitorScan</code> stores: <code>competitorId</code>, <code>content</code> (extracted text), <code>insights</code> (AI-generated JSON), <code>scannedAt</code>.</p>
+
+    <h3>API Endpoints</h3>
+    <ul>
+      <li><code>GET /api/competitors</code> &mdash; List competitors (filtered by hotel)</li>
+      <li><code>POST /api/competitors</code> &mdash; Add a new competitor</li>
+      <li><code>GET /api/competitors/[id]</code> &mdash; Get competitor details with latest scan</li>
+      <li><code>PUT /api/competitors/[id]</code> &mdash; Update competitor info</li>
+      <li><code>DELETE /api/competitors/[id]</code> &mdash; Remove a competitor</li>
+      <li><code>POST /api/competitors/[id]/scan</code> &mdash; Trigger a scan for one competitor</li>
+      <li><code>POST /api/competitors/scan-all</code> &mdash; Scan all competitors for a hotel</li>
+      <li><code>GET /api/competitors/[id]/history</code> &mdash; Get scan history with snapshots</li>
+    </ul>
+  </section>
+
+  <!-- ─── GUEST REVIEW RESPONSE AI (v3.0) ─── -->
+  <section id="reviews" class="section">
+    <h2>
+      <div class="section-icon accent-teal">&#11088;</div>
+      Guest Review Response AI <span class="new-badge">v3.0</span>
+    </h2>
+    <p class="section-desc">Paste guest reviews from any platform. AI drafts on-brand responses with sentiment-adjusted tone. Analytics dashboard for tracking review health.</p>
+
+    <h3>Response Generation Flow</h3>
+    <div class="flow-steps">
+      <div class="flow-step">
+        <div class="flow-dot"></div>
+        <div class="flow-content">
+          <div class="flow-title">1 &mdash; Add review</div>
+          <div class="flow-detail">Paste the guest name, rating (1-5), platform (Google/TripAdvisor/Booking.com/etc.), and review text. AI immediately analyzes sentiment.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-dot"></div>
+        <div class="flow-content">
+          <div class="flow-title">2 &mdash; AI drafts response</div>
+          <div class="flow-detail">Using the hotel's brand voice and the review's sentiment, AI generates an appropriate response. Positive reviews get warm acknowledgment; negative reviews get empathetic, resolution-focused replies.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-dot"></div>
+        <div class="flow-content">
+          <div class="flow-title">3 &mdash; Review and copy</div>
+          <div class="flow-detail">Edit the response if needed, then copy to clipboard and paste directly into the review platform. Regenerate option available for alternative wording.</div>
+        </div>
+      </div>
+    </div>
+
+    <h3>Sentiment Analysis</h3>
+    <p>Each review is tagged with a sentiment: <strong>positive</strong>, <strong>neutral</strong>, or <strong>negative</strong>. The analytics dashboard shows aggregate sentiment distribution, average rating, and response rate for each hotel.</p>
+
+    <h3>Data Model</h3>
+    <p><code>Review</code> stores: <code>guestName</code>, <code>platform</code>, <code>rating</code>, <code>reviewText</code>, <code>sentiment</code>, <code>aiResponse</code>, <code>status</code> (pending/responded), <code>hotelId</code>.</p>
+
+    <h3>API Endpoints</h3>
+    <ul>
+      <li><code>GET /api/reviews</code> &mdash; List reviews for a hotel (with filtering/sorting)</li>
+      <li><code>POST /api/reviews</code> &mdash; Add a review and trigger AI response generation</li>
+      <li><code>GET /api/reviews/[id]</code> &mdash; Get review details with AI response</li>
+      <li><code>PUT /api/reviews/[id]</code> &mdash; Update review or response</li>
+      <li><code>DELETE /api/reviews/[id]</code> &mdash; Delete a review</li>
+      <li><code>POST /api/reviews/[id]/regenerate</code> &mdash; Regenerate AI response with alternative wording</li>
+      <li><code>GET /api/reviews/stats</code> &mdash; Get sentiment analytics per hotel</li>
+    </ul>
+  </section>
+
+  <!-- ─── BRAND GOVERNANCE (v3.0) ─── -->
+  <section id="brand-governance" class="section">
+    <h2>
+      <div class="section-icon accent-amber">&#128737;</div>
+      Brand Governance Engine <span class="new-badge">v3.0</span>
+    </h2>
+    <p class="section-desc">Org-level brand themes and locked sections cascade to all hotels. AI protection ensures locked content stays consistent across the fleet.</p>
+
+    <h3>How It Works</h3>
+    <p>Brand governance operates at the <strong>organization level</strong>. Admins define a master brand theme (colors, typography, spacing) and designate locked sections (e.g., the footer, legal disclaimers, brand header) that cascade to every hotel in the organization.</p>
+
+    <h4>Brand Theme Cascade</h4>
+    <p>When an org-level brand theme is set, it overrides individual hotel themes for the specified tokens. Hotels can still customize non-locked tokens, but the brand-level values take precedence for consistency.</p>
+
+    <h4>Locked Sections</h4>
+    <p>Locked sections are defined at the org level and pushed to all hotels. Editors cannot modify locked sections, and AI commands that target locked sections are blocked with a clear error message. Only admins can update locked sections through the brand governance panel.</p>
+
+    <h4>AI Protection</h4>
+    <p>The AI engine checks for locked sections before executing any operation. If a user tries to modify a locked section via the command bar, AI returns an explanatory message instead of making the change. This prevents accidental brand drift across properties.</p>
+
+    <h3>API Endpoints</h3>
+    <ul>
+      <li><code>GET /api/brand</code> &mdash; Get org-level brand theme and locked sections</li>
+      <li><code>PUT /api/brand/theme</code> &mdash; Update the org-level brand theme tokens</li>
+      <li><code>PUT /api/brand/sections</code> &mdash; Update locked section definitions</li>
+    </ul>
   </section>
 
   <!-- ─── COMPONENT REGISTRY ─── -->
   <section id="components" class="section">
     <h2>
-      <div class="section-icon accent-purple">◧</div>
+      <div class="section-icon accent-purple">&#9639;</div>
       Component Registry
     </h2>
-    <p class="section-desc">All 12 production-ready components. Each component defines its own prop schema, variant options, and AI affinity.</p>
+    <p class="section-desc">All 12 production-ready components. Each defines its own prop schema, variant options, and AI affinity tier.</p>
 
     <div class="table-wrap">
+      <div class="table-scroll">
       <table>
         <thead>
           <tr>
@@ -1481,63 +2314,63 @@
         </thead>
         <tbody>
           <tr>
-            <td><strong>Hero — Cinematic</strong></td>
+            <td><strong>Hero &mdash; Cinematic</strong></td>
             <td>Full-bleed video or image background with bold overlay headline and CTA</td>
             <td>Hero</td>
             <td><span class="tier-badge tier-1">Tier 1</span></td>
             <td><code>mediaUrl</code>, <code>headline</code>, <code>ctaLabel</code>, <code>overlay</code></td>
           </tr>
           <tr>
-            <td><strong>Hero — Editorial</strong></td>
+            <td><strong>Hero &mdash; Editorial</strong></td>
             <td>Split-layout hero with large typography on one side, featured image on the other</td>
             <td>Hero</td>
             <td><span class="tier-badge tier-1">Tier 1</span></td>
             <td><code>headline</code>, <code>subhead</code>, <code>imageUrl</code>, <code>alignment</code></td>
           </tr>
           <tr>
-            <td><strong>Hero — Minimal</strong></td>
-            <td>Clean, text-centered hero with gradient background, ideal for boutique properties</td>
+            <td><strong>Hero &mdash; Minimal</strong></td>
+            <td>Clean, text-centered hero with gradient background for boutique properties</td>
             <td>Hero</td>
             <td><span class="tier-badge tier-0">Tier 0</span></td>
             <td><code>headline</code>, <code>tagline</code>, <code>bgGradient</code></td>
           </tr>
           <tr>
-            <td><strong>Rooms — Grid</strong></td>
-            <td>Responsive masonry or uniform grid of room cards with pricing and quick-book</td>
+            <td><strong>Rooms &mdash; Grid</strong></td>
+            <td>Responsive grid of room cards with pricing and quick-book CTA</td>
             <td>Rooms</td>
             <td><span class="tier-badge tier-1">Tier 1</span></td>
             <td><code>roomIds</code>, <code>columns</code>, <code>showPricing</code>, <code>showRating</code></td>
           </tr>
           <tr>
-            <td><strong>Rooms — Showcase</strong></td>
+            <td><strong>Rooms &mdash; Showcase</strong></td>
             <td>Horizontal scrolling hero card per room with full-bleed image and feature list</td>
             <td>Rooms</td>
             <td><span class="tier-badge tier-1">Tier 1</span></td>
             <td><code>roomIds</code>, <code>autoPlay</code>, <code>interval</code></td>
           </tr>
           <tr>
-            <td><strong>Gallery — Masonry</strong></td>
+            <td><strong>Gallery &mdash; Masonry</strong></td>
             <td>Pinterest-style variable-height image grid with lightbox</td>
             <td>Gallery</td>
             <td><span class="tier-badge tier-1">Tier 1</span></td>
             <td><code>mediaIds</code>, <code>columns</code>, <code>lightbox</code></td>
           </tr>
           <tr>
-            <td><strong>Gallery — Filmstrip</strong></td>
-            <td>Horizontal strip with looping animation, ideal for lobby/property photography</td>
+            <td><strong>Gallery &mdash; Filmstrip</strong></td>
+            <td>Horizontal strip with looping animation for lobby/property photography</td>
             <td>Gallery</td>
             <td><span class="tier-badge tier-1">Tier 1</span></td>
             <td><code>mediaIds</code>, <code>speed</code>, <code>gap</code></td>
           </tr>
           <tr>
-            <td><strong>Booking — Inline</strong></td>
+            <td><strong>Booking &mdash; Inline</strong></td>
             <td>Embedded check-in/check-out date picker with room count and CTA</td>
             <td>Booking</td>
             <td><span class="tier-badge tier-2">Tier 2</span></td>
             <td><code>engineUrl</code>, <code>style</code>, <code>primaryColor</code></td>
           </tr>
           <tr>
-            <td><strong>Booking — Sticky</strong></td>
+            <td><strong>Booking &mdash; Sticky</strong></td>
             <td>Fixed bottom booking bar that appears on scroll, non-intrusive on mobile</td>
             <td>Booking</td>
             <td><span class="tier-badge tier-2">Tier 2</span></td>
@@ -1545,14 +2378,14 @@
           </tr>
           <tr>
             <td><strong>Reviews Wall</strong></td>
-            <td>Animated grid of guest reviews pulled from connected sources with star ratings</td>
+            <td>Animated grid of guest reviews with star ratings from connected sources</td>
             <td>Social Proof</td>
             <td><span class="tier-badge tier-1">Tier 1</span></td>
             <td><code>reviewIds</code>, <code>layout</code>, <code>showSource</code>, <code>animate</code></td>
           </tr>
           <tr>
             <td><strong>Map</strong></td>
-            <td>Interactive map section with hotel pin, nearby attractions, and directions link</td>
+            <td>Interactive map with hotel pin, nearby attractions, and directions link</td>
             <td>Location</td>
             <td><span class="tier-badge tier-1">Tier 1</span></td>
             <td><code>lat</code>, <code>lng</code>, <code>zoom</code>, <code>mapStyle</code>, <code>showNearby</code></td>
@@ -1566,18 +2399,20 @@
           </tr>
         </tbody>
       </table>
+      </div>
     </div>
   </section>
 
   <!-- ─── DATABASE SCHEMA ─── -->
   <section id="schema" class="section">
     <h2>
-      <div class="section-icon accent-blue">🗄</div>
+      <div class="section-icon accent-blue">&#128451;</div>
       Database Schema
     </h2>
-    <p class="section-desc">9 Prisma models covering the full domain from hotel configuration to AI memory.</p>
+    <p class="section-desc">16 Prisma models covering the full domain from multi-tenant organizations to AI memory, campaigns, competitive intelligence, and guest reviews.</p>
 
     <div class="table-wrap">
+      <div class="table-scroll">
       <table>
         <thead>
           <tr>
@@ -1588,9 +2423,24 @@
         </thead>
         <tbody>
           <tr>
+            <td><strong>Organization</strong></td>
+            <td>Top-level tenant entity. Groups hotels and users. Holds brand governance settings.</td>
+            <td><code>id</code>, <code>name</code>, <code>slug</code>, <code>brandTheme</code> (JSON), <code>lockedSections</code> (JSON)</td>
+          </tr>
+          <tr>
+            <td><strong>User</strong></td>
+            <td>Authentication and authorization. Belongs to an organization.</td>
+            <td><code>email</code>, <code>passwordHash</code>, <code>role</code>, <code>hotelAccess</code> (JSON), <code>organizationId</code></td>
+          </tr>
+          <tr>
+            <td><strong>Session</strong></td>
+            <td>Server-side session store. httpOnly cookie references this.</td>
+            <td><code>token</code>, <code>userId</code>, <code>expiresAt</code></td>
+          </tr>
+          <tr>
             <td><strong>Hotel</strong></td>
-            <td>Root entity. One record per property.</td>
-            <td><code>id</code>, <code>name</code>, <code>slug</code>, <code>domain</code>, <code>themeId</code>, <code>brandVoice</code></td>
+            <td>Root entity per property. Belongs to an organization.</td>
+            <td><code>id</code>, <code>name</code>, <code>slug</code>, <code>domain</code>, <code>contactInfo</code> (JSON), <code>brandVoice</code>, <code>organizationId</code></td>
           </tr>
           <tr>
             <td><strong>Theme</strong></td>
@@ -1600,7 +2450,7 @@
           <tr>
             <td><strong>Page</strong></td>
             <td>A published or draft page on the hotel site.</td>
-            <td><code>slug</code>, <code>title</code>, <code>status</code>, <code>metaTitle</code>, <code>metaDescription</code>, <code>hotelId</code></td>
+            <td><code>slug</code>, <code>title</code>, <code>status</code>, <code>locale</code>, <code>metaTitle</code>, <code>metaDescription</code>, <code>hotelId</code></td>
           </tr>
           <tr>
             <td><strong>Section</strong></td>
@@ -1619,389 +2469,805 @@
           </tr>
           <tr>
             <td><strong>MediaAsset</strong></td>
-            <td>Uploaded images and videos post-processing pipeline.</td>
+            <td>Uploaded images/videos post-processing pipeline.</td>
             <td><code>originalUrl</code>, <code>webpUrl</code>, <code>avifUrl</code>, <code>srcset</code>, <code>altText</code>, <code>tags</code>, <code>width</code>, <code>height</code></td>
           </tr>
           <tr>
             <td><strong>SchemaVersion</strong></td>
             <td>Immutable version snapshot with RFC 6902 patch.</td>
-            <td><code>patch</code> (JSON), <code>status</code> (draft/published/rejected), <code>createdBy</code>, <code>publishedAt</code></td>
+            <td><code>patch</code> (JSON), <code>status</code>, <code>createdBy</code>, <code>modelUsed</code>, <code>publishedAt</code></td>
           </tr>
           <tr>
             <td><strong>HotelContext</strong></td>
             <td>AI memory store. Key-value pairs for persistent hotel preferences.</td>
             <td><code>hotelId</code>, <code>key</code>, <code>value</code> (JSON), <code>updatedAt</code></td>
           </tr>
+          <tr>
+            <td><strong>SeoAudit</strong></td>
+            <td>Cached SEO audit results per hotel.</td>
+            <td><code>hotelId</code>, <code>score</code>, <code>checks</code> (JSON), <code>issues</code> (JSON), <code>createdAt</code></td>
+          </tr>
+          <tr style="background: var(--coral-bg);">
+            <td><strong>Campaign</strong> <span class="new-badge">v3.0</span></td>
+            <td>Cross-property content syndication campaigns with lifecycle management.</td>
+            <td><code>title</code>, <code>brief</code>, <code>hotelIds</code> (JSON), <code>status</code>, <code>deployments</code> (JSON), <code>organizationId</code></td>
+          </tr>
+          <tr style="background: var(--purple-bg);">
+            <td><strong>Competitor</strong> <span class="new-badge">v3.0</span></td>
+            <td>Tracked competitor hotel with website URL.</td>
+            <td><code>name</code>, <code>websiteUrl</code>, <code>hotelId</code>, <code>notes</code>, <code>lastScannedAt</code></td>
+          </tr>
+          <tr style="background: var(--purple-bg);">
+            <td><strong>CompetitorScan</strong> <span class="new-badge">v3.0</span></td>
+            <td>Point-in-time scan snapshot with AI-generated competitive insights.</td>
+            <td><code>competitorId</code>, <code>content</code>, <code>insights</code> (JSON), <code>scannedAt</code></td>
+          </tr>
+          <tr style="background: #edf8f7;">
+            <td><strong>Review</strong> <span class="new-badge">v3.0</span></td>
+            <td>Guest review with AI-generated response and sentiment analysis.</td>
+            <td><code>guestName</code>, <code>platform</code>, <code>rating</code>, <code>reviewText</code>, <code>sentiment</code>, <code>aiResponse</code>, <code>hotelId</code></td>
+          </tr>
         </tbody>
       </table>
+      </div>
     </div>
 
     <h3>Schema Relationships</h3>
-    <pre><code><span class="cm">// Simplified Prisma schema excerpt</span>
-<span class="kw">model</span> <span class="fn">Hotel</span> {
-  id        <span class="prop">String</span>   <span class="op">@id @default</span>(<span class="fn">cuid</span>())
-  pages     <span class="fn">Page</span>[]
-  theme     <span class="fn">Theme?</span>
-  context   <span class="fn">HotelContext</span>[]
+    <pre><code><span class="cm">// Simplified Prisma schema excerpt (v3.0)</span>
+<span class="kw">model</span> <span class="fn">Organization</span> {
+  id             <span class="prop">String</span>   <span class="op">@id @default</span>(<span class="fn">cuid</span>())
+  hotels         <span class="fn">Hotel</span>[]
+  users          <span class="fn">User</span>[]
+  campaigns      <span class="fn">Campaign</span>[]
+  brandTheme     <span class="prop">Json?</span>
+  lockedSections <span class="prop">Json?</span>
 }
 
-<span class="kw">model</span> <span class="fn">Section</span> {
-  id          <span class="prop">String</span>  <span class="op">@id</span>
-  page        <span class="fn">Page</span>    <span class="op">@relation</span>(fields: [pageId], references: [id])
-  component   <span class="fn">Component</span>
-  props       <span class="prop">Json</span>
-  customCss   <span class="prop">String?</span>
-  customHtml  <span class="prop">String?</span>
-  order       <span class="prop">Int</span>
-  visible     <span class="prop">Boolean</span> <span class="op">@default</span>(<span class="kw">true</span>)
+<span class="kw">model</span> <span class="fn">Hotel</span> {
+  id             <span class="prop">String</span>   <span class="op">@id @default</span>(<span class="fn">cuid</span>())
+  organization   <span class="fn">Organization</span> <span class="op">@relation</span>(...)
+  pages          <span class="fn">Page</span>[]
+  theme          <span class="fn">Theme?</span>
+  rooms          <span class="fn">Room</span>[]
+  context        <span class="fn">HotelContext</span>[]
+  seoAudits      <span class="fn">SeoAudit</span>[]
+  competitors    <span class="fn">Competitor</span>[]
+  reviews        <span class="fn">Review</span>[]
+}
+
+<span class="kw">model</span> <span class="fn">Campaign</span> {
+  id             <span class="prop">String</span>  <span class="op">@id</span>
+  title          <span class="prop">String</span>
+  brief          <span class="prop">String</span>
+  hotelIds       <span class="prop">Json</span>
+  status         <span class="prop">String</span>  <span class="cm">// draft | active | ended</span>
+  deployments    <span class="prop">Json?</span>
+  organization   <span class="fn">Organization</span> <span class="op">@relation</span>(...)
+}
+
+<span class="kw">model</span> <span class="fn">Competitor</span> {
+  id             <span class="prop">String</span>  <span class="op">@id</span>
+  name           <span class="prop">String</span>
+  websiteUrl     <span class="prop">String</span>
+  hotel          <span class="fn">Hotel</span>   <span class="op">@relation</span>(...)
+  scans          <span class="fn">CompetitorScan</span>[]
+}
+
+<span class="kw">model</span> <span class="fn">Review</span> {
+  id             <span class="prop">String</span>  <span class="op">@id</span>
+  guestName      <span class="prop">String</span>
+  platform       <span class="prop">String</span>
+  rating         <span class="prop">Int</span>
+  reviewText     <span class="prop">String</span>
+  sentiment      <span class="prop">String</span>
+  aiResponse     <span class="prop">String?</span>
+  hotel          <span class="fn">Hotel</span>   <span class="op">@relation</span>(...)
 }</code></pre>
-    <div class="code-label" style="display:none;"></div>
-  </section>
-
-  <!-- ─── AI PROMPT FLOW ─── -->
-  <section id="ai-flow" class="section">
-    <h2>
-      <div class="section-icon accent-coral">🤖</div>
-      AI Prompt Flow
-    </h2>
-    <p class="section-desc">Every natural-language command travels through a deterministic pipeline before anything in the database changes.</p>
-
-    <div class="flow-steps">
-      <div class="flow-step">
-        <div class="flow-dot"></div>
-        <div class="flow-content">
-          <div class="flow-title">1 — User types a command</div>
-          <div class="flow-detail">Via the ⌘K command bar, a text field in the dashboard, or the API directly. Example: <em>"Make the booking section sticky and change the CTA to 'Reserve Now'"</em></div>
-        </div>
-      </div>
-      <div class="flow-step">
-        <div class="flow-dot"></div>
-        <div class="flow-content">
-          <div class="flow-title">2 — Intent classification</div>
-          <div class="flow-detail">A lightweight rule engine checks for pattern matches (regex + keyword heuristics). On a match, Tier 0 executes directly. On ambiguity, the classifier calls a small LLM to resolve intent and assign a tier.</div>
-        </div>
-      </div>
-      <div class="flow-step">
-        <div class="flow-dot"></div>
-        <div class="flow-content">
-          <div class="flow-title">3 — Context assembly</div>
-          <div class="flow-detail">The system gathers: hotel profile + brand voice, active theme tokens, all sections with props, HotelContext memory entries, and the current rendered HTML of the page. This forms the LLM's system prompt.</div>
-        </div>
-      </div>
-      <div class="flow-step">
-        <div class="flow-dot"></div>
-        <div class="flow-content">
-          <div class="flow-title">4 — LLM call via OpenRouter</div>
-          <div class="flow-detail">The appropriate tier's model receives the assembled context and the user command. It responds with a structured JSON array of operations conforming to the CMS operations schema.</div>
-        </div>
-      </div>
-      <div class="flow-step">
-        <div class="flow-dot"></div>
-        <div class="flow-content">
-          <div class="flow-title">5 — Response parsing and validation</div>
-          <div class="flow-detail">The LLM output is parsed and each operation is validated with Zod. Invalid operations are rejected with an error surfaced to the user. Valid operations proceed to execution.</div>
-        </div>
-      </div>
-      <div class="flow-step">
-        <div class="flow-dot"></div>
-        <div class="flow-content">
-          <div class="flow-title">6 — Execute against database</div>
-          <div class="flow-detail">Operations run in a Prisma transaction. A before-state snapshot is captured, the changes applied, and an RFC 6902 patch computed between old and new state for the version record.</div>
-        </div>
-      </div>
-      <div class="flow-step">
-        <div class="flow-dot"></div>
-        <div class="flow-content">
-          <div class="flow-title">7 — Preview refresh</div>
-          <div class="flow-detail">The dashboard's iframe preview reloads, reflecting all changes. The version timeline updates with the new draft entry, ready to publish or reject.</div>
-        </div>
-      </div>
-    </div>
-
-    <h3>Context Window Budget</h3>
-    <pre><code><span class="cm">// Approximate token allocation per LLM call</span>
-<span class="var">systemPrompt</span>     = hotel profile + theme tokens      <span class="cm">// ~800 tokens</span>
-<span class="var">sectionContext</span>   = all sections serialized to JSON   <span class="cm">// ~2,400 tokens</span>
-<span class="var">aiMemory</span>         = HotelContext key-value pairs       <span class="cm">// ~400 tokens</span>
-<span class="var">renderedHtml</span>     = truncated current page HTML        <span class="cm">// ~1,200 tokens</span>
-<span class="var">userMessage</span>      = the natural language command       <span class="cm">// ~50–200 tokens</span>
-<span class="cm">// Total: ~5,000 tokens (well within Tier 1 context windows)</span></code></pre>
   </section>
 
   <!-- ─── API REFERENCE ─── -->
   <section id="api" class="section">
     <h2>
-      <div class="section-icon accent-blue">⟁</div>
+      <div class="section-icon accent-coral">&#10033;</div>
       API Reference
     </h2>
-    <p class="section-desc">All endpoints return JSON. Authentication uses Bearer tokens in the <code>Authorization</code> header.</p>
+    <p class="section-desc">All REST endpoints grouped by domain. Base URL: <code>/api</code></p>
 
+    <!-- Auth -->
+    <div class="endpoint-group">
+      <div class="endpoint-group-title">Authentication</div>
+      <div class="endpoint">
+        <span class="method method-post">POST</span>
+        <div>
+          <div class="endpoint-path">/api/auth/register</div>
+          <div class="endpoint-desc">Create a new user account within an organization</div>
+        </div>
+      </div>
+      <div class="endpoint">
+        <span class="method method-post">POST</span>
+        <div>
+          <div class="endpoint-path">/api/auth/login</div>
+          <div class="endpoint-desc">Validate credentials, create session, set httpOnly cookie</div>
+        </div>
+      </div>
+      <div class="endpoint">
+        <span class="method method-post">POST</span>
+        <div>
+          <div class="endpoint-path">/api/auth/logout</div>
+          <div class="endpoint-desc">Destroy current session</div>
+        </div>
+      </div>
+      <div class="endpoint">
+        <span class="method method-get">GET</span>
+        <div>
+          <div class="endpoint-path">/api/auth/me</div>
+          <div class="endpoint-desc">Return current authenticated user from session</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Users -->
+    <div class="endpoint-group">
+      <div class="endpoint-group-title">Users</div>
+      <div class="endpoint">
+        <span class="method method-get">GET</span>
+        <div>
+          <div class="endpoint-path">/api/users</div>
+          <div class="endpoint-desc">List all users in the organization (admin only)</div>
+        </div>
+      </div>
+      <div class="endpoint">
+        <span class="method method-post">POST</span>
+        <div>
+          <div class="endpoint-path">/api/users</div>
+          <div class="endpoint-desc">Create/invite a new user with role and hotel access</div>
+        </div>
+      </div>
+      <div class="endpoint">
+        <span class="method method-put">PUT</span>
+        <div>
+          <div class="endpoint-path">/api/users/[id]</div>
+          <div class="endpoint-desc">Update user role, hotel access, or profile</div>
+        </div>
+      </div>
+      <div class="endpoint">
+        <span class="method method-delete">DEL</span>
+        <div>
+          <div class="endpoint-path">/api/users/[id]</div>
+          <div class="endpoint-desc">Delete a user account</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hotels -->
     <div class="endpoint-group">
       <div class="endpoint-group-title">Hotels</div>
-      <div class="endpoint"><span class="method method-get">GET</span><div><div class="endpoint-path">/api/hotels</div><div class="endpoint-desc">List all hotels for the authenticated user</div></div></div>
-      <div class="endpoint"><span class="method method-post">POST</span><div><div class="endpoint-path">/api/hotels</div><div class="endpoint-desc">Create a new hotel</div></div></div>
-      <div class="endpoint"><span class="method method-get">GET</span><div><div class="endpoint-path">/api/hotels/[id]</div><div class="endpoint-desc">Fetch a hotel by ID with theme and pages</div></div></div>
-      <div class="endpoint"><span class="method method-put">PUT</span><div><div class="endpoint-path">/api/hotels/[id]</div><div class="endpoint-desc">Update hotel profile (name, domain, brand voice)</div></div></div>
-      <div class="endpoint"><span class="method method-delete">DELETE</span><div><div class="endpoint-path">/api/hotels/[id]</div><div class="endpoint-desc">Delete hotel and all associated data</div></div></div>
-      <div class="endpoint"><span class="method method-get">GET</span><div><div class="endpoint-path">/api/hotels/[id]/theme</div><div class="endpoint-desc">Get hotel theme tokens</div></div></div>
-      <div class="endpoint"><span class="method method-put">PUT</span><div><div class="endpoint-path">/api/hotels/[id]/theme</div><div class="endpoint-desc">Update theme tokens (partial update supported)</div></div></div>
+      <div class="endpoint">
+        <span class="method method-get">GET</span>
+        <div>
+          <div class="endpoint-path">/api/hotels</div>
+          <div class="endpoint-desc">List all hotels in the organization (filtered by user access)</div>
+        </div>
+      </div>
+      <div class="endpoint">
+        <span class="method method-post">POST</span>
+        <div>
+          <div class="endpoint-path">/api/hotels</div>
+          <div class="endpoint-desc">Create a new hotel with name, slug, and contact info</div>
+        </div>
+      </div>
+      <div class="endpoint">
+        <span class="method method-get">GET</span>
+        <div>
+          <div class="endpoint-path">/api/hotels/[id]</div>
+          <div class="endpoint-desc">Get hotel details with theme, pages, rooms, context</div>
+        </div>
+      </div>
+      <div class="endpoint">
+        <span class="method method-put">PUT</span>
+        <div>
+          <div class="endpoint-path">/api/hotels/[id]</div>
+          <div class="endpoint-desc">Update hotel metadata, contact info, brand voice</div>
+        </div>
+      </div>
+      <div class="endpoint">
+        <span class="method method-delete">DEL</span>
+        <div>
+          <div class="endpoint-path">/api/hotels/[id]</div>
+          <div class="endpoint-desc">Delete a hotel and all associated data</div>
+        </div>
+      </div>
+      <div class="endpoint">
+        <span class="method method-get">GET</span>
+        <div>
+          <div class="endpoint-path">/api/hotels/[id]/theme</div>
+          <div class="endpoint-desc">Get the hotel's theme configuration</div>
+        </div>
+      </div>
+      <div class="endpoint">
+        <span class="method method-put">PUT</span>
+        <div>
+          <div class="endpoint-path">/api/hotels/[id]/theme</div>
+          <div class="endpoint-desc">Update theme tokens (colors, typography, spacing)</div>
+        </div>
+      </div>
     </div>
 
+    <!-- Pages -->
     <div class="endpoint-group">
       <div class="endpoint-group-title">Pages</div>
-      <div class="endpoint"><span class="method method-get">GET</span><div><div class="endpoint-path">/api/pages</div><div class="endpoint-desc">List all pages, optionally filtered by hotelId</div></div></div>
-      <div class="endpoint"><span class="method method-post">POST</span><div><div class="endpoint-path">/api/pages</div><div class="endpoint-desc">Create a new page under a hotel</div></div></div>
-      <div class="endpoint"><span class="method method-get">GET</span><div><div class="endpoint-path">/api/pages/[id]</div><div class="endpoint-desc">Get page with all sections and their props</div></div></div>
-      <div class="endpoint"><span class="method method-put">PUT</span><div><div class="endpoint-path">/api/pages/[id]</div><div class="endpoint-desc">Update page metadata or status</div></div></div>
-      <div class="endpoint"><span class="method method-delete">DELETE</span><div><div class="endpoint-path">/api/pages/[id]</div><div class="endpoint-desc">Delete page and all its sections</div></div></div>
+      <div class="endpoint">
+        <span class="method method-get">GET</span>
+        <div>
+          <div class="endpoint-path">/api/hotels/[id]/pages</div>
+          <div class="endpoint-desc">List all pages for a hotel</div>
+        </div>
+      </div>
+      <div class="endpoint">
+        <span class="method method-post">POST</span>
+        <div>
+          <div class="endpoint-path">/api/hotels/[id]/pages</div>
+          <div class="endpoint-desc">Create a new page with slug, title, meta</div>
+        </div>
+      </div>
+      <div class="endpoint">
+        <span class="method method-put">PUT</span>
+        <div>
+          <div class="endpoint-path">/api/hotels/[id]/pages/[pageId]</div>
+          <div class="endpoint-desc">Update page metadata and settings</div>
+        </div>
+      </div>
+      <div class="endpoint">
+        <span class="method method-delete">DEL</span>
+        <div>
+          <div class="endpoint-path">/api/hotels/[id]/pages/[pageId]</div>
+          <div class="endpoint-desc">Delete a page and its sections</div>
+        </div>
+      </div>
     </div>
 
+    <!-- Sections -->
     <div class="endpoint-group">
       <div class="endpoint-group-title">Sections</div>
-      <div class="endpoint"><span class="method method-post">POST</span><div><div class="endpoint-path">/api/sections</div><div class="endpoint-desc">Add a new section to a page</div></div></div>
-      <div class="endpoint"><span class="method method-get">GET</span><div><div class="endpoint-path">/api/sections/[id]</div><div class="endpoint-desc">Get section with component definition</div></div></div>
-      <div class="endpoint"><span class="method method-put">PUT</span><div><div class="endpoint-path">/api/sections/[id]</div><div class="endpoint-desc">Update section props, CSS, HTML, or visibility</div></div></div>
-      <div class="endpoint"><span class="method method-delete">DELETE</span><div><div class="endpoint-path">/api/sections/[id]</div><div class="endpoint-desc">Remove a section from its page</div></div></div>
-      <div class="endpoint"><span class="method method-put">PUT</span><div><div class="endpoint-path">/api/sections/[id]/reorder</div><div class="endpoint-desc">Update section order within its page</div></div></div>
+      <div class="endpoint">
+        <span class="method method-get">GET</span>
+        <div>
+          <div class="endpoint-path">/api/hotels/[id]/pages/[pageId]/sections</div>
+          <div class="endpoint-desc">List all sections on a page with props</div>
+        </div>
+      </div>
+      <div class="endpoint">
+        <span class="method method-post">POST</span>
+        <div>
+          <div class="endpoint-path">/api/hotels/[id]/pages/[pageId]/sections</div>
+          <div class="endpoint-desc">Add a new section (component, position, props)</div>
+        </div>
+      </div>
+      <div class="endpoint">
+        <span class="method method-put">PUT</span>
+        <div>
+          <div class="endpoint-path">/api/sections/[sectionId]</div>
+          <div class="endpoint-desc">Update section props, visibility, or custom overrides</div>
+        </div>
+      </div>
+      <div class="endpoint">
+        <span class="method method-delete">DEL</span>
+        <div>
+          <div class="endpoint-path">/api/sections/[sectionId]</div>
+          <div class="endpoint-desc">Remove a section from a page</div>
+        </div>
+      </div>
     </div>
 
+    <!-- Rooms -->
     <div class="endpoint-group">
       <div class="endpoint-group-title">Rooms</div>
-      <div class="endpoint"><span class="method method-post">POST</span><div><div class="endpoint-path">/api/rooms</div><div class="endpoint-desc">Create a room record linked to a hotel</div></div></div>
-      <div class="endpoint"><span class="method method-get">GET</span><div><div class="endpoint-path">/api/rooms/[id]</div><div class="endpoint-desc">Get room details with media assets</div></div></div>
-      <div class="endpoint"><span class="method method-put">PUT</span><div><div class="endpoint-path">/api/rooms/[id]</div><div class="endpoint-desc">Update room content, pricing, or amenities</div></div></div>
-      <div class="endpoint"><span class="method method-delete">DELETE</span><div><div class="endpoint-path">/api/rooms/[id]</div><div class="endpoint-desc">Delete room record</div></div></div>
+      <div class="endpoint">
+        <span class="method method-get">GET</span>
+        <div>
+          <div class="endpoint-path">/api/hotels/[id]/rooms</div>
+          <div class="endpoint-desc">List all rooms for a hotel</div>
+        </div>
+      </div>
+      <div class="endpoint">
+        <span class="method method-post">POST</span>
+        <div>
+          <div class="endpoint-path">/api/hotels/[id]/rooms</div>
+          <div class="endpoint-desc">Create a new room with name, price, amenities</div>
+        </div>
+      </div>
+      <div class="endpoint">
+        <span class="method method-put">PUT</span>
+        <div>
+          <div class="endpoint-path">/api/hotels/[id]/rooms/[roomId]</div>
+          <div class="endpoint-desc">Update room details</div>
+        </div>
+      </div>
+      <div class="endpoint">
+        <span class="method method-delete">DEL</span>
+        <div>
+          <div class="endpoint-path">/api/hotels/[id]/rooms/[roomId]</div>
+          <div class="endpoint-desc">Delete a room record</div>
+        </div>
+      </div>
     </div>
 
+    <!-- Media -->
     <div class="endpoint-group">
       <div class="endpoint-group-title">Media</div>
-      <div class="endpoint"><span class="method method-get">GET</span><div><div class="endpoint-path">/api/media</div><div class="endpoint-desc">List media assets for a hotel</div></div></div>
-      <div class="endpoint"><span class="method method-post">POST</span><div><div class="endpoint-path">/api/media</div><div class="endpoint-desc">Create a media record (after upload)</div></div></div>
-      <div class="endpoint"><span class="method method-get">GET</span><div><div class="endpoint-path">/api/media/[id]</div><div class="endpoint-desc">Get a media asset by ID including srcset</div></div></div>
-      <div class="endpoint"><span class="method method-put">PUT</span><div><div class="endpoint-path">/api/media/[id]</div><div class="endpoint-desc">Update alt text or tags</div></div></div>
-      <div class="endpoint"><span class="method method-delete">DELETE</span><div><div class="endpoint-path">/api/media/[id]</div><div class="endpoint-desc">Delete media asset and remove from storage</div></div></div>
-      <div class="endpoint"><span class="method method-post">POST</span><div><div class="endpoint-path">/api/media/upload</div><div class="endpoint-desc">Upload file → EXIF strip → convert → srcset → AI alt text. Returns MediaAsset.</div></div></div>
+      <div class="endpoint">
+        <span class="method method-get">GET</span>
+        <div>
+          <div class="endpoint-path">/api/hotels/[id]/media</div>
+          <div class="endpoint-desc">List all media assets for a hotel</div>
+        </div>
+      </div>
+      <div class="endpoint">
+        <span class="method method-post">POST</span>
+        <div>
+          <div class="endpoint-path">/api/hotels/[id]/media</div>
+          <div class="endpoint-desc">Upload image (triggers EXIF strip, WebP/AVIF, srcset, alt-text)</div>
+        </div>
+      </div>
+      <div class="endpoint">
+        <span class="method method-delete">DEL</span>
+        <div>
+          <div class="endpoint-path">/api/hotels/[id]/media/[mediaId]</div>
+          <div class="endpoint-desc">Delete a media asset</div>
+        </div>
+      </div>
     </div>
 
+    <!-- Versions -->
     <div class="endpoint-group">
       <div class="endpoint-group-title">Versions</div>
-      <div class="endpoint"><span class="method method-get">GET</span><div><div class="endpoint-path">/api/versions</div><div class="endpoint-desc">List all version records for a page or hotel</div></div></div>
-      <div class="endpoint"><span class="method method-get">GET</span><div><div class="endpoint-path">/api/versions/[id]</div><div class="endpoint-desc">Get a specific version with its RFC 6902 patch</div></div></div>
-      <div class="endpoint"><span class="method method-post">POST</span><div><div class="endpoint-path">/api/versions/[id]/publish</div><div class="endpoint-desc">Mark a draft version as published</div></div></div>
-      <div class="endpoint"><span class="method method-post">POST</span><div><div class="endpoint-path">/api/versions/[id]/reject</div><div class="endpoint-desc">Reject and archive a version</div></div></div>
-      <div class="endpoint"><span class="method method-post">POST</span><div><div class="endpoint-path">/api/versions/[id]/rollback</div><div class="endpoint-desc">Apply reverse patch to restore previous state</div></div></div>
+      <div class="endpoint">
+        <span class="method method-get">GET</span>
+        <div>
+          <div class="endpoint-path">/api/hotels/[id]/versions</div>
+          <div class="endpoint-desc">List version history with patches and model attribution</div>
+        </div>
+      </div>
+      <div class="endpoint">
+        <span class="method method-post">POST</span>
+        <div>
+          <div class="endpoint-path">/api/hotels/[id]/versions/[versionId]/publish</div>
+          <div class="endpoint-desc">Publish a draft version</div>
+        </div>
+      </div>
+      <div class="endpoint">
+        <span class="method method-post">POST</span>
+        <div>
+          <div class="endpoint-path">/api/hotels/[id]/versions/[versionId]/rollback</div>
+          <div class="endpoint-desc">Rollback to a specific version</div>
+        </div>
+      </div>
     </div>
 
+    <!-- AI -->
     <div class="endpoint-group">
-      <div class="endpoint-group-title">AI</div>
-      <div class="endpoint"><span class="method method-post">POST</span><div><div class="endpoint-path">/api/ai/classify</div><div class="endpoint-desc">Classify a command string — returns intent, tier, and matched operations. Useful for debugging.</div></div></div>
-      <div class="endpoint"><span class="method method-post">POST</span><div><div class="endpoint-path">/api/ai/execute</div><div class="endpoint-desc">Execute a natural-language command against a page. Full pipeline: classify → context → LLM → validate → DB → version.</div></div></div>
+      <div class="endpoint-group-title">AI Engine</div>
+      <div class="endpoint">
+        <span class="method method-post">POST</span>
+        <div>
+          <div class="endpoint-path">/api/ai/classify</div>
+          <div class="endpoint-desc">Classify intent and determine tier for a natural-language command</div>
+        </div>
+      </div>
+      <div class="endpoint">
+        <span class="method method-post">POST</span>
+        <div>
+          <div class="endpoint-path">/api/ai/execute</div>
+          <div class="endpoint-desc">Classify, route to LLM, execute operations, create version</div>
+        </div>
+      </div>
     </div>
 
-    <h3>Example: Execute AI Command</h3>
-    <pre><code><span class="cm">// POST /api/ai/execute</span>
-{
-  <span class="prop">"hotelId"</span>: <span class="str">"cld_abc123"</span>,
-  <span class="prop">"pageId"</span>:  <span class="str">"cld_xyz789"</span>,
-  <span class="prop">"command"</span>: <span class="str">"Make the hero cinematic with a sunset beach photo and change the headline to 'Where the Ocean Meets Luxury'"</span>
-}
+    <!-- SEO -->
+    <div class="endpoint-group">
+      <div class="endpoint-group-title">SEO</div>
+      <div class="endpoint">
+        <span class="method method-get">GET</span>
+        <div>
+          <div class="endpoint-path">/api/seo/audit/[hotelId]</div>
+          <div class="endpoint-desc">Get cached SEO audit results</div>
+        </div>
+      </div>
+      <div class="endpoint">
+        <span class="method method-post">POST</span>
+        <div>
+          <div class="endpoint-path">/api/seo/audit/[hotelId]</div>
+          <div class="endpoint-desc">Run a fresh SEO audit (9 checks, returns score)</div>
+        </div>
+      </div>
+    </div>
 
-<span class="cm">// Response</span>
-{
-  <span class="prop">"operations"</span>: [
-    { <span class="prop">"type"</span>: <span class="str">"swap_component"</span>, <span class="prop">"sectionId"</span>: <span class="str">"sec_001"</span>, <span class="prop">"newComponentId"</span>: <span class="str">"hero-cinematic"</span> },
-    { <span class="prop">"type"</span>: <span class="str">"update_text"</span>, <span class="prop">"sectionId"</span>: <span class="str">"sec_001"</span>, <span class="prop">"field"</span>: <span class="str">"headline"</span>, <span class="prop">"value"</span>: <span class="str">"Where the Ocean Meets Luxury"</span> }
-  ],
-  <span class="prop">"versionId"</span>: <span class="str">"ver_20240312_001"</span>,
-  <span class="prop">"tier"</span>: <span class="num">1</span>
-}</code></pre>
+    <!-- i18n -->
+    <div class="endpoint-group">
+      <div class="endpoint-group-title">Internationalization</div>
+      <div class="endpoint">
+        <span class="method method-post">POST</span>
+        <div>
+          <div class="endpoint-path">/api/i18n/translate/[hotelId]</div>
+          <div class="endpoint-desc">Clone all pages and AI-translate to target locale</div>
+        </div>
+      </div>
+      <div class="endpoint">
+        <span class="method method-delete">DEL</span>
+        <div>
+          <div class="endpoint-path">/api/i18n/[hotelId]/[locale]</div>
+          <div class="endpoint-desc">Delete all pages for a specific locale</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Brand Governance -->
+    <div class="endpoint-group">
+      <div class="endpoint-group-title">Brand Governance <span class="new-badge">v3.0</span></div>
+      <div class="endpoint">
+        <span class="method method-get">GET</span>
+        <div>
+          <div class="endpoint-path">/api/brand</div>
+          <div class="endpoint-desc">Get org-level brand theme and locked sections</div>
+        </div>
+      </div>
+      <div class="endpoint">
+        <span class="method method-put">PUT</span>
+        <div>
+          <div class="endpoint-path">/api/brand/theme</div>
+          <div class="endpoint-desc">Update organization-wide brand theme tokens</div>
+        </div>
+      </div>
+      <div class="endpoint">
+        <span class="method method-put">PUT</span>
+        <div>
+          <div class="endpoint-path">/api/brand/sections</div>
+          <div class="endpoint-desc">Update locked section definitions that cascade to all hotels</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Campaigns -->
+    <div class="endpoint-group">
+      <div class="endpoint-group-title">Campaigns <span class="new-badge">v3.0</span></div>
+      <div class="endpoint">
+        <span class="method method-get">GET</span>
+        <div>
+          <div class="endpoint-path">/api/campaigns</div>
+          <div class="endpoint-desc">List all campaigns for the organization</div>
+        </div>
+      </div>
+      <div class="endpoint">
+        <span class="method method-post">POST</span>
+        <div>
+          <div class="endpoint-path">/api/campaigns</div>
+          <div class="endpoint-desc">Create a new campaign with title, brief, and target hotels</div>
+        </div>
+      </div>
+      <div class="endpoint">
+        <span class="method method-get">GET</span>
+        <div>
+          <div class="endpoint-path">/api/campaigns/[id]</div>
+          <div class="endpoint-desc">Get campaign details with per-hotel deployment status</div>
+        </div>
+      </div>
+      <div class="endpoint">
+        <span class="method method-put">PUT</span>
+        <div>
+          <div class="endpoint-path">/api/campaigns/[id]</div>
+          <div class="endpoint-desc">Update campaign title, brief, or target hotels</div>
+        </div>
+      </div>
+      <div class="endpoint">
+        <span class="method method-delete">DEL</span>
+        <div>
+          <div class="endpoint-path">/api/campaigns/[id]</div>
+          <div class="endpoint-desc">Delete a campaign</div>
+        </div>
+      </div>
+      <div class="endpoint">
+        <span class="method method-post">POST</span>
+        <div>
+          <div class="endpoint-path">/api/campaigns/[id]/launch</div>
+          <div class="endpoint-desc">Launch campaign: AI generates tailored content per hotel</div>
+        </div>
+      </div>
+      <div class="endpoint">
+        <span class="method method-post">POST</span>
+        <div>
+          <div class="endpoint-path">/api/campaigns/[id]/end</div>
+          <div class="endpoint-desc">End campaign: removes content from all participating hotels</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Competitors -->
+    <div class="endpoint-group">
+      <div class="endpoint-group-title">Competitive Intelligence <span class="new-badge">v3.0</span></div>
+      <div class="endpoint">
+        <span class="method method-get">GET</span>
+        <div>
+          <div class="endpoint-path">/api/competitors</div>
+          <div class="endpoint-desc">List competitors (filtered by hotel)</div>
+        </div>
+      </div>
+      <div class="endpoint">
+        <span class="method method-post">POST</span>
+        <div>
+          <div class="endpoint-path">/api/competitors</div>
+          <div class="endpoint-desc">Add a new competitor with name and website URL</div>
+        </div>
+      </div>
+      <div class="endpoint">
+        <span class="method method-get">GET</span>
+        <div>
+          <div class="endpoint-path">/api/competitors/[id]</div>
+          <div class="endpoint-desc">Get competitor details with latest scan insights</div>
+        </div>
+      </div>
+      <div class="endpoint">
+        <span class="method method-put">PUT</span>
+        <div>
+          <div class="endpoint-path">/api/competitors/[id]</div>
+          <div class="endpoint-desc">Update competitor info</div>
+        </div>
+      </div>
+      <div class="endpoint">
+        <span class="method method-delete">DEL</span>
+        <div>
+          <div class="endpoint-path">/api/competitors/[id]</div>
+          <div class="endpoint-desc">Remove a competitor</div>
+        </div>
+      </div>
+      <div class="endpoint">
+        <span class="method method-post">POST</span>
+        <div>
+          <div class="endpoint-path">/api/competitors/[id]/scan</div>
+          <div class="endpoint-desc">Trigger scan for one competitor (fetch + AI analysis)</div>
+        </div>
+      </div>
+      <div class="endpoint">
+        <span class="method method-post">POST</span>
+        <div>
+          <div class="endpoint-path">/api/competitors/scan-all</div>
+          <div class="endpoint-desc">Scan all competitors for a hotel</div>
+        </div>
+      </div>
+      <div class="endpoint">
+        <span class="method method-get">GET</span>
+        <div>
+          <div class="endpoint-path">/api/competitors/[id]/history</div>
+          <div class="endpoint-desc">Get scan history with snapshots and trend data</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Reviews -->
+    <div class="endpoint-group">
+      <div class="endpoint-group-title">Guest Reviews <span class="new-badge">v3.0</span></div>
+      <div class="endpoint">
+        <span class="method method-get">GET</span>
+        <div>
+          <div class="endpoint-path">/api/reviews</div>
+          <div class="endpoint-desc">List reviews for a hotel with filtering and sorting</div>
+        </div>
+      </div>
+      <div class="endpoint">
+        <span class="method method-post">POST</span>
+        <div>
+          <div class="endpoint-path">/api/reviews</div>
+          <div class="endpoint-desc">Add a review and trigger AI response generation</div>
+        </div>
+      </div>
+      <div class="endpoint">
+        <span class="method method-get">GET</span>
+        <div>
+          <div class="endpoint-path">/api/reviews/[id]</div>
+          <div class="endpoint-desc">Get review details with AI-generated response</div>
+        </div>
+      </div>
+      <div class="endpoint">
+        <span class="method method-put">PUT</span>
+        <div>
+          <div class="endpoint-path">/api/reviews/[id]</div>
+          <div class="endpoint-desc">Update review or edit AI response</div>
+        </div>
+      </div>
+      <div class="endpoint">
+        <span class="method method-delete">DEL</span>
+        <div>
+          <div class="endpoint-path">/api/reviews/[id]</div>
+          <div class="endpoint-desc">Delete a review</div>
+        </div>
+      </div>
+      <div class="endpoint">
+        <span class="method method-post">POST</span>
+        <div>
+          <div class="endpoint-path">/api/reviews/[id]/regenerate</div>
+          <div class="endpoint-desc">Regenerate AI response with alternative wording</div>
+        </div>
+      </div>
+      <div class="endpoint">
+        <span class="method method-get">GET</span>
+        <div>
+          <div class="endpoint-path">/api/reviews/stats</div>
+          <div class="endpoint-desc">Get sentiment analytics and response rate per hotel</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sitemap & Robots -->
+    <div class="endpoint-group">
+      <div class="endpoint-group-title">Sitemap &amp; Robots</div>
+      <div class="endpoint">
+        <span class="method method-get">GET</span>
+        <div>
+          <div class="endpoint-path">/sitemap/[hotelId]/sitemap.xml</div>
+          <div class="endpoint-desc">Auto-generated XML sitemap with all published pages</div>
+        </div>
+      </div>
+      <div class="endpoint">
+        <span class="method method-get">GET</span>
+        <div>
+          <div class="endpoint-path">/robots/[hotelId]</div>
+          <div class="endpoint-desc">Auto-generated robots.txt with sitemap reference</div>
+        </div>
+      </div>
+    </div>
   </section>
 
   <!-- ─── TECH STACK ─── -->
   <section id="tech-stack" class="section">
     <h2>
-      <div class="section-icon accent-green">🔧</div>
+      <div class="section-icon accent-orange">&#128295;</div>
       Tech Stack
     </h2>
-    <p class="section-desc">Chosen for performance, type safety, and developer experience.</p>
+    <p class="section-desc">The complete technology foundation powering hotelCMS.</p>
 
     <div class="tech-grid">
       <div class="tech-item">
-        <div class="tech-icon" style="background:#edf4ff;">▲</div>
+        <div class="tech-icon accent-coral">&#9650;</div>
         <div class="tech-info">
           <div class="tech-name">Next.js 16</div>
-          <div class="tech-role">App Router, Server Components</div>
+          <div class="tech-role">App Router, Server Components, Turbopack</div>
         </div>
       </div>
       <div class="tech-item">
-        <div class="tech-icon" style="background:#edf7f2;">🐘</div>
+        <div class="tech-icon accent-blue">&#128024;</div>
         <div class="tech-info">
           <div class="tech-name">PostgreSQL</div>
-          <div class="tech-role">Primary data store</div>
+          <div class="tech-role">Primary database</div>
         </div>
       </div>
       <div class="tech-item">
-        <div class="tech-icon" style="background:#f0eef8;">◈</div>
+        <div class="tech-icon accent-purple">&#9830;</div>
         <div class="tech-info">
           <div class="tech-name">Prisma ORM</div>
-          <div class="tech-role">Type-safe DB access</div>
+          <div class="tech-role">Typed database access &amp; migrations</div>
         </div>
       </div>
       <div class="tech-item">
-        <div class="tech-icon" style="background:#edf7f5;">💨</div>
+        <div class="tech-icon accent-green">&#127912;</div>
         <div class="tech-info">
           <div class="tech-name">Tailwind CSS</div>
-          <div class="tech-role">Utility-first styling</div>
+          <div class="tech-role">Utility-first styling + Glassmorphism</div>
         </div>
       </div>
       <div class="tech-item">
-        <div class="tech-icon" style="background:#fdf1ee;">🔀</div>
+        <div class="tech-icon accent-orange">&#129302;</div>
         <div class="tech-info">
           <div class="tech-name">OpenRouter</div>
-          <div class="tech-role">LLM gateway, multi-model</div>
+          <div class="tech-role">LLM gateway &mdash; Nemotron 120B free</div>
         </div>
       </div>
       <div class="tech-item">
-        <div class="tech-icon" style="background:#fdf5ee;">🖼</div>
+        <div class="tech-icon accent-pink">&#128444;</div>
         <div class="tech-info">
           <div class="tech-name">Sharp</div>
-          <div class="tech-role">WebP/AVIF image processing</div>
+          <div class="tech-role">Image processing pipeline</div>
         </div>
       </div>
       <div class="tech-item">
-        <div class="tech-icon" style="background:#f4f0fb;">📋</div>
+        <div class="tech-icon accent-teal">&#128196;</div>
         <div class="tech-info">
           <div class="tech-name">fast-json-patch</div>
-          <div class="tech-role">RFC 6902 diff & apply</div>
+          <div class="tech-role">RFC 6902 diff/patch for versioning</div>
         </div>
       </div>
       <div class="tech-item">
-        <div class="tech-icon" style="background:#edf4ff;">✓</div>
+        <div class="tech-icon accent-indigo">&#10003;</div>
         <div class="tech-info">
           <div class="tech-name">Zod</div>
-          <div class="tech-role">Runtime schema validation</div>
+          <div class="tech-role">Runtime validation for AI ops</div>
+        </div>
+      </div>
+      <div class="tech-item">
+        <div class="tech-icon accent-coral">&#128274;</div>
+        <div class="tech-info">
+          <div class="tech-name">bcryptjs</div>
+          <div class="tech-role">Password hashing</div>
         </div>
       </div>
     </div>
+
+    <div class="callout callout-green" style="margin-top:24px;">
+      <div class="callout-icon">&#128161;</div>
+      <div>The LLM model used is <code>nvidia/nemotron-3-super-120b-a12b:free</code> via OpenRouter &mdash; a 120B parameter model available at zero cost. The 4-tier routing system ensures it is only called when simpler DB operations cannot handle the task.</div>
+    </div>
   </section>
 
-  <!-- ─── SHORTCUTS ─── -->
+  <!-- ─── KEYBOARD SHORTCUTS ─── -->
   <section id="shortcuts" class="section">
     <h2>
-      <div class="section-icon accent-purple">⌨</div>
+      <div class="section-icon accent-blue">&#9000;</div>
       Keyboard Shortcuts
     </h2>
-    <p class="section-desc">Move faster through the dashboard with these shortcuts.</p>
+    <p class="section-desc">Speed up your workflow with keyboard shortcuts in the CMS dashboard.</p>
 
     <div class="shortcuts-grid">
       <div class="shortcut">
-        <div class="shortcut-desc">Focus AI command bar</div>
+        <span class="shortcut-desc">Focus AI command bar</span>
         <div class="shortcut-keys">
-          <kbd>⌘</kbd>
+          <kbd>&#8984;</kbd>
           <span class="plus-sep">+</span>
           <kbd>K</kbd>
-          <span style="color:var(--text-3);font-size:12px;margin:0 8px;">or</span>
-          <kbd>Ctrl</kbd>
+          <span style="color:var(--text-3); font-size:12px; margin-left:8px;">or</span>
+          <kbd style="margin-left:8px;">Ctrl</kbd>
           <span class="plus-sep">+</span>
           <kbd>K</kbd>
         </div>
       </div>
-      <div class="shortcut">
-        <div class="shortcut-desc">Submit AI command</div>
-        <div class="shortcut-keys">
-          <kbd>Enter</kbd>
-        </div>
-      </div>
-    </div>
-
-    <div class="callout callout-purple" style="margin-top:20px;">
-      <div class="callout-icon">💡</div>
-      <div>More shortcuts are planned for future releases, including section navigation, undo/redo, and quick component insertion.</div>
     </div>
   </section>
-
-  <div class="divider"></div>
 
 </main>
 
 <!-- FOOTER -->
-<footer class="footer" style="margin-left: var(--sidebar-w);">
+<footer class="footer" style="margin-left:var(--sidebar-w);">
   <div class="footer-brand">
     <div class="footer-brand-icon">H</div>
-    <div>
-      <div class="footer-brand-name">hotel<span>CMS</span></div>
-      <div class="footer-meta" style="margin-top:2px;">Version 1.0 — AI-Powered Hotel Website Builder</div>
-    </div>
+    <div class="footer-brand-name">hotel<span>CMS</span></div>
+    <span class="footer-meta" style="margin-left:8px;">v3.0</span>
   </div>
   <div class="footer-meta">
-    Built with hotelCMS · Next.js 16 · PostgreSQL · OpenRouter
+    19 features &middot; 18 operations &middot; 12 components &middot; 16 models &middot; 18 languages
   </div>
-  <div class="footer-links">
-    <a href="#intro" class="footer-link">Docs</a>
-    <a href="#api" class="footer-link">API</a>
-    <a href="#getting-started" class="footer-link">Quick Start</a>
-  </div>
+  <div class="footer-meta">Built with hotelCMS v3.0</div>
 </footer>
 
 <script>
-  // ─── MOBILE SIDEBAR ───
   function toggleSidebar() {
-    const sidebar = document.getElementById('sidebar');
-    const overlay = document.getElementById('sidebarOverlay');
-    sidebar.classList.toggle('open');
-    overlay.classList.toggle('open');
+    document.getElementById('sidebar').classList.toggle('open');
+    document.getElementById('sidebarOverlay').classList.toggle('open');
   }
 
-  // ─── ACTIVE SIDEBAR LINK ON SCROLL ───
-  const sections = document.querySelectorAll('.section[id]');
+  // Active sidebar link tracking
+  const sections = document.querySelectorAll('.section');
   const sidebarLinks = document.querySelectorAll('.sidebar-link');
 
-  function updateActiveLink() {
-    let currentId = '';
-    const scrollY = window.scrollY + 100;
-
-    sections.forEach(section => {
-      if (section.offsetTop <= scrollY) {
-        currentId = section.id;
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        sidebarLinks.forEach(link => link.classList.remove('active'));
+        const id = entry.target.id;
+        const activeLink = document.querySelector(`.sidebar-link[href="#${id}"]`);
+        if (activeLink) activeLink.classList.add('active');
       }
     });
+  }, { rootMargin: '-80px 0px -70% 0px' });
 
-    sidebarLinks.forEach(link => {
-      link.classList.remove('active');
-      const href = link.getAttribute('href');
-      if (href === '#' + currentId) {
-        link.classList.add('active');
-      }
-    });
-  }
+  sections.forEach(section => observer.observe(section));
 
-  window.addEventListener('scroll', updateActiveLink, { passive: true });
-  updateActiveLink();
-
-  // ─── CLOSE SIDEBAR ON LINK CLICK (MOBILE) ───
+  // Close mobile sidebar when clicking a link
   sidebarLinks.forEach(link => {
     link.addEventListener('click', () => {
-      const sidebar = document.getElementById('sidebar');
-      const overlay = document.getElementById('sidebarOverlay');
-      if (sidebar.classList.contains('open')) {
-        sidebar.classList.remove('open');
-        overlay.classList.remove('open');
+      if (window.innerWidth <= 900) {
+        document.getElementById('sidebar').classList.remove('open');
+        document.getElementById('sidebarOverlay').classList.remove('open');
       }
     });
   });
-
-  // ─── RESPONSIVE FOOTER MARGIN ───
-  function updateFooterMargin() {
-    const footer = document.querySelector('footer');
-    if (window.innerWidth <= 900) {
-      footer.style.marginLeft = '0';
-    } else {
-      footer.style.marginLeft = 'var(--sidebar-w)';
-    }
-  }
-
-  window.addEventListener('resize', updateFooterMargin);
-  updateFooterMargin();
 </script>
+
 </body>
 </html>

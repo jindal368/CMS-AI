@@ -1,0 +1,1418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>hotelCMS User Guide v3.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --coral: #e85d45;
+    --coral-light: #fef0ee;
+    --coral-dark: #c94a34;
+    --purple: #7c5cbf;
+    --purple-light: #f3f0fa;
+    --purple-dark: #5e3fa3;
+    --gray-50: #fafafa;
+    --gray-100: #f5f5f5;
+    --gray-200: #e5e5e5;
+    --gray-300: #d4d4d4;
+    --gray-400: #a3a3a3;
+    --gray-500: #737373;
+    --gray-600: #525252;
+    --gray-700: #404040;
+    --gray-800: #262626;
+    --gray-900: #171717;
+    --green: #22c55e;
+    --green-light: #f0fdf4;
+    --amber: #f59e0b;
+    --amber-light: #fffbeb;
+    --blue: #3b82f6;
+    --blue-light: #eff6ff;
+    --teal: #14b8a6;
+    --teal-light: #f0fdfa;
+    --radius: 12px;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+    --shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
+    --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+    --shadow-lg: 0 10px 25px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+  }
+
+  html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    color: var(--gray-800);
+    line-height: 1.7;
+    background: #fff;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Sticky Nav ── */
+  .topnav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--gray-200);
+    transition: box-shadow 0.2s;
+  }
+  .topnav.scrolled { box-shadow: var(--shadow-md); }
+  .topnav-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 60px;
+  }
+  .topnav-logo {
+    font-weight: 800;
+    font-size: 18px;
+    color: var(--gray-900);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .topnav-logo span { color: var(--coral); }
+  .topnav-links {
+    display: flex;
+    gap: 4px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .topnav-links::-webkit-scrollbar { display: none; }
+  .topnav-links a {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--gray-500);
+    text-decoration: none;
+    padding: 6px 12px;
+    border-radius: 8px;
+    white-space: nowrap;
+    transition: all 0.15s;
+  }
+  .topnav-links a:hover { color: var(--gray-900); background: var(--gray-100); }
+  .topnav-links a.new-link { color: var(--coral); }
+
+  /* ── Hero ── */
+  .hero {
+    background: linear-gradient(135deg, #fef0ee 0%, #f3f0fa 50%, #eff6ff 100%);
+    padding: 80px 24px 64px;
+    text-align: center;
+  }
+  .hero-badge {
+    display: inline-block;
+    background: white;
+    border: 1px solid var(--gray-200);
+    border-radius: 100px;
+    padding: 6px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--coral);
+    margin-bottom: 24px;
+    box-shadow: var(--shadow-sm);
+  }
+  .hero h1 {
+    font-size: clamp(36px, 5vw, 56px);
+    font-weight: 800;
+    color: var(--gray-900);
+    letter-spacing: -1.5px;
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+  .hero h1 em { font-style: normal; color: var(--coral); }
+  .hero p {
+    font-size: 18px;
+    color: var(--gray-500);
+    max-width: 560px;
+    margin: 0 auto 40px;
+    line-height: 1.6;
+  }
+  .hero-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .hero-grid a {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: white;
+    border: 1px solid var(--gray-200);
+    padding: 8px 16px;
+    border-radius: 100px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--gray-700);
+    text-decoration: none;
+    transition: all 0.15s;
+    box-shadow: var(--shadow-sm);
+  }
+  .hero-grid a:hover {
+    border-color: var(--coral);
+    color: var(--coral);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow);
+  }
+  .hero-grid a.new-pill {
+    border-color: rgba(232,93,69,0.3);
+    background: var(--coral-light);
+  }
+
+  /* ── New Badge ── */
+  .new-badge {
+    display: inline-flex;
+    align-items: center;
+    font-size: 9px;
+    font-weight: 800;
+    padding: 2px 6px;
+    border-radius: 4px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    background: linear-gradient(135deg, var(--coral), var(--purple));
+    color: white;
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+
+  /* ── Sections ── */
+  .section {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 64px 24px;
+  }
+  .section-alt {
+    background: var(--gray-50);
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 8px;
+  }
+  .section-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+  .section-icon.coral { background: var(--coral-light); }
+  .section-icon.purple { background: var(--purple-light); }
+  .section-icon.green { background: var(--green-light); }
+  .section-icon.amber { background: var(--amber-light); }
+  .section-icon.blue { background: var(--blue-light); }
+  .section-icon.teal { background: var(--teal-light); }
+
+  .section h2 {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--gray-900);
+    letter-spacing: -0.5px;
+  }
+  .section-subtitle {
+    color: var(--gray-500);
+    font-size: 16px;
+    margin-bottom: 40px;
+    max-width: 600px;
+  }
+  .section h3 {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--gray-900);
+    margin: 40px 0 16px;
+    letter-spacing: -0.3px;
+  }
+  .section h3:first-of-type { margin-top: 0; }
+  .section p { color: var(--gray-600); margin-bottom: 16px; }
+
+  /* ── Screenshot placeholders ── */
+  .screenshot {
+    width: 100%;
+    border-radius: var(--radius);
+    height: 280px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 24px 0;
+    border: 1px solid rgba(0,0,0,0.06);
+    box-shadow: var(--shadow-md);
+    position: relative;
+    overflow: hidden;
+  }
+  .screenshot::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0.08;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+  .screenshot-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.95);
+    background: rgba(0,0,0,0.2);
+    backdrop-filter: blur(4px);
+    padding: 8px 20px;
+    border-radius: 100px;
+    z-index: 1;
+    letter-spacing: 0.3px;
+  }
+  .screenshot.grad-coral { background: linear-gradient(135deg, #e85d45, #f59e0b); }
+  .screenshot.grad-purple { background: linear-gradient(135deg, #7c5cbf, #3b82f6); }
+  .screenshot.grad-green { background: linear-gradient(135deg, #22c55e, #06b6d4); }
+  .screenshot.grad-blue { background: linear-gradient(135deg, #3b82f6, #8b5cf6); }
+  .screenshot.grad-amber { background: linear-gradient(135deg, #f59e0b, #ef4444); }
+  .screenshot.grad-teal { background: linear-gradient(135deg, #14b8a6, #3b82f6); }
+  .screenshot.grad-pink { background: linear-gradient(135deg, #ec4899, #8b5cf6); }
+  .screenshot.grad-dark { background: linear-gradient(135deg, #1e293b, #334155); }
+
+  /* ── Callout boxes ── */
+  .callout {
+    border-radius: var(--radius);
+    padding: 16px 20px;
+    margin: 20px 0;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  .callout-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+  .callout p { margin: 0; }
+  .callout.tip { background: var(--green-light); border: 1px solid #bbf7d0; color: #166534; }
+  .callout.info { background: var(--blue-light); border: 1px solid #bfdbfe; color: #1e40af; }
+  .callout.warn { background: var(--amber-light); border: 1px solid #fde68a; color: #92400e; }
+  .callout.note { background: var(--purple-light); border: 1px solid #ddd6fe; color: #5b21b6; }
+
+  /* ── Step lists ── */
+  .steps { list-style: none; counter-reset: step; margin: 20px 0; }
+  .steps li {
+    counter-increment: step;
+    padding: 12px 0 12px 52px;
+    position: relative;
+    color: var(--gray-600);
+    border-bottom: 1px solid var(--gray-100);
+  }
+  .steps li:last-child { border-bottom: none; }
+  .steps li::before {
+    content: counter(step);
+    position: absolute;
+    left: 0;
+    top: 12px;
+    width: 32px;
+    height: 32px;
+    border-radius: 10px;
+    background: var(--coral-light);
+    color: var(--coral);
+    font-weight: 700;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .steps li strong { color: var(--gray-800); }
+  .steps.purple li::before { background: var(--purple-light); color: var(--purple); }
+  .steps.blue li::before { background: var(--blue-light); color: var(--blue); }
+  .steps.teal li::before { background: var(--teal-light); color: var(--teal); }
+
+  /* ── Feature cards ── */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 16px;
+    margin: 24px 0;
+  }
+  .card {
+    background: white;
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius);
+    padding: 20px;
+    transition: all 0.15s;
+  }
+  .card:hover { border-color: var(--gray-300); box-shadow: var(--shadow); }
+  .card-icon { font-size: 24px; margin-bottom: 10px; }
+  .card h4 { font-size: 15px; font-weight: 600; color: var(--gray-900); margin-bottom: 6px; }
+  .card p { font-size: 13px; color: var(--gray-500); margin: 0; line-height: 1.5; }
+
+  /* ── Grade pills ── */
+  .grade-row { display: flex; gap: 10px; flex-wrap: wrap; margin: 16px 0; }
+  .grade-pill {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: white;
+    border: 1px solid var(--gray-200);
+    border-radius: 100px;
+    padding: 6px 16px 6px 8px;
+    font-size: 13px;
+    color: var(--gray-700);
+  }
+  .grade-letter {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 13px;
+    color: white;
+  }
+  .grade-A { background: #22c55e; }
+  .grade-B { background: #84cc16; }
+  .grade-C { background: #f59e0b; }
+  .grade-D { background: #f97316; }
+  .grade-F { background: #ef4444; }
+
+  /* ── Component list ── */
+  .component-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 10px;
+    margin: 20px 0;
+  }
+  .component-item {
+    background: white;
+    border: 1px solid var(--gray-200);
+    border-radius: 10px;
+    padding: 14px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--gray-700);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .component-item span { font-size: 18px; }
+
+  /* ── AI Command examples ── */
+  .ai-example {
+    background: var(--gray-900);
+    border-radius: var(--radius);
+    padding: 14px 20px;
+    margin: 8px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .ai-example kbd {
+    background: var(--gray-700);
+    color: var(--gray-300);
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 6px;
+    white-space: nowrap;
+  }
+  .ai-example .ai-text {
+    color: #e2e8f0;
+    font-size: 14px;
+  }
+  .ai-example .ai-label {
+    color: var(--gray-400);
+    font-size: 12px;
+    margin-left: auto;
+    white-space: nowrap;
+  }
+
+  /* ── Roles table ── */
+  .roles-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 14px;
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: 1px solid var(--gray-200);
+  }
+  .roles-table th {
+    background: var(--gray-50);
+    font-weight: 600;
+    text-align: left;
+    padding: 12px 16px;
+    color: var(--gray-700);
+    border-bottom: 1px solid var(--gray-200);
+  }
+  .roles-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--gray-100);
+    color: var(--gray-600);
+  }
+  .roles-table tr:last-child td { border-bottom: none; }
+  .check { color: var(--green); font-weight: 600; }
+  .cross { color: var(--gray-300); }
+
+  /* ── Keyboard shortcut ── */
+  .kbd-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--gray-100);
+  }
+  .kbd-row:last-child { border-bottom: none; }
+  .kbd-row .label { color: var(--gray-600); font-size: 14px; }
+  .kbd-keys { display: flex; gap: 4px; }
+  .kbd {
+    background: white;
+    border: 1px solid var(--gray-200);
+    box-shadow: 0 1px 0 var(--gray-200);
+    border-radius: 6px;
+    padding: 4px 10px;
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--gray-700);
+  }
+
+  /* ── Sentiment pills ── */
+  .sentiment-row { display: flex; gap: 10px; flex-wrap: wrap; margin: 16px 0; }
+  .sentiment-pill {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: white;
+    border: 1px solid var(--gray-200);
+    border-radius: 100px;
+    padding: 8px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--gray-700);
+  }
+  .sentiment-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+  }
+  .sentiment-dot.positive { background: #22c55e; }
+  .sentiment-dot.neutral { background: #f59e0b; }
+  .sentiment-dot.negative { background: #ef4444; }
+
+  /* ── Divider ── */
+  .divider {
+    height: 1px;
+    background: var(--gray-200);
+    margin: 0;
+  }
+
+  /* ── Footer ── */
+  .footer {
+    text-align: center;
+    padding: 48px 24px;
+    background: var(--gray-900);
+    color: var(--gray-400);
+  }
+  .footer-logo {
+    font-size: 20px;
+    font-weight: 800;
+    color: white;
+    margin-bottom: 8px;
+  }
+  .footer-logo span { color: var(--coral); }
+  .footer p { font-size: 14px; margin-bottom: 4px; }
+  .footer .footer-help {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--gray-800);
+    border: 1px solid var(--gray-700);
+    color: var(--gray-300);
+    padding: 10px 24px;
+    border-radius: 100px;
+    font-size: 14px;
+    font-weight: 500;
+    margin-top: 20px;
+    text-decoration: none;
+    transition: all 0.15s;
+  }
+  .footer .footer-help:hover { background: var(--gray-700); color: white; }
+
+  /* ── Responsive ── */
+  @media (max-width: 768px) {
+    .topnav-links { display: none; }
+    .section { padding: 48px 20px; }
+    .hero { padding: 60px 20px 48px; }
+    .screenshot { height: 200px; }
+    .card-grid { grid-template-columns: 1fr; }
+    .component-grid { grid-template-columns: 1fr 1fr; }
+    .roles-table { font-size: 13px; }
+    .roles-table th, .roles-table td { padding: 10px 12px; }
+  }
+
+  @media (max-width: 480px) {
+    .component-grid { grid-template-columns: 1fr; }
+    .grade-row { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════ NAV ════════════════════════ -->
+<nav class="topnav" id="topnav">
+  <div class="topnav-inner">
+    <a href="#hero" class="topnav-logo">hotel<span>CMS</span> Guide</a>
+    <div class="topnav-links">
+      <a href="#getting-started">Getting Started</a>
+      <a href="#hotels">Hotels</a>
+      <a href="#pages">Pages</a>
+      <a href="#ai">AI</a>
+      <a href="#languages">Languages</a>
+      <a href="#seo">SEO</a>
+      <a href="#campaigns" class="new-link">Campaigns</a>
+      <a href="#competitors" class="new-link">Competitors</a>
+      <a href="#reviews" class="new-link">Reviews</a>
+      <a href="#brand" class="new-link">Brand</a>
+      <a href="#team">Team</a>
+      <a href="#media">Media</a>
+      <a href="#versions">Versions</a>
+      <a href="#tips">Tips</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ════════════════════════ HERO ════════════════════════ -->
+<section class="hero" id="hero">
+  <div class="hero-badge">User Guide v3.0</div>
+  <h1>hotel<em>CMS</em> User Guide</h1>
+  <p>Everything you need to build and manage stunning hotel websites &mdash; now with campaigns, competitive intelligence, guest review AI, and brand governance.</p>
+  <div class="hero-grid">
+    <a href="#getting-started">Getting Started</a>
+    <a href="#hotels">Managing Hotels</a>
+    <a href="#pages">Building Pages</a>
+    <a href="#ai">Using AI</a>
+    <a href="#languages">Multi-Language</a>
+    <a href="#seo">SEO</a>
+    <a href="#campaigns" class="new-pill">Campaigns</a>
+    <a href="#competitors" class="new-pill">Competitive Intel</a>
+    <a href="#reviews" class="new-pill">Guest Reviews</a>
+    <a href="#brand" class="new-pill">Brand Governance</a>
+    <a href="#team">Team</a>
+    <a href="#media">Media Library</a>
+    <a href="#versions">Version History</a>
+    <a href="#tips">Tips &amp; Best Practices</a>
+    <a href="#shortcuts">Keyboard Shortcuts</a>
+  </div>
+</section>
+
+<!-- ════════════════════════ 1. GETTING STARTED ════════════════════════ -->
+<div class="divider"></div>
+<section id="getting-started">
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon coral">&#x1F680;</div>
+      <h2>Getting Started</h2>
+    </div>
+    <p class="section-subtitle">Log in, explore your dashboard, and understand your hotel portfolio at a glance.</p>
+
+    <h3>Logging In</h3>
+    <p>Open hotelCMS in your browser and sign in with your email and password. If your organization uses single sign-on, you'll see that option on the login page too.</p>
+
+    <div class="screenshot grad-coral">
+      <span class="screenshot-label">Login Screen</span>
+    </div>
+
+    <h3>First Time? Create Your Organization</h3>
+    <p>If you're setting up hotelCMS for the first time, you'll be asked to create your organization. Enter your company name and you're in. You'll automatically become the Admin for your organization.</p>
+
+    <ol class="steps">
+      <li><strong>Enter your organization name</strong> &mdash; this is the name of your hotel group or management company.</li>
+      <li><strong>Set up your first hotel</strong> &mdash; you'll add a name, category, and basic contact details.</li>
+      <li><strong>Explore the dashboard</strong> &mdash; you'll land on a bird's-eye view of all your properties.</li>
+    </ol>
+
+    <h3>Your Dashboard Overview</h3>
+    <p>The dashboard is your command center. At the top, you'll see summary cards showing your total hotels, pages, and overall health scores. Below that, each hotel is listed with its current status.</p>
+
+    <div class="screenshot grad-purple">
+      <span class="screenshot-label">Dashboard Overview</span>
+    </div>
+
+    <h3>Health Grades Explained</h3>
+    <p>Every hotel receives a health grade based on completeness, SEO readiness, and content quality. Here's what each grade means:</p>
+
+    <div class="grade-row">
+      <div class="grade-pill"><div class="grade-letter grade-A">A</div> Excellent &mdash; fully optimized</div>
+      <div class="grade-pill"><div class="grade-letter grade-B">B</div> Good &mdash; minor improvements</div>
+      <div class="grade-pill"><div class="grade-letter grade-C">C</div> Fair &mdash; needs attention</div>
+      <div class="grade-pill"><div class="grade-letter grade-D">D</div> Poor &mdash; significant gaps</div>
+      <div class="grade-pill"><div class="grade-letter grade-F">F</div> Critical &mdash; immediate action</div>
+    </div>
+
+    <h3>Action Queue &mdash; Your To-Do List</h3>
+    <p>The action queue surfaces the most important tasks across all your properties. Missing meta descriptions, incomplete pages, broken links &mdash; they all appear here, sorted by priority. Think of it as your daily checklist.</p>
+
+    <div class="callout tip">
+      <span class="callout-icon">&#x1F4A1;</span>
+      <p>Check your action queue first thing each morning. It's the fastest way to keep all your hotel websites in great shape.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ 2. MANAGING HOTELS ════════════════════════ -->
+<div class="divider"></div>
+<section id="hotels" class="section-alt">
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon purple">&#x1F3E8;</div>
+      <h2>Managing Hotels</h2>
+    </div>
+    <p class="section-subtitle">Add properties, configure their details, and set up everything guests need to find and contact you.</p>
+
+    <h3>Creating a New Hotel</h3>
+    <p>Click the <strong>"Add Hotel"</strong> button on your dashboard. Fill in the basics:</p>
+    <ol class="steps purple">
+      <li><strong>Hotel name</strong> &mdash; the full property name as you want it displayed to guests.</li>
+      <li><strong>Category</strong> &mdash; boutique, resort, business, heritage, or another type. This helps AI tailor content to your property style.</li>
+      <li><strong>Contact info</strong> &mdash; phone number, email address, and physical address.</li>
+    </ol>
+
+    <div class="screenshot grad-teal">
+      <span class="screenshot-label">Add Hotel Form</span>
+    </div>
+
+    <h3>Hotel Detail Page</h3>
+    <p>Click any hotel from the dashboard to open its detail page. This is the main workspace for that property. You'll see tabs for Pages, SEO, Smart Links, Theme, Languages, Competitors, and Reviews.</p>
+
+    <h3>Editing Hotel Info</h3>
+    <p>Need to update the phone number or change the category? Open the hotel detail page and click the <strong>edit icon</strong> next to the hotel name. Make your changes and save.</p>
+
+    <h3>Setting Up Smart Links</h3>
+    <p>Smart Links are the key actions guests can take from your website. Set these up before building pages &mdash; they get used everywhere automatically.</p>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">&#x1F517;</div>
+        <h4>Booking URL</h4>
+        <p>Link to your booking engine. Every "Book Now" button will point here.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">&#x1F4F1;</div>
+        <h4>Social Media</h4>
+        <p>Instagram, Facebook, Twitter &mdash; add your social profiles.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">&#x260E;&#xFE0F;</div>
+        <h4>Phone</h4>
+        <p>Your front desk or reservations number. Tap-to-call on mobile.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">&#x2709;&#xFE0F;</div>
+        <h4>Email</h4>
+        <p>Contact email for guest inquiries.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">&#x1F4CD;</div>
+        <h4>Maps</h4>
+        <p>Google Maps link so guests can get directions instantly.</p>
+      </div>
+    </div>
+
+    <h3>Configuring a Theme</h3>
+    <p>Your theme controls how your website looks and feels. You can customize:</p>
+    <ul style="margin: 12px 0 0 20px; color: var(--gray-600);">
+      <li><strong>Colors</strong> &mdash; primary brand color, secondary color, background tones</li>
+      <li><strong>Fonts</strong> &mdash; heading and body font families</li>
+      <li><strong>Spacing</strong> &mdash; compact, comfortable, or spacious layouts</li>
+    </ul>
+
+    <div class="callout info">
+      <span class="callout-icon">&#x2139;&#xFE0F;</span>
+      <p>Changes to your theme are applied across all pages instantly. You'll see the update in the live preview right away.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ 3. BUILDING PAGES ════════════════════════ -->
+<div class="divider"></div>
+<section id="pages">
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon coral">&#x1F4C4;</div>
+      <h2>Building Pages</h2>
+    </div>
+    <p class="section-subtitle">The visual page builder lets you create beautiful, conversion-ready pages without writing a single line of code.</p>
+
+    <h3>Adding Pages to Your Hotel</h3>
+    <p>From the hotel detail page, click <strong>"Add Page"</strong>. Give it a name (like "Homepage", "Rooms", or "Dining") and a URL slug. The page is created as a draft &mdash; you can build it out before publishing.</p>
+
+    <h3>Opening the Page Builder</h3>
+    <p>Click on any page to enter the page builder. On the left, you'll see your page sections stacked vertically. On the right, a live preview shows exactly what guests will see.</p>
+
+    <div class="screenshot grad-blue">
+      <span class="screenshot-label">Page Builder &mdash; Visual Editor</span>
+    </div>
+
+    <h3>Adding Sections</h3>
+    <p>Click the <strong>"+ Add Section"</strong> button to open the component picker. Choose from 12 ready-to-use section types:</p>
+
+    <div class="component-grid">
+      <div class="component-item"><span>&#x1F3A8;</span> Hero &mdash; Cinematic</div>
+      <div class="component-item"><span>&#x1F4DD;</span> Hero &mdash; Editorial</div>
+      <div class="component-item"><span>&#x2728;</span> Hero &mdash; Minimal</div>
+      <div class="component-item"><span>&#x1F3E0;</span> Rooms &mdash; Grid</div>
+      <div class="component-item"><span>&#x1F3E0;</span> Rooms &mdash; Showcase</div>
+      <div class="component-item"><span>&#x1F5BC;&#xFE0F;</span> Gallery &mdash; Masonry</div>
+      <div class="component-item"><span>&#x1F3AC;</span> Gallery &mdash; Filmstrip</div>
+      <div class="component-item"><span>&#x1F4B0;</span> Booking &mdash; Inline</div>
+      <div class="component-item"><span>&#x1F4B0;</span> Booking &mdash; Sticky</div>
+      <div class="component-item"><span>&#x2B50;</span> Reviews Wall</div>
+      <div class="component-item"><span>&#x1F5FA;&#xFE0F;</span> Map</div>
+      <div class="component-item"><span>&#x1F517;</span> Footer</div>
+    </div>
+
+    <h3>Editing Section Content</h3>
+    <p>Select any section to open the <strong>props editor</strong> on the right. This is where you change headlines, descriptions, images, button text, and other content specific to that section type. Every change is reflected in the live preview instantly.</p>
+
+    <h3>Reordering Sections</h3>
+    <p>Use the <strong>up/down arrows</strong> on each section to reorder them. Drag a hero banner to the top, move testimonials right above your call to action &mdash; arrange the page however tells the best story.</p>
+
+    <h3>Showing &amp; Hiding Sections</h3>
+    <p>Don't want to delete a section but need it off the page temporarily? Toggle the <strong>visibility icon</strong> to hide it. Hidden sections are saved but won't appear on the live website.</p>
+
+    <h3>Deleting Sections</h3>
+    <p>Click the <strong>trash icon</strong> on any section to remove it. You'll be asked to confirm before it's deleted.</p>
+
+    <h3>Live Preview</h3>
+    <p>The right side of the page builder shows a real-time preview of your page. What you see is exactly what your guests will see. Resize your browser to check how it looks on different screen sizes.</p>
+
+    <div class="callout tip">
+      <span class="callout-icon">&#x1F4A1;</span>
+      <p>Use the full-screen preview button to see your page without the editor sidebar. Great for a final review before publishing.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ 4. USING AI ════════════════════════ -->
+<div class="divider"></div>
+<section id="ai" class="section-alt">
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon purple">&#x2728;</div>
+      <h2>Using AI</h2>
+    </div>
+    <p class="section-subtitle">Your AI assistant understands hospitality. Just tell it what you want and watch the magic happen.</p>
+
+    <h3>The Command Bar</h3>
+    <p>Press <strong>&#x2318;K</strong> (Mac) or <strong>Ctrl+K</strong> (Windows) anywhere in the page builder to open the AI command bar. Type what you want in plain English &mdash; no special syntax needed.</p>
+
+    <div class="screenshot grad-dark">
+      <span class="screenshot-label">AI Command Bar</span>
+    </div>
+
+    <h3>What You Can Ask AI to Do</h3>
+    <p>Here are some examples of what works. Try them out &mdash; you can always undo changes.</p>
+
+    <div class="ai-example">
+      <kbd>&#x2318;K</kbd>
+      <span class="ai-text">"Make the headline more inviting"</span>
+      <span class="ai-label">Text change</span>
+    </div>
+    <div class="ai-example">
+      <kbd>&#x2318;K</kbd>
+      <span class="ai-text">"Make the hero background dark blue"</span>
+      <span class="ai-label">Visual change</span>
+    </div>
+    <div class="ai-example">
+      <kbd>&#x2318;K</kbd>
+      <span class="ai-text">"Redesign the hero with a cinematic layout"</span>
+      <span class="ai-label">Component change</span>
+    </div>
+    <div class="ai-example">
+      <kbd>&#x2318;K</kbd>
+      <span class="ai-text">"Add a gallery section after the hero"</span>
+      <span class="ai-label">Structural change</span>
+    </div>
+    <div class="ai-example">
+      <kbd>&#x2318;K</kbd>
+      <span class="ai-text">"Build a homepage inspired by hablis.com"</span>
+      <span class="ai-label">URL reference</span>
+    </div>
+
+    <h3>How AI Works Behind the Scenes</h3>
+    <p>When you give AI a command, here's what happens:</p>
+    <ol class="steps purple">
+      <li><strong>Analyze</strong> &mdash; AI reads your instruction and figures out the best approach.</li>
+      <li><strong>Review tier &amp; cost</strong> &mdash; it picks the most efficient route, from simple text edits to full redesigns.</li>
+      <li><strong>Execute</strong> &mdash; the change is made to your page sections.</li>
+      <li><strong>See changes</strong> &mdash; the live preview updates instantly so you can review.</li>
+    </ol>
+
+    <h3>The Logs Panel</h3>
+    <p>Curious what AI is doing? Open the <strong>logs panel</strong> at the bottom of the page builder. It shows a real-time feed of AI's thinking process &mdash; what it analyzed, what decisions it made, and what it changed.</p>
+
+    <h3>The Diff Panel</h3>
+    <p>After any AI change, the <strong>diff panel</strong> shows you a clear before-and-after comparison. Green highlights show what was added, red shows what was removed. This way, you always know exactly what changed.</p>
+
+    <div class="screenshot grad-pink">
+      <span class="screenshot-label">AI Diff View &mdash; Before &amp; After</span>
+    </div>
+
+    <h3>AI Remembers Your Preferences</h3>
+    <p>The more you use AI, the better it understands your brand voice and style. If you consistently ask for "warm, inviting" language, AI will learn to match that tone across future suggestions.</p>
+
+    <h3>AI Direct Code Editing</h3>
+    <p>For pixel-perfect customizations that go beyond standard components, AI can inject custom CSS or replace entire sections with custom HTML. Just describe what you want &mdash; "make the hero full-width with a gradient overlay and centered white text" &mdash; and AI writes the code.</p>
+
+    <div class="callout note">
+      <span class="callout-icon">&#x1F3AF;</span>
+      <p>Be specific with your instructions. Instead of "make it better," try "make the headline shorter and add urgency for a summer promotion." The more detail you give, the better the result.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ 5. MULTI-LANGUAGE ════════════════════════ -->
+<div class="divider"></div>
+<section id="languages">
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon green">&#x1F30D;</div>
+      <h2>Multi-Language</h2>
+    </div>
+    <p class="section-subtitle">Reach international guests with professionally translated content in 18 languages.</p>
+
+    <h3>Adding a New Language</h3>
+    <p>From the hotel detail page, go to the <strong>Languages</strong> tab and click <strong>"Add Language"</strong>. Select from 18 supported languages. Once added, AI will automatically translate all your existing pages into the new language.</p>
+
+    <div class="screenshot grad-green">
+      <span class="screenshot-label">Language Management</span>
+    </div>
+
+    <h3>How Translation Works</h3>
+    <p>When you add a language, AI translates every page section &mdash; headlines, descriptions, button text, everything. It doesn't just do a word-for-word translation; it adapts the tone and phrasing to feel natural in each language.</p>
+
+    <h3>Switching Between Languages in the CMS</h3>
+    <p>In the page builder, use the <strong>language switcher</strong> dropdown at the top to toggle between languages. This lets you review and edit the translated version of each page.</p>
+
+    <h3>How Guests See Different Languages</h3>
+    <p>On your live website, guests see a language switcher icon. Clicking it lets them choose their preferred language. The entire site &mdash; all pages, all sections &mdash; switches seamlessly.</p>
+
+    <h3>Editing Translated Content</h3>
+    <p>AI translations are a starting point. You can manually edit any translated text using the same props editor you use for the original language. Just switch to the language you want to edit and make your changes.</p>
+
+    <div class="callout tip">
+      <span class="callout-icon">&#x1F4A1;</span>
+      <p>Have a native speaker review AI translations for important markets. While AI translations are high quality, a local touch for your top markets can make a real difference.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ 6. SEO ════════════════════════ -->
+<div class="divider"></div>
+<section id="seo" class="section-alt">
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon amber">&#x1F50D;</div>
+      <h2>SEO</h2>
+    </div>
+    <p class="section-subtitle">Help potential guests find your hotel when they search online.</p>
+
+    <h3>What SEO Means for Your Hotel</h3>
+    <p>SEO (Search Engine Optimization) determines how easily people find your hotel when they search on Google. Good SEO means more visibility, more website visitors, and ultimately more bookings &mdash; all without paying for ads.</p>
+
+    <h3>Your SEO Score</h3>
+    <p>Each hotel page gets an SEO score that measures:</p>
+    <ul style="margin: 12px 0 0 20px; color: var(--gray-600);">
+      <li><strong>Page titles &amp; descriptions</strong> &mdash; are they set and the right length?</li>
+      <li><strong>Headings structure</strong> &mdash; is your content well organized?</li>
+      <li><strong>Image alt text</strong> &mdash; can search engines understand your images?</li>
+      <li><strong>Content quality</strong> &mdash; is there enough meaningful text?</li>
+      <li><strong>Mobile friendliness</strong> &mdash; does it work well on phones?</li>
+    </ul>
+
+    <div class="screenshot grad-amber">
+      <span class="screenshot-label">SEO Audit Dashboard</span>
+    </div>
+
+    <h3>Common Issues and How to Fix Them</h3>
+    <p>The SEO panel lists issues sorted by impact. Click any issue to see a clear explanation of what's wrong and how to fix it. Many fixes are as simple as adding a missing description or updating a page title.</p>
+
+    <h3>Auto-Generated Sitemap &amp; Structured Data</h3>
+    <p>hotelCMS automatically creates a sitemap (a map of all your pages for search engines) and adds structured data (extra information that helps Google show rich results like star ratings and prices). You don't need to do anything &mdash; it just works.</p>
+
+    <div class="callout info">
+      <span class="callout-icon">&#x2139;&#xFE0F;</span>
+      <p>SEO improvements take time. After making changes, it typically takes 2-4 weeks for Google to re-index your pages and for ranking improvements to appear.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ 7. CAMPAIGNS (NEW) ════════════════════════ -->
+<div class="divider"></div>
+<section id="campaigns">
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon coral">&#x1F4E3;</div>
+      <h2>Campaigns <span class="new-badge">NEW</span></h2>
+    </div>
+    <p class="section-subtitle">Run promotions across all your properties at once. One campaign, every hotel updated with AI-tailored content.</p>
+
+    <h3>What Are Campaigns?</h3>
+    <p>Campaigns let you push a promotion, seasonal offer, or brand initiative to multiple hotel websites simultaneously. Instead of manually updating each property, you create one campaign and AI adapts the content for each hotel &mdash; a boutique beach resort gets different messaging than a downtown business hotel, even though it's the same promotion.</p>
+
+    <h3>Creating a Campaign</h3>
+    <ol class="steps">
+      <li><strong>Set a title</strong> &mdash; for example, "Summer Escape 2026" or "Holiday Season Special".</li>
+      <li><strong>Write a brief</strong> &mdash; describe what the promotion is about, key selling points, dates, and any specific messaging you want.</li>
+      <li><strong>Select hotels</strong> &mdash; choose which properties should participate. You can select all or pick specific ones.</li>
+    </ol>
+
+    <div class="screenshot grad-coral">
+      <span class="screenshot-label">Campaign Builder</span>
+    </div>
+
+    <h3>Launching a Campaign</h3>
+    <p>When you launch, AI takes your brief and creates tailored content for each selected hotel. The content is adapted to each property's style, category, and audience. You can monitor the deployment status for each hotel on the campaign dashboard.</p>
+
+    <h3>Checking Deployment Status</h3>
+    <p>The campaign dashboard shows the deployment status for each hotel: pending, deployed, or failed. If something goes wrong, you'll see a clear error message and can retry.</p>
+
+    <h3>Ending a Campaign</h3>
+    <p>When the promotion is over, click <strong>"End Campaign"</strong>. This removes the campaign content from all participating hotel websites in one step. No manual cleanup needed.</p>
+
+    <div class="callout warn">
+      <span class="callout-icon">&#x26A0;&#xFE0F;</span>
+      <p>Ending a campaign immediately removes the promotional content from all hotel websites. Make sure the promotion period is actually over before ending it.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ 8. COMPETITIVE INTELLIGENCE (NEW) ════════════════════════ -->
+<div class="divider"></div>
+<section id="competitors" class="section-alt">
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon purple">&#x1F575;&#xFE0F;</div>
+      <h2>Competitive Intelligence <span class="new-badge">NEW</span></h2>
+    </div>
+    <p class="section-subtitle">Monitor competitor hotel websites and get AI-powered insights to stay ahead.</p>
+
+    <h3>Why Track Competitors?</h3>
+    <p>Knowing what your competitors are doing with their websites &mdash; new promotions, pricing changes, content updates &mdash; helps you stay competitive. hotelCMS monitors their sites for you and suggests strategic counter-moves.</p>
+
+    <h3>Adding a Competitor</h3>
+    <ol class="steps purple">
+      <li><strong>Enter the competitor name</strong> &mdash; the hotel or brand you want to track.</li>
+      <li><strong>Paste their website URL</strong> &mdash; the main page of their hotel website.</li>
+      <li><strong>Assign to a hotel</strong> &mdash; link the competitor to one of your properties for targeted analysis.</li>
+    </ol>
+
+    <div class="screenshot grad-purple">
+      <span class="screenshot-label">Competitor Dashboard</span>
+    </div>
+
+    <h3>Scanning Competitors</h3>
+    <p>Click <strong>"Scan"</strong> on any competitor to fetch their latest website content. You can also scan all competitors at once. The system extracts their content, compares it to your hotel, and generates AI insights.</p>
+
+    <h3>Understanding Insights</h3>
+    <p>After each scan, AI generates competitive insights:</p>
+    <ul style="margin: 12px 0 0 20px; color: var(--gray-600);">
+      <li><strong>What they changed</strong> &mdash; new promotions, updated pricing, or content shifts</li>
+      <li><strong>What they do well</strong> &mdash; areas where the competitor's site outperforms yours</li>
+      <li><strong>Recommended counter-moves</strong> &mdash; specific actions you can take to stay competitive</li>
+    </ul>
+
+    <h3>Tracking Changes Over Time</h3>
+    <p>Every scan is saved in the competitor's history. Compare snapshots over time to spot trends, like when a competitor runs seasonal promotions or changes their pricing strategy.</p>
+
+    <div class="callout tip">
+      <span class="callout-icon">&#x1F4A1;</span>
+      <p>Scan your top competitors weekly. The more data points you have, the better AI can identify patterns and suggest strategic responses.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ 9. GUEST REVIEWS (NEW) ════════════════════════ -->
+<div class="divider"></div>
+<section id="reviews">
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon teal">&#x2B50;</div>
+      <h2>Guest Review Responses <span class="new-badge">NEW</span></h2>
+    </div>
+    <p class="section-subtitle">AI drafts on-brand responses to guest reviews. Copy, paste, done.</p>
+
+    <h3>Why Respond to Reviews?</h3>
+    <p>Responding to guest reviews shows potential guests that you care. It improves your reputation on platforms like Google, TripAdvisor, and Booking.com, and can directly influence booking decisions. hotelCMS makes it fast with AI-generated responses.</p>
+
+    <h3>Adding a Review</h3>
+    <ol class="steps teal">
+      <li><strong>Paste the guest's name</strong> &mdash; as it appears on the review platform.</li>
+      <li><strong>Select the platform</strong> &mdash; Google, TripAdvisor, Booking.com, or others.</li>
+      <li><strong>Set the rating</strong> &mdash; the star rating the guest gave (1-5).</li>
+      <li><strong>Paste the review text</strong> &mdash; copy the full review from the platform.</li>
+    </ol>
+
+    <div class="screenshot grad-teal">
+      <span class="screenshot-label">Guest Review Dashboard</span>
+    </div>
+
+    <h3>How AI Responds</h3>
+    <p>As soon as you add a review, AI analyzes the sentiment and drafts an appropriate response:</p>
+
+    <div class="sentiment-row">
+      <div class="sentiment-pill"><div class="sentiment-dot positive"></div> Positive reviews get warm, grateful acknowledgment</div>
+      <div class="sentiment-pill"><div class="sentiment-dot neutral"></div> Neutral reviews get friendly engagement</div>
+      <div class="sentiment-pill"><div class="sentiment-dot negative"></div> Negative reviews get empathetic, resolution-focused replies</div>
+    </div>
+
+    <p>The response is written in your hotel's brand voice &mdash; the same tone AI uses across your website content.</p>
+
+    <h3>Copy to Clipboard</h3>
+    <p>Happy with the AI response? Click <strong>"Copy"</strong> to copy it to your clipboard, then paste it directly into the review platform. Need a different take? Click <strong>"Regenerate"</strong> for an alternative wording.</p>
+
+    <h3>Review Analytics</h3>
+    <p>The review dashboard shows aggregate statistics for each hotel: average rating, total reviews, sentiment breakdown (positive/neutral/negative), and response rate. Use this to track your hotel's online reputation over time.</p>
+
+    <div class="callout info">
+      <span class="callout-icon">&#x2139;&#xFE0F;</span>
+      <p>Aim for a 100% response rate. Responding to every review &mdash; positive and negative &mdash; shows guests and Google that you're actively engaged.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ 10. BRAND GOVERNANCE (NEW) ════════════════════════ -->
+<div class="divider"></div>
+<section id="brand" class="section-alt">
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon amber">&#x1F6E1;&#xFE0F;</div>
+      <h2>Brand Governance <span class="new-badge">NEW</span></h2>
+    </div>
+    <p class="section-subtitle">Maintain brand consistency across every hotel in your portfolio. Set it once, enforce it everywhere.</p>
+
+    <h3>What Is Brand Governance?</h3>
+    <p>When you manage multiple hotels, keeping a consistent brand across all of them is challenging. Brand governance lets you define organization-wide rules for how your hotels look and what content stays the same everywhere.</p>
+
+    <h3>Organization-Level Theme</h3>
+    <p>Set brand colors, typography, and spacing at the organization level. These override individual hotel themes for the values you specify. Hotels can still customize their own non-locked theme values, but the brand-level settings always take precedence.</p>
+
+    <div class="screenshot grad-amber">
+      <span class="screenshot-label">Brand Theme Editor</span>
+    </div>
+
+    <h3>Locked Sections</h3>
+    <p>Some content must be the same across every property &mdash; legal disclaimers, brand headers, footer links, compliance notices. Mark these sections as <strong>"locked"</strong> and they'll cascade to all hotels automatically.</p>
+    <ul style="margin: 12px 0 0 20px; color: var(--gray-600);">
+      <li>Editors cannot modify locked sections</li>
+      <li>AI commands targeting locked sections are blocked automatically</li>
+      <li>Only organization admins can update locked content</li>
+    </ul>
+
+    <h3>AI Protection</h3>
+    <p>If someone tries to use the AI command bar to modify a locked section &mdash; for example, "change the footer text" when the footer is locked &mdash; AI will politely explain that the section is brand-locked and suggest contacting an admin instead.</p>
+
+    <div class="callout note">
+      <span class="callout-icon">&#x1F3AF;</span>
+      <p>Start with locking your footer and legal sections. These are the most common sections that need to be consistent across all properties. You can lock additional sections over time.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ 11. TEAM MANAGEMENT ════════════════════════ -->
+<div class="divider"></div>
+<section id="team">
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon blue">&#x1F465;</div>
+      <h2>Team Management</h2>
+    </div>
+    <p class="section-subtitle">Invite your team, assign roles, and control who can do what across your portfolio.</p>
+
+    <h3>Inviting Team Members</h3>
+    <p>Go to <strong>Settings &rarr; Team</strong> and click <strong>"Invite Member"</strong>. Enter their email address, choose a role, and optionally assign them to specific hotels. They'll receive an email invitation to join.</p>
+
+    <h3>Roles Explained</h3>
+    <p>Each team member gets one of three roles. Here's what each can do:</p>
+
+    <table class="roles-table">
+      <thead>
+        <tr>
+          <th>Capability</th>
+          <th>Admin</th>
+          <th>Editor</th>
+          <th>Viewer</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>View hotels &amp; pages</td>
+          <td class="check">&#x2713;</td>
+          <td class="check">&#x2713;</td>
+          <td class="check">&#x2713;</td>
+        </tr>
+        <tr>
+          <td>Edit pages &amp; content</td>
+          <td class="check">&#x2713;</td>
+          <td class="check">&#x2713;</td>
+          <td class="cross">&mdash;</td>
+        </tr>
+        <tr>
+          <td>Use AI features</td>
+          <td class="check">&#x2713;</td>
+          <td class="check">&#x2713;</td>
+          <td class="cross">&mdash;</td>
+        </tr>
+        <tr>
+          <td>Publish pages</td>
+          <td class="check">&#x2713;</td>
+          <td class="check">&#x2713;</td>
+          <td class="cross">&mdash;</td>
+        </tr>
+        <tr>
+          <td>Respond to guest reviews</td>
+          <td class="check">&#x2713;</td>
+          <td class="check">&#x2713;</td>
+          <td class="cross">&mdash;</td>
+        </tr>
+        <tr>
+          <td>Manage hotels &amp; settings</td>
+          <td class="check">&#x2713;</td>
+          <td class="cross">&mdash;</td>
+          <td class="cross">&mdash;</td>
+        </tr>
+        <tr>
+          <td>Invite &amp; remove team members</td>
+          <td class="check">&#x2713;</td>
+          <td class="cross">&mdash;</td>
+          <td class="cross">&mdash;</td>
+        </tr>
+        <tr>
+          <td>Run campaigns</td>
+          <td class="check">&#x2713;</td>
+          <td class="cross">&mdash;</td>
+          <td class="cross">&mdash;</td>
+        </tr>
+        <tr>
+          <td>Manage brand governance</td>
+          <td class="check">&#x2713;</td>
+          <td class="cross">&mdash;</td>
+          <td class="cross">&mdash;</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Assigning Hotel Access</h3>
+    <p>You can restrict team members to specific hotels. This is useful when different properties are managed by different teams. An editor assigned to "Grand Hotel" won't see or be able to edit "Beach Resort".</p>
+
+    <h3>Removing Team Members</h3>
+    <p>In the team settings, click the <strong>remove button</strong> next to any member. Their access is revoked immediately. They won't be able to log in or see any content.</p>
+
+    <div class="callout tip">
+      <span class="callout-icon">&#x1F4A1;</span>
+      <p>Give Editors access only to the hotels they manage. This keeps things clean and prevents accidental edits to the wrong property.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ 12. MEDIA LIBRARY ════════════════════════ -->
+<div class="divider"></div>
+<section id="media" class="section-alt">
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon green">&#x1F5BC;&#xFE0F;</div>
+      <h2>Media Library</h2>
+    </div>
+    <p class="section-subtitle">Upload, manage, and optimize all your hotel imagery in one place.</p>
+
+    <h3>Uploading Images</h3>
+    <p>Open the media library from the sidebar or from within the page builder. Drag and drop images, or click <strong>"Upload"</strong> to browse your computer. You can upload multiple images at once.</p>
+
+    <div class="screenshot grad-teal">
+      <span class="screenshot-label">Media Library</span>
+    </div>
+
+    <h3>How Images Are Processed</h3>
+    <p>Every image you upload is automatically optimized for the web. hotelCMS:</p>
+    <ul style="margin: 12px 0 0 20px; color: var(--gray-600);">
+      <li>Strips EXIF data (location, camera info) for privacy</li>
+      <li>Converts to modern formats (WebP, AVIF) for faster loading</li>
+      <li>Creates multiple sizes for different devices (responsive srcset)</li>
+      <li>Generates AI alt-text for accessibility and SEO</li>
+    </ul>
+    <p>You don't need to resize or compress images before uploading. Just upload the highest quality version you have.</p>
+
+    <h3>Editing Alt Text</h3>
+    <p>Alt text describes your image for search engines and visually impaired users. Click any image in the library to edit its alt text. AI generates a starting point, but you can customize it. Be descriptive: "Sunset view from the rooftop pool" is much better than "image1".</p>
+
+    <h3>Deleting Images</h3>
+    <p>Select an image and click <strong>"Delete"</strong>. If the image is currently used on a page, you'll see a warning before it's removed.</p>
+
+    <div class="callout info">
+      <span class="callout-icon">&#x2139;&#xFE0F;</span>
+      <p>Upload images at their original resolution. The system handles optimization automatically, so you always get the best quality at the smallest file size.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ 13. VERSION HISTORY ════════════════════════ -->
+<div class="divider"></div>
+<section id="versions">
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon purple">&#x1F553;</div>
+      <h2>Version History</h2>
+    </div>
+    <p class="section-subtitle">Every change is saved. Review, compare, and roll back at any time.</p>
+
+    <h3>Every Change Is Tracked</h3>
+    <p>Every time you (or AI) edits a page, a new version is automatically saved. Nothing is ever lost. You can always go back to any previous version. hotelCMS uses RFC 6902 patches for efficient storage &mdash; only the changes are stored, not full copies.</p>
+
+    <div class="screenshot grad-purple">
+      <span class="screenshot-label">Version History Timeline</span>
+    </div>
+
+    <h3>Viewing Version History</h3>
+    <p>Open any page in the builder and click the <strong>version history icon</strong>. You'll see a timeline of every change, with timestamps and descriptions of what was modified. Click any version to preview it.</p>
+
+    <h3>Publishing Drafts</h3>
+    <p>New changes are saved as drafts until you're ready to publish. This means you can make edits, review them, and only push them live when everything looks perfect. Click <strong>"Publish"</strong> to make your current draft the live version.</p>
+
+    <h3>Rolling Back to a Previous Version</h3>
+    <p>Made a change you regret? Find the version you want in the history timeline and click <strong>"Restore"</strong>. The page will revert to that exact state. The restored version becomes your new draft, so you still need to publish it to go live.</p>
+
+    <h3>Smart Merge</h3>
+    <p>If you make manual CMS edits while AI has custom code overrides on the same section, hotelCMS detects the conflict and gives you options: keep your changes, discard them, or re-apply the AI overrides. This prevents any work from being silently lost.</p>
+
+    <div class="callout tip">
+      <span class="callout-icon">&#x1F4A1;</span>
+      <p>Don't be afraid to experiment. Since every change is tracked, you can always roll back. Try bold changes &mdash; you have a safety net.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ 14. TIPS & BEST PRACTICES ════════════════════════ -->
+<div class="divider"></div>
+<section id="tips" class="section-alt">
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon amber">&#x1F31F;</div>
+      <h2>Tips &amp; Best Practices</h2>
+    </div>
+    <p class="section-subtitle">Get the most out of hotelCMS with these proven strategies.</p>
+
+    <div class="card-grid" style="grid-template-columns: 1fr 1fr;">
+      <div class="card">
+        <div class="card-icon">&#x1F4C5;</div>
+        <h4>Keep Content Fresh</h4>
+        <p>Update your hotel pages at least monthly. Seasonal updates, new photos, and current promotions signal to guests (and search engines) that you're active.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">&#x1F916;</div>
+        <h4>Use AI for Meta Descriptions</h4>
+        <p>Open the command bar and ask AI to generate meta descriptions for every page. This alone can significantly improve your search rankings.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">&#x1F517;</div>
+        <h4>Set Up Smart Links First</h4>
+        <p>Before building pages, configure your Smart Links. Booking URLs, phone numbers, and social profiles get pulled into sections automatically.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">&#x1F4F7;</div>
+        <h4>Upload High-Quality Images</h4>
+        <p>Always upload the highest resolution available. hotelCMS auto-optimizes them, so you get fast loading without sacrificing quality.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">&#x2705;</div>
+        <h4>Use the Action Queue</h4>
+        <p>Check your dashboard action queue daily. It surfaces the most impactful improvements across all your properties.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">&#x1F3A4;</div>
+        <h4>Set Up Your Brand Voice</h4>
+        <p>Tell AI about your brand's tone and style. The more context you provide, the better AI writes in your voice across all content.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">&#x1F4E3;</div>
+        <h4>Use Campaigns for Promotions</h4>
+        <p>Instead of editing each hotel individually, create a campaign. One brief, AI tailors it for every property. Saves hours across your portfolio.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">&#x2B50;</div>
+        <h4>Respond to Every Review</h4>
+        <p>Use the review AI to maintain a 100% response rate. Even a brief, warm reply to positive reviews boosts your online reputation.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ 15. KEYBOARD SHORTCUTS ════════════════════════ -->
+<div class="divider"></div>
+<section id="shortcuts">
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon blue">&#x2328;&#xFE0F;</div>
+      <h2>Keyboard Shortcuts</h2>
+    </div>
+    <p class="section-subtitle">Speed up your workflow with quick keyboard commands.</p>
+
+    <div style="background: white; border: 1px solid var(--gray-200); border-radius: var(--radius); padding: 8px 20px;">
+      <div class="kbd-row">
+        <span class="label">Focus AI command bar</span>
+        <div class="kbd-keys">
+          <span class="kbd">&#x2318; K</span>
+          <span style="color: var(--gray-400); font-size: 13px; display: flex; align-items: center;">/</span>
+          <span class="kbd">Ctrl K</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout info" style="margin-top: 24px;">
+      <span class="callout-icon">&#x2139;&#xFE0F;</span>
+      <p>More shortcuts are coming soon. The AI command bar is your primary power tool &mdash; you can do almost everything through it.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ FOOTER ════════════════════════ -->
+<footer class="footer">
+  <div class="footer-logo">hotel<span>CMS</span></div>
+  <p>AI-Powered Hotel Website Builder &mdash; v3.0</p>
+  <p>19 features &middot; 12 components &middot; 18 languages &middot; 16 data models</p>
+  <a href="mailto:support@hotelcms.com" class="footer-help">
+    Need help? Contact your account manager
+  </a>
+</footer>
+
+<!-- ── Scripts ── -->
+<script>
+  // Sticky nav shadow on scroll
+  const nav = document.getElementById('topnav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 10);
+  }, { passive: true });
+
+  // Active nav link highlight
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.topnav-links a');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.getAttribute('id');
+        navLinks.forEach(link => {
+          link.style.color = link.getAttribute('href') === '#' + id ? 'var(--coral)' : '';
+          link.style.background = link.getAttribute('href') === '#' + id ? 'var(--coral-light)' : '';
+        });
+      }
+    });
+  }, { rootMargin: '-20% 0px -60% 0px' });
+  sections.forEach(section => observer.observe(section));
+</script>
+</body>
+</html>

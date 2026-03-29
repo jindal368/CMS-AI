@@ -2,14 +2,32 @@ import { type NextRequest } from "next/server";
 import { prisma } from "@/lib/db";
 import { PageCreateSchema } from "@/lib/schemas";
 import { parseBody, errorResponse, successResponse } from "@/lib/api-utils";
+import { requireAuth } from "@/lib/auth";
 
 export async function GET(request: NextRequest) {
   try {
+    const auth = await requireAuth(request);
+    if (auth.response) return auth.response;
+
     const { searchParams } = new URL(request.url);
     const hotelId = searchParams.get("hotelId");
 
     if (!hotelId) {
       return errorResponse("Missing required query parameter: hotelId", 400);
+    }
+
+    // Verify the hotel belongs to the user's org before returning pages
+    const hotel = await prisma.hotel.findUnique({
+      where: { id: hotelId },
+      select: { orgId: true },
+    });
+
+    if (!hotel) {
+      return errorResponse("Hotel not found", 404);
+    }
+
+    if (hotel.orgId && hotel.orgId !== auth.user.orgId) {
+      return errorResponse("Forbidden", 403);
     }
 
     const pages = await prisma.page.findMany({
@@ -42,6 +60,14 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
+    const auth = await requireAuth(request);
+    if (auth.response) return auth.response;
+
+    // Require at least editor role
+    if (!["admin", "editor"].includes(auth.user.role)) {
+      return errorResponse("Forbidden", 403);
+    }
+
     const { data, error } = await parseBody(request, PageCreateSchema);
     if (error) return error;
 

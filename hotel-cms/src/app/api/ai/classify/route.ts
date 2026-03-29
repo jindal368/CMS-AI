@@ -2,6 +2,7 @@ import { NextRequest } from "next/server";
 import { parseBody, errorResponse, successResponse } from "@/lib/api-utils";
 import { z } from "zod";
 import { classifyAction } from "@/lib/router";
+import { requireAuth } from "@/lib/auth";
 
 const ClassifyOnlySchema = z.object({
   hotelId: z.string().uuid(),
@@ -14,6 +15,9 @@ const ClassifyOnlySchema = z.object({
  */
 export async function POST(request: NextRequest) {
   try {
+    const auth = await requireAuth(request);
+    if (auth.response) return auth.response;
+
     const { data, error } = await parseBody(request, ClassifyOnlySchema);
     if (error) return error;
 

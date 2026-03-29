@@ -1,6 +1,8 @@
+import { getSessionFromCookies } from "@/lib/auth";
 import { redirect } from "next/navigation";
 
-// Root redirects to the dashboard home
-export default function RootPage() {
-  redirect("/dashboard");
+export default async function RootPage() {
+  const session = await getSessionFromCookies();
+  if (session) redirect("/dashboard");
+  redirect("/login");
 }

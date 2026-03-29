@@ -2,13 +2,17 @@ import { type NextRequest } from "next/server";
 import { prisma } from "@/lib/db";
 import { parseBody, errorResponse, successResponse } from "@/lib/api-utils";
 import { ThemeSchema } from "@/lib/schemas";
+import { requireHotelAccess } from "@/lib/auth";
 
 export async function GET(
-  _request: NextRequest,
+  request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const { id } = await params;
+
+    const auth = await requireHotelAccess(request, id);
+    if (auth.response) return auth.response;
 
     const hotel = await prisma.hotel.findUnique({ where: { id } });
     if (!hotel) {
@@ -33,6 +37,14 @@ export async function PUT(
 ) {
   try {
     const { id } = await params;
+
+    const auth = await requireHotelAccess(request, id);
+    if (auth.response) return auth.response;
+
+    // Require at least editor role
+    if (!["admin", "editor"].includes(auth.user.role)) {
+      return errorResponse("Forbidden", 403);
+    }
 
     const hotel = await prisma.hotel.findUnique({ where: { id } });
     if (!hotel) {

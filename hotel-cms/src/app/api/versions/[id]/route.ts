@@ -1,12 +1,16 @@
 import { NextRequest } from "next/server";
 import { prisma } from "@/lib/db";
 import { errorResponse, successResponse } from "@/lib/api-utils";
+import { requireAuth } from "@/lib/auth";
 
 export async function GET(
-  _request: NextRequest,
+  request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const auth = await requireAuth(request);
+    if (auth.response) return auth.response;
+
     const { id } = await params;
 
     const version = await prisma.schemaVersion.findUnique({ where: { id } });

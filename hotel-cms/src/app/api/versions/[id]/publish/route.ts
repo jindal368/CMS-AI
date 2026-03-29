@@ -2,12 +2,21 @@ import { NextRequest } from "next/server";
 import { prisma } from "@/lib/db";
 import { publishVersion } from "@/lib/versioning";
 import { errorResponse, successResponse } from "@/lib/api-utils";
+import { requireAuth } from "@/lib/auth";
 
 export async function POST(
-  _request: NextRequest,
+  request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const auth = await requireAuth(request);
+    if (auth.response) return auth.response;
+
+    // Require at least editor role
+    if (!["admin", "editor"].includes(auth.user.role)) {
+      return errorResponse("Forbidden", 403);
+    }
+
     const { id } = await params;
 
     const existing = await prisma.schemaVersion.findUnique({ where: { id } });

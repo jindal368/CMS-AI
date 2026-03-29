@@ -36,6 +36,7 @@ import { NextRequest } from "next/server";
 import { prisma } from "@/lib/db";
 import { processImage } from "@/lib/image-pipeline";
 import { errorResponse, successResponse } from "@/lib/api-utils";
+import { requireAuth } from "@/lib/auth";
 
 // ─── Supported upload MIME types ─────────────────────────────────────────────
 
@@ -54,6 +55,14 @@ const MAX_FILE_SIZE_BYTES = 20 * 1024 * 1024; // 20 MB
 
 export async function POST(request: NextRequest) {
   try {
+    const auth = await requireAuth(request);
+    if (auth.response) return auth.response;
+
+    // Require at least editor role
+    if (!["admin", "editor"].includes(auth.user.role)) {
+      return errorResponse("Forbidden", 403);
+    }
+
     // ── 1. Parse multipart form data ────────────────────────────────────────
 
     let formData: FormData;

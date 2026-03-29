@@ -13,6 +13,9 @@ async function getHotelWithTheme(hotelId: string) {
       id: true,
       name: true,
       theme: true,
+      org: {
+        select: { brandTheme: true },
+      },
     },
   });
 }
@@ -24,7 +27,8 @@ export default async function ThemePage(props: {
   const hotelData = await getHotelWithTheme(id);
   if (!hotelData) notFound();
 
-  const { name, theme } = hotelData;
+  const { name, theme, org } = hotelData;
+  const hasBrandTheme = !!(org?.brandTheme);
 
   // Serialize theme data from Prisma result
   const serializedTheme = theme
@@ -112,6 +116,12 @@ export default async function ThemePage(props: {
         </div>
 
         <div className="p-5">
+          {hasBrandTheme && (
+            <div className="mb-4 p-3 rounded-lg bg-[#0fa886]/10 border border-[#0fa886]/20 flex items-center gap-2">
+              <span className="text-[#0fa886]">ℹ️</span>
+              <p className="text-xs text-[#0fa886]">Organization theme is active. Brand colors and fonts are managed at the org level.</p>
+            </div>
+          )}
           <div className="mb-5">
             <h3 className="text-sm font-semibold text-[#1a1a2e]">
               Theme Editor

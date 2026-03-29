@@ -3,20 +3,35 @@ import { z } from "zod";
 import { prisma } from "@/lib/db";
 import { SectionUpdateSchema } from "@/lib/schemas";
 import { parseBody, errorResponse, successResponse } from "@/lib/api-utils";
+import { requireAuth, requireHotelAccess } from "@/lib/auth";
 
 const ConflictResolutionSchema = z
   .enum(["keep", "discard", "reapply"])
   .optional();
 
 export async function GET(
-  _request: NextRequest,
+  request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const auth = await requireAuth(request);
+    if (auth.response) return auth.response;
+
     const { id } = await params;
 
     const section = await prisma.section.findUnique({ where: { id } });
     if (!section) return errorResponse("Section not found", 404);
+
+    // Resolve hotelId through section→page→hotel chain
+    const page = await prisma.page.findUnique({
+      where: { id: section.pageId },
+      select: { hotelId: true },
+    });
+
+    if (page) {
+      const hotelAuth = await requireHotelAccess(request, page.hotelId);
+      if (hotelAuth.response) return hotelAuth.response;
+    }
 
     return successResponse(section);
   } catch (err) {
@@ -30,6 +45,14 @@ export async function PUT(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const auth = await requireAuth(request);
+    if (auth.response) return auth.response;
+
+    // Require at least editor role
+    if (!["admin", "editor"].includes(auth.user.role)) {
+      return errorResponse("Forbidden", 403);
+    }
+
     const { id } = await params;
 
     // Parse the raw body once so we can extract both the validated fields and
@@ -61,6 +84,17 @@ export async function PUT(
 
     const existing = await prisma.section.findUnique({ where: { id } });
     if (!existing) return errorResponse("Section not found", 404);
+
+    // Resolve hotelId through section→page→hotel chain
+    const page = await prisma.page.findUnique({
+      where: { id: existing.pageId },
+      select: { hotelId: true },
+    });
+
+    if (page) {
+      const hotelAuth = await requireHotelAccess(request, page.hotelId);
+      if (hotelAuth.response) return hotelAuth.response;
+    }
 
     // Detect conflict: section has custom overrides AND this update is structural.
     const hasOverrides = !!(existing.customCss || existing.customHtml);
@@ -111,14 +145,33 @@ export async function PUT(
 }
 
 export async function DELETE(
-  _request: NextRequest,
+  request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const auth = await requireAuth(request);
+    if (auth.response) return auth.response;
+
+    // Require at least editor role
+    if (!["admin", "editor"].includes(auth.user.role)) {
+      return errorResponse("Forbidden", 403);
+    }
+
     const { id } = await params;
 
     const existing = await prisma.section.findUnique({ where: { id } });
     if (!existing) return errorResponse("Section not found", 404);
+
+    // Resolve hotelId through section→page→hotel chain
+    const page = await prisma.page.findUnique({
+      where: { id: existing.pageId },
+      select: { hotelId: true },
+    });
+
+    if (page) {
+      const hotelAuth = await requireHotelAccess(request, page.hotelId);
+      if (hotelAuth.response) return hotelAuth.response;
+    }
 
     await prisma.section.delete({ where: { id } });
 

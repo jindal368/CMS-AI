@@ -3,6 +3,8 @@ import { prisma } from "@/lib/db";
 import PageRenderer from "@/components/renderer/PageRenderer";
 import type { SectionData } from "@/components/renderer/RenderSection";
 import type { ThemeData } from "@/lib/schemas";
+import { generateHotelSchema, generateRoomSchemas } from "@/lib/seo/structured-data";
+import { resolvePropsLinks, resolveSmartLink, HotelLinkData } from "@/lib/smart-links";
 
 export const dynamic = "force-dynamic";
 
@@ -17,13 +19,19 @@ export default async function PreviewPage({ params }: PreviewPageProps) {
   // We accept "home" as an alias for "/".
   const resolvedSlug = pageSlug === "home" ? "/" : pageSlug;
 
-  // Fetch hotel with theme
+  // Fetch hotel with theme and org brand overrides
   const hotel = await prisma.hotel.findUnique({
     where: { id: hotelId },
-    include: { theme: true },
+    include: { theme: true, org: true },
   });
 
   if (!hotel) notFound();
+
+  const hotelLinkData: HotelLinkData = {
+    id: hotel.id,
+    links: (hotel.links as Record<string, string>) || {},
+    contactInfo: (hotel.contactInfo as Record<string, any>) || {},
+  };
 
   // Fetch the page by slug + hotelId
   const page = await prisma.page.findFirst({
@@ -36,6 +44,15 @@ export default async function PreviewPage({ params }: PreviewPageProps) {
   });
 
   if (!page) notFound();
+
+  // Fetch available locales for language switcher
+  const localeRows = await prisma.page.findMany({
+    where: { hotelId },
+    select: { locale: true },
+    distinct: ["locale"],
+  });
+  const locales = localeRows.map((r: { locale: string | null }) => r.locale).filter(Boolean) as string[];
+  const currentLocale = hotel.defaultLocale ?? "";
 
   // Fetch hotel rooms and media for section data enrichment
   const [rooms, mediaAssets] = await Promise.all([
@@ -112,10 +129,29 @@ export default async function PreviewPage({ params }: PreviewPageProps) {
         break;
     }
 
+    // Resolve smart link tokens in all props
+    const resolvedProps = resolvePropsLinks(enrichedProps, hotelLinkData);
+
+    // Inject component-specific resolved links
+    switch (section.componentVariant) {
+      case "booking_sticky":
+        resolvedProps.phoneLink = resolveSmartLink("{{phone}}", hotelLinkData);
+        break;
+      case "footer_rich":
+        resolvedProps.instagramUrl = resolveSmartLink("{{instagram}}", hotelLinkData);
+        resolvedProps.facebookUrl = resolveSmartLink("{{facebook}}", hotelLinkData);
+        resolvedProps.twitterUrl = resolveSmartLink("{{twitter}}", hotelLinkData);
+        break;
+      case "rooms_grid":
+      case "rooms_showcase":
+        resolvedProps.ctaLink = resolveSmartLink("{{booking}}", hotelLinkData);
+        break;
+    }
+
     return {
       id: section.id,
       componentVariant: section.componentVariant,
-      props: enrichedProps,
+      props: resolvedProps,
       sortOrder: section.sortOrder,
       isVisible: section.isVisible,
       customCss: section.customCss ?? null,
@@ -125,7 +161,7 @@ export default async function PreviewPage({ params }: PreviewPageProps) {
   });
 
   // Parse theme data
-  const themeData = hotel.theme
+  let themeData = hotel.theme
     ? ({
         colorTokens: hotel.theme.colorTokens,
         typography: hotel.theme.typography,
@@ -133,6 +169,37 @@ export default async function PreviewPage({ params }: PreviewPageProps) {
         baseTemplate: hotel.theme.baseTemplate,
       } as unknown as ThemeData)
     : null;
+
+  // Apply org brand theme override if present
+  const orgBrandTheme = (hotel as any).org?.brandTheme as Record<string, any> | null;
+  if (orgBrandTheme && orgBrandTheme.colorTokens) {
+    themeData = {
+      colorTokens: orgBrandTheme.colorTokens,
+      typography: orgBrandTheme.typography || themeData?.colorTokens,
+      spacing: orgBrandTheme.spacing || themeData?.spacing,
+      baseTemplate: orgBrandTheme.baseTemplate || themeData?.baseTemplate,
+    } as any;
+  }
+
+  // Inject org locked sections (pinned top/bottom across all pages)
+  const orgLockedSections = ((hotel as any).org?.lockedSections || []) as Array<{
+    id: string; label: string; position: string; componentVariant: string;
+    props: Record<string, unknown>; customHtml?: string; customMode?: boolean;
+  }>;
+
+  const topLocked = orgLockedSections.filter(s => s.position === "top").map(s => ({
+    id: s.id, componentVariant: s.componentVariant, props: resolvePropsLinks(s.props || {}, hotelLinkData),
+    sortOrder: -1000, isVisible: true, customCss: null,
+    customHtml: s.customHtml || null, customMode: s.customMode || false,
+  }));
+
+  const bottomLocked = orgLockedSections.filter(s => s.position === "bottom").map(s => ({
+    id: s.id, componentVariant: s.componentVariant, props: resolvePropsLinks(s.props || {}, hotelLinkData),
+    sortOrder: 9999, isVisible: true, customCss: null,
+    customHtml: s.customHtml || null, customMode: s.customMode || false,
+  }));
+
+  const allSections = [...topLocked, ...sections, ...bottomLocked];
 
   const metaTags = page.metaTags as Record<string, string> | null;
   const pageTitle = metaTags?.title ?? `${hotel.name} — Preview`;
@@ -145,9 +212,38 @@ export default async function PreviewPage({ params }: PreviewPageProps) {
         <span className="capitalize">{page.pageType}</span>
       </div>
 
+      {/* Language switcher */}
+      {locales.length > 1 && (
+        <div className="fixed top-10 right-4 z-40 flex gap-1 bg-white/90 backdrop-blur-sm rounded-full px-2 py-1 shadow-lg border border-gray-200 text-xs">
+          {locales.map((l) => {
+            const resolvedSlugForLink = pageSlug === "/" ? "home" : pageSlug;
+            const isActive = l === currentLocale;
+            return (
+              <a
+                key={l}
+                href={`/preview/${hotelId}/lang/${l}/${resolvedSlugForLink}`}
+                className={`px-2.5 py-1 rounded-full font-medium transition-colors ${isActive ? "bg-[#e85d45] text-white" : "text-gray-600 hover:bg-gray-100"}`}
+              >
+                {l.toUpperCase()}
+              </a>
+            );
+          })}
+        </div>
+      )}
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify([
+            generateHotelSchema(hotel),
+            ...generateRoomSchemas(rooms),
+          ]),
+        }}
+      />
+
       <div className="pt-8">
         <PageRenderer
-          sections={sections}
+          sections={allSections}
           theme={themeData}
           hotelName={hotel.name}
         />

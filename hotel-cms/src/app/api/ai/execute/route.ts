@@ -4,6 +4,7 @@ import { z } from "zod";
 import { prisma } from "@/lib/db";
 import { classifyAction } from "@/lib/router";
 import { extractUrlFromText, scrapeReference } from "@/lib/scraper";
+import { requireAuth } from "@/lib/auth";
 
 // Allow up to 3 minutes for LLM responses (free models can be slow)
 export const maxDuration = 180;
@@ -27,6 +28,9 @@ const ExecuteSchema = z.object({
  */
 export async function POST(request: NextRequest) {
   try {
+    const auth = await requireAuth(request);
+    if (auth.response) return auth.response;
+
     const { data, error } = await parseBody(request, ExecuteSchema);
     if (error) return error;
 

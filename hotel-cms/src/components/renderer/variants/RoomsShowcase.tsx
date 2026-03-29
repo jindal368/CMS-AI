@@ -8,6 +8,7 @@ export interface RoomsShowcaseProps {
   autoplay?: boolean;
   showDetails?: boolean;
   transitionEffect?: "slide" | "fade" | "zoom";
+  ctaLink?: string;
   rooms?: RoomData[];
 }
 
@@ -46,6 +47,7 @@ const placeholderRooms: RoomData[] = [
 
 export default function RoomsShowcase({
   showDetails = true,
+  ctaLink = "#",
   rooms = [],
 }: RoomsShowcaseProps) {
   const displayRooms = rooms.length ? rooms : placeholderRooms;
@@ -108,7 +110,7 @@ export default function RoomsShowcase({
               </div>
             )}
             <Link
-              href="#booking"
+              href={ctaLink || "#"}
               className="self-start inline-block px-8 py-3 border border-white text-white text-xs tracking-[0.2em] uppercase hover:bg-white hover:text-stone-900 transition-all duration-300 font-medium"
             >
               Reserve Now
