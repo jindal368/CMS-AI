@@ -33,14 +33,17 @@ export default async function PageBuilderPage(props: {
 
   if (!page || page.hotelId !== id) notFound();
 
-  // Parse locked sections from org
+  // Parse locked sections from org — DB may store "variant" or "componentVariant"
   type LockedSection = { id: string; label: string; position: string; componentVariant: string };
   let lockedSections: LockedSection[] | undefined;
   if (page.hotel.org) {
     try {
       const raw = page.hotel.org.lockedSections;
       if (Array.isArray(raw)) {
-        lockedSections = raw as LockedSection[];
+        lockedSections = (raw as any[]).map((s) => ({
+          ...s,
+          componentVariant: s.componentVariant || s.variant || "",
+        }));
       }
     } catch {
       // ignore parse errors

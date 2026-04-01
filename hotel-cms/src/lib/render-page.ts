@@ -200,7 +200,8 @@ export async function getHotelPageData(
     id: string;
     label: string;
     position: string;
-    componentVariant: string;
+    componentVariant?: string;
+    variant?: string;
     props: Record<string, unknown>;
     customHtml?: string;
     customMode?: boolean;
@@ -210,7 +211,7 @@ export async function getHotelPageData(
     .filter((s) => s.position === "top")
     .map((s) => ({
       id: s.id,
-      componentVariant: s.componentVariant,
+      componentVariant: s.componentVariant || s.variant || "",
       props: resolvePropsLinks(s.props || {}, hotelLinkData),
       sortOrder: -1000,
       isVisible: true,
@@ -223,7 +224,7 @@ export async function getHotelPageData(
     .filter((s) => s.position === "bottom")
     .map((s) => ({
       id: s.id,
-      componentVariant: s.componentVariant,
+      componentVariant: s.componentVariant || s.variant || "",
       props: resolvePropsLinks(s.props || {}, hotelLinkData),
       sortOrder: 9999,
       isVisible: true,
